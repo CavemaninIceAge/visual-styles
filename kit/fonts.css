@@ -1,0 +1,115 @@
+/* 图册字体
+   文件都在 assets/fonts/，由 tools/setup.sh 下载，授权全文见仓库的 licenses/fonts-OFL.txt（全部 SIL OFL 1.1，可商用、可嵌入）。
+   __ROOT__ 在构建时换成 file:// 开头的工程根。
+   单字重的展示字体把 font-weight 写成 100 900：标题默认加粗时浏览器就不会再"伪加粗"把字描糊。
+   可变字体写的是真实轴范围；Fraunces 的 SOFT / WONK、Inter / Bodoni / Bricolage 的 opsz 用 font-variation-settings 或 font-optical-sizing 调。
+   系统自带、不用在这里声明的：PingFang SC、Songti SC、Kaiti SC、Yuanti SC、Lantinghei SC、Hiragino Mincho ProN、Hiragino Maru Gothic ProN、
+   Avenir Next、Helvetica Neue、DIN Alternate、DIN Condensed、Futura、Didot、Bodoni 72、Baskerville、New York、Optima、Rockwell、American Typewriter、Menlo 等。 */
+
+/* ───────── 中文 ───────── */
+
+/* 霞鹜文楷：Light 300 / Regular 400 / Medium 500（500 起都用 Medium，避免伪粗） */
+@font-face { font-family: "LXGW WenKai"; src: url("__ROOT__/assets/fonts/LXGWWenKai-Light.ttf") format("truetype"); font-weight: 100 300; font-style: normal; font-display: block; }
+@font-face { font-family: "LXGW WenKai"; src: url("__ROOT__/assets/fonts/LXGWWenKai-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "LXGW WenKai"; src: url("__ROOT__/assets/fonts/LXGWWenKai-Medium.ttf") format("truetype"); font-weight: 500 900; font-style: normal; font-display: block; }
+
+/* 得意黑：字形本身就是斜的，按正体声明；italic 也指向同一文件，免得再被浏览器斜一次 */
+@font-face { font-family: "Smiley Sans"; src: url("__ROOT__/assets/fonts/SmileySans-Oblique.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Smiley Sans"; src: url("__ROOT__/assets/fonts/SmileySans-Oblique.ttf") format("truetype"); font-weight: 100 900; font-style: italic; font-display: block; }
+
+/* 抖音美好体：只有粗体一档 */
+@font-face { font-family: "Douyin Sans"; src: url("__ROOT__/assets/fonts/DouyinSansBold.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+
+/* 站酷快乐体 / 站酷庆科黄油体 / 站酷小薇 / 马善政楷书：单字重 */
+@font-face { font-family: "ZCOOL KuaiLe"; src: url("__ROOT__/assets/fonts/ZCOOLKuaiLe-Regular.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "ZCOOL QingKe HuangYou"; src: url("__ROOT__/assets/fonts/ZCOOLQingKeHuangYou-Regular.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "ZCOOL XiaoWei"; src: url("__ROOT__/assets/fonts/ZCOOLXiaoWei-Regular.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Ma Shan Zheng"; src: url("__ROOT__/assets/fonts/MaShanZheng-Regular.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+
+/* 思源宋体 / 思源黑体：可变字体 */
+@font-face { font-family: "Noto Serif SC"; src: url("__ROOT__/assets/fonts/NotoSerifSC[wght].ttf") format("truetype"); font-weight: 200 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Noto Sans SC"; src: url("__ROOT__/assets/fonts/NotoSansSC[wght].ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+
+/* 寒蝉全圆体：Regular / Bold */
+@font-face { font-family: "Chill Round"; src: url("__ROOT__/assets/fonts/ChillRoundFRegular.ttf") format("truetype"); font-weight: 100 500; font-style: normal; font-display: block; }
+@font-face { font-family: "Chill Round"; src: url("__ROOT__/assets/fonts/ChillRoundFBold.ttf") format("truetype"); font-weight: 600 900; font-style: normal; font-display: block; }
+
+/* ───────── 西文 · 无衬线 ───────── */
+
+@font-face { font-family: "Inter"; src: url("__ROOT__/assets/fonts/Inter[opsz,wght].ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Inter"; src: url("__ROOT__/assets/fonts/Inter-Italic[opsz,wght].ttf") format("truetype"); font-weight: 100 900; font-style: italic; font-display: block; }
+
+@font-face { font-family: "Space Grotesk"; src: url("__ROOT__/assets/fonts/SpaceGrotesk[wght].ttf") format("truetype"); font-weight: 300 700; font-style: normal; font-display: block; }
+
+@font-face { font-family: "Syne"; src: url("__ROOT__/assets/fonts/Syne[wght].ttf") format("truetype"); font-weight: 400 800; font-style: normal; font-display: block; }
+
+/* Bricolage Grotesque：wght 200–800、wdth 75–100（font-stretch）、opsz 12–96 */
+@font-face { font-family: "Bricolage Grotesque"; src: url("__ROOT__/assets/fonts/BricolageGrotesque[opsz,wdth,wght].ttf") format("truetype"); font-weight: 200 800; font-stretch: 75% 100%; font-style: normal; font-display: block; }
+
+/* Fredoka：wght 300–700、wdth 75–125 */
+@font-face { font-family: "Fredoka"; src: url("__ROOT__/assets/fonts/Fredoka[wdth,wght].ttf") format("truetype"); font-weight: 300 700; font-stretch: 75% 125%; font-style: normal; font-display: block; }
+
+@font-face { font-family: "Nunito"; src: url("__ROOT__/assets/fonts/Nunito[wght].ttf") format("truetype"); font-weight: 200 1000; font-style: normal; font-display: block; }
+@font-face { font-family: "Nunito"; src: url("__ROOT__/assets/fonts/Nunito-Italic[wght].ttf") format("truetype"); font-weight: 200 1000; font-style: italic; font-display: block; }
+
+/* 单字重的重磅标题字 */
+@font-face { font-family: "Archivo Black"; src: url("__ROOT__/assets/fonts/ArchivoBlack-Regular.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Anton"; src: url("__ROOT__/assets/fonts/Anton-Regular.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Bebas Neue"; src: url("__ROOT__/assets/fonts/BebasNeue-Regular.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+
+/* Barlow Condensed：静态字重 300–900，含斜体 */
+@font-face { font-family: "Barlow Condensed"; src: url("__ROOT__/assets/fonts/BarlowCondensed-Light.ttf") format("truetype"); font-weight: 300; font-style: normal; font-display: block; }
+@font-face { font-family: "Barlow Condensed"; src: url("__ROOT__/assets/fonts/BarlowCondensed-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Barlow Condensed"; src: url("__ROOT__/assets/fonts/BarlowCondensed-Medium.ttf") format("truetype"); font-weight: 500; font-style: normal; font-display: block; }
+@font-face { font-family: "Barlow Condensed"; src: url("__ROOT__/assets/fonts/BarlowCondensed-SemiBold.ttf") format("truetype"); font-weight: 600; font-style: normal; font-display: block; }
+@font-face { font-family: "Barlow Condensed"; src: url("__ROOT__/assets/fonts/BarlowCondensed-Bold.ttf") format("truetype"); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Barlow Condensed"; src: url("__ROOT__/assets/fonts/BarlowCondensed-ExtraBold.ttf") format("truetype"); font-weight: 800; font-style: normal; font-display: block; }
+@font-face { font-family: "Barlow Condensed"; src: url("__ROOT__/assets/fonts/BarlowCondensed-Black.ttf") format("truetype"); font-weight: 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Barlow Condensed"; src: url("__ROOT__/assets/fonts/BarlowCondensed-Italic.ttf") format("truetype"); font-weight: 400; font-style: italic; font-display: block; }
+@font-face { font-family: "Barlow Condensed"; src: url("__ROOT__/assets/fonts/BarlowCondensed-MediumItalic.ttf") format("truetype"); font-weight: 500; font-style: italic; font-display: block; }
+@font-face { font-family: "Barlow Condensed"; src: url("__ROOT__/assets/fonts/BarlowCondensed-SemiBoldItalic.ttf") format("truetype"); font-weight: 600; font-style: italic; font-display: block; }
+@font-face { font-family: "Barlow Condensed"; src: url("__ROOT__/assets/fonts/BarlowCondensed-BoldItalic.ttf") format("truetype"); font-weight: 700; font-style: italic; font-display: block; }
+@font-face { font-family: "Barlow Condensed"; src: url("__ROOT__/assets/fonts/BarlowCondensed-ExtraBoldItalic.ttf") format("truetype"); font-weight: 800; font-style: italic; font-display: block; }
+@font-face { font-family: "Barlow Condensed"; src: url("__ROOT__/assets/fonts/BarlowCondensed-BlackItalic.ttf") format("truetype"); font-weight: 900; font-style: italic; font-display: block; }
+
+/* ───────── 西文 · 衬线 ───────── */
+
+/* Fraunces：wght 100–900、opsz 9–144、SOFT 0–100、WONK 0–1。软圆黑体例：font-weight:900; font-variation-settings:"SOFT" 100, "WONK" 1 */
+@font-face { font-family: "Fraunces"; src: url("__ROOT__/assets/fonts/Fraunces[SOFT,WONK,opsz,wght].ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Fraunces"; src: url("__ROOT__/assets/fonts/Fraunces-Italic[SOFT,WONK,opsz,wght].ttf") format("truetype"); font-weight: 100 900; font-style: italic; font-display: block; }
+
+@font-face { font-family: "Instrument Serif"; src: url("__ROOT__/assets/fonts/InstrumentSerif-Regular.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Instrument Serif"; src: url("__ROOT__/assets/fonts/InstrumentSerif-Italic.ttf") format("truetype"); font-weight: 100 900; font-style: italic; font-display: block; }
+
+@font-face { font-family: "Playfair Display"; src: url("__ROOT__/assets/fonts/PlayfairDisplay[wght].ttf") format("truetype"); font-weight: 400 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Playfair Display"; src: url("__ROOT__/assets/fonts/PlayfairDisplay-Italic[wght].ttf") format("truetype"); font-weight: 400 900; font-style: italic; font-display: block; }
+
+@font-face { font-family: "Cormorant Garamond"; src: url("__ROOT__/assets/fonts/CormorantGaramond[wght].ttf") format("truetype"); font-weight: 300 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Cormorant Garamond"; src: url("__ROOT__/assets/fonts/CormorantGaramond-Italic[wght].ttf") format("truetype"); font-weight: 300 700; font-style: italic; font-display: block; }
+
+@font-face { font-family: "Bodoni Moda"; src: url("__ROOT__/assets/fonts/BodoniModa[opsz,wght].ttf") format("truetype"); font-weight: 400 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Bodoni Moda"; src: url("__ROOT__/assets/fonts/BodoniModa-Italic[opsz,wght].ttf") format("truetype"); font-weight: 400 900; font-style: italic; font-display: block; }
+
+@font-face { font-family: "DM Serif Display"; src: url("__ROOT__/assets/fonts/DMSerifDisplay-Regular.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "DM Serif Display"; src: url("__ROOT__/assets/fonts/DMSerifDisplay-Italic.ttf") format("truetype"); font-weight: 100 900; font-style: italic; font-display: block; }
+
+/* ───────── 西文 · 等宽 ───────── */
+
+@font-face { font-family: "JetBrains Mono"; src: url("__ROOT__/assets/fonts/JetBrainsMono[wght].ttf") format("truetype"); font-weight: 100 800; font-style: normal; font-display: block; }
+@font-face { font-family: "JetBrains Mono"; src: url("__ROOT__/assets/fonts/JetBrainsMono-Italic[wght].ttf") format("truetype"); font-weight: 100 800; font-style: italic; font-display: block; }
+
+@font-face { font-family: "Space Mono"; src: url("__ROOT__/assets/fonts/SpaceMono-Regular.ttf") format("truetype"); font-weight: 100 500; font-style: normal; font-display: block; }
+@font-face { font-family: "Space Mono"; src: url("__ROOT__/assets/fonts/SpaceMono-Bold.ttf") format("truetype"); font-weight: 600 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Space Mono"; src: url("__ROOT__/assets/fonts/SpaceMono-Italic.ttf") format("truetype"); font-weight: 100 500; font-style: italic; font-display: block; }
+@font-face { font-family: "Space Mono"; src: url("__ROOT__/assets/fonts/SpaceMono-BoldItalic.ttf") format("truetype"); font-weight: 600 900; font-style: italic; font-display: block; }
+
+@font-face { font-family: "Courier Prime"; src: url("__ROOT__/assets/fonts/CourierPrime-Regular.ttf") format("truetype"); font-weight: 100 500; font-style: normal; font-display: block; }
+@font-face { font-family: "Courier Prime"; src: url("__ROOT__/assets/fonts/CourierPrime-Bold.ttf") format("truetype"); font-weight: 600 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Courier Prime"; src: url("__ROOT__/assets/fonts/CourierPrime-Italic.ttf") format("truetype"); font-weight: 100 500; font-style: italic; font-display: block; }
+@font-face { font-family: "Courier Prime"; src: url("__ROOT__/assets/fonts/CourierPrime-BoldItalic.ttf") format("truetype"); font-weight: 600 900; font-style: italic; font-display: block; }
+
+/* 霞鹜漫黑 LXGW Marker Gothic（OFL 1.1，github.com/lxgw/LxgwMarkerGothic v1.004）：手写马克笔感的圆头黑体，05 暖调自然用 */
+@font-face { font-family: "LXGW Marker Gothic"; src: url("__ROOT__/assets/fonts/LXGWMarkerGothic-Regular.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+
+/* Outfit（OFL 1.1，github.com/google/fonts/tree/main/ofl/outfit）：几何感的细体无衬线，14 液态玻璃的数字和西文用 */
+@font-face { font-family: "Outfit"; src: url("__ROOT__/assets/fonts/Outfit[wght].ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }

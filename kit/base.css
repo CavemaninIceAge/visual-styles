@@ -1,0 +1,40 @@
+/* 公用：设备外框、浏览器外框、屏幕基础（从图册工程搬来，类名不要拿去做别的用途：.sb .mn .hb .dev .scr .brw .ic .ph） */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#ECE8E1}
+body{font-family:"PingFang SC","Hiragino Sans GB",-apple-system,sans-serif;color:#111;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+img{display:block}
+.ic{display:inline-block;vertical-align:middle;flex:none}
+
+/* 手机 */
+.dev{position:relative;flex:none;background:linear-gradient(150deg,#34353b,#0f1013 60%);box-shadow:0 0 0 1px rgba(255,255,255,.22),inset 0 0 0 1.5px #55565d,inset 0 0 0 3px #1a1b1f,0 30px 60px -18px rgba(18,26,51,.45),0 10px 22px -8px rgba(18,26,51,.25)}
+.dev-s{position:relative;overflow:hidden;background:#fff}
+.dev-z{position:absolute;left:0;top:0;width:375px;height:812px;transform-origin:0 0}
+.island{position:absolute;left:50%;transform:translateX(-50%);background:#000;border-radius:999px;z-index:20}
+
+/* 浏览器 */
+.brw{border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 30px 60px -18px rgba(18,26,51,.4),0 0 0 1px rgba(18,26,51,.08)}
+.brw-bar{height:38px;background:#ECEAE6;display:flex;align-items:center;gap:8px;padding:0 16px;position:relative}
+.brw-bar span{width:12px;height:12px;border-radius:50%;background:#D6D2CB}
+.brw-bar span:nth-child(1){background:#F26D5F}.brw-bar span:nth-child(2){background:#F5BE4F}.brw-bar span:nth-child(3){background:#5CC05A}
+.brw-url{position:absolute;left:50%;transform:translateX(-50%);height:24px;min-width:300px;border-radius:7px;background:#fff;font:500 13px/24px "PingFang SC",sans-serif;color:#555;text-align:center;padding:0 14px}
+.brw-s{position:relative;overflow:hidden}
+
+/* 屏幕：设计稿 375×812 */
+.scr{position:relative;width:375px;height:812px;overflow:hidden;font-family:-apple-system,"PingFang SC",sans-serif;font-size:14px;line-height:1.45;color:#111}
+.scr *{box-sizing:border-box}
+.sb{height:50px;display:flex;align-items:center;justify-content:space-between;padding:4px 30px 0 34px;position:relative;z-index:5}
+.sb-t{font:600 16px/1 -apple-system,"SF Pro Text",sans-serif;letter-spacing:-.01em}
+.sb-r{display:flex;gap:6px;align-items:center}
+.mn{height:44px;display:flex;align-items:center;justify-content:center;position:relative;z-index:5}
+.mn-t{font-size:17px;font-weight:600;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mn-l{position:absolute;left:12px;top:0;height:44px;display:flex;align-items:center}
+.cap{position:absolute;right:7px;top:6px;width:87px;height:32px;border-radius:16px;border:.5px solid;display:flex;align-items:center;justify-content:space-around;padding:0 9px}
+.cap i{width:.5px;height:19px}
+.hb{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;z-index:30}
+.ph{background-size:cover;background-position:center}
+
+/* 网页：设计稿 1280 宽，高度默认 800（长页面可以更高） */
+.web{position:relative;width:1280px;overflow:hidden}
+
+/* 可点击的元素 */
+[data-go],[data-back]{cursor:pointer}

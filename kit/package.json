@@ -1,0 +1,9 @@
+{
+  "name": "visual-styles-kit",
+  "private": true,
+  "description": "出图工具的依赖",
+  "dependencies": {
+    "lucide-static": "0.460.0",
+    "sharp": "0.33.5"
+  }
+}

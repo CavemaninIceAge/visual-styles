@@ -1,0 +1,8 @@
+.DS_Store
+本地约定.md
+tools/config.local.sh
+.local/
+kit/assets/
+kit/node_modules/
+kit/.venv/
+refs/图库/*总览*.jpg
