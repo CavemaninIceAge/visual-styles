@@ -1,8 +1,10 @@
-// 09 撞色波普 Bold Pop —— 起手包
-// 色值、字体、字号、按钮、波浪、爆炸星、闪星、斜色块、飘带都照图册模块 catalog/pages/s09-pop.js（啵啵 BOBO）原样取
+// 09 撞色波普 Bold Pop，起手包
+// 色值、字体、字号、波浪、爆炸星、闪星、斜色块、飘带都照图册模块 catalog/pages/s09-pop.js（啵啵）原样取
 // 用法：const S = style('s09-pop'); 屏幕根元素 <div class="scr s09">（默认电光紫底、白字）；整屏黄底写 <div class="scr s09 v-c-y">
 // 画面靠四样东西撑：两三种高饱和色大块撞色、超大倾斜的庆科黄油体、歪着出框的色块和贴纸、星星 / 波浪 / 爆炸星这类平面图形
-// 图册正文用苹方，这里换成开源的思源黑体（交 HTML 时安卓上也一样）；字号字距照旧
+// 图册正文用苹方，这里换成开源的思源黑体（交 HTML 时安卓上也一样）
+// 和图册不一样的地方（审美守则第二节）：按钮、字标英文不拉字距；字标的 o 是实心圆、不点高光；标签栏当前项不画小圆点，靠字重和图标线粗；
+// 小数据的说明词放在数字下面；两样信息放一行用 ui.pair（窄粗大数字 + 一句粗字），不拿符号串
 // 换配色：const S = style('s09-pop'); S.recolor({ bg, primary, red, pink, ink, deep }); 之后再取 S.ui、S.T。T、css、组件默认色全部跟着换
 module.exports = function starter(L, over = {}) {
   const { icon } = L;
@@ -49,7 +51,7 @@ module.exports = function starter(L, over = {}) {
 .s09 .v-mut{font:600 14px/1.4 ${SANS};opacity:.75}
 /* 色块上的小粗字：舞台、件数、规格这类跟在大字旁边的信息 */
 .s09 .v-lb{font:700 15px/1 ${SANS};white-space:nowrap}
-.s09 .v-num{font-family:${BG};font-weight:800;font-stretch:75%;letter-spacing:-.01em}
+.s09 .v-num{font-family:${BG};font-weight:800;font-stretch:75%;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
 .s09 .v-tx .v-num,.s09 .v-mut .v-num{font-size:1.14em}
 /* 主角大数字（取单号、日期、分数）：窄粗、斜切、轻转；紫底上是荧光黄，黄 / 粉底上是电光紫 */
 .s09 .v-big{display:block;width:max-content;font:800 200px/1 ${BG};font-stretch:75%;letter-spacing:-.03em;white-space:nowrap;color:var(--big);transform:skewX(-8deg) rotate(-4deg);transform-origin:0 100%}
@@ -60,12 +62,13 @@ module.exports = function starter(L, over = {}) {
 .s09 .v-price{display:inline-block;font:800 36px/1 ${BG};font-stretch:75%;letter-spacing:-.01em;white-space:nowrap}
 .s09 .v-price::first-letter{font-size:.56em;vertical-align:.32em;margin-right:.04em}
 .s09 .v-price small{font:700 .4em/1 ${SANS};letter-spacing:0;margin-left:.2em}
-/* 按钮：墨黑胶囊、荧光黄字、字距 .12em（放在黄色块上）；.y 是紫底上的黄胶囊；.ghost 是一圈粗边的次按钮 */
-.s09 .v-btn{height:60px;padding:0 30px;display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:30px;background:var(--k);color:var(--y);font:700 19px/1 ${SANS};letter-spacing:.12em;white-space:nowrap}
+/* 按钮：墨黑胶囊、荧光黄字（放在黄色块上）；.y 是紫底上的黄胶囊；.ghost 是一圈粗边的次按钮
+   海报感靠一大块墨黑胶囊和 800 的粗字，字距只留 .02em，不拉开 */
+.s09 .v-btn{height:60px;padding:0 30px;display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:30px;background:var(--k);color:var(--y);font:800 20px/1 ${SANS};letter-spacing:.02em;white-space:nowrap}
 .s09 .v-btn.wide{display:flex;width:100%}
 .s09 .v-btn.y{background:var(--y);color:var(--k)}
 .s09 .v-btn.ghost{background:transparent;color:inherit;box-shadow:inset 0 0 0 3px currentColor}
-.s09 .v-btn.sm{height:50px;padding:0 26px;border-radius:25px;font-size:17px;letter-spacing:.08em}
+.s09 .v-btn.sm{height:50px;padding:0 26px;border-radius:25px;font-size:17px}
 .s09 .v-round{width:40px;height:40px;border-radius:50%;background:var(--k);color:var(--y);display:grid;place-items:center;flex:none}
 /* 卡片：一整块纯色、大圆角，不描边不加影；贴纸可以压出卡片边 */
 .s09 .v-card{position:relative;border-radius:28px;background:var(--y);--fg:var(--k);--hl:var(--k);--big:var(--p);--bgc:var(--y);color:var(--fg)}
@@ -95,41 +98,42 @@ module.exports = function starter(L, over = {}) {
 .s09 .v-burst{position:relative;flex:none}
 .s09 .v-burst svg{position:absolute;left:0;top:0}
 .s09 .v-burst .bi{position:absolute;inset:0;display:grid;place-items:center;color:#fff}
-.s09 .v-dot{display:inline-block;border-radius:50%;position:relative}
-.s09 .v-dot::after{content:"";position:absolute;left:24%;top:22%;width:22%;height:22%;border-radius:50%;background:var(--hl2)}
-/* 字标：庆科黄油体中文名（斜）+ 宽字距英文；ui.wordmark 是把 o 换成气泡的英文字标 */
+/* 字标：庆科黄油体中文名（斜）+ 同样斜切的窄粗英文（中文字号的 .56 倍、不小于 14px、字距 0、大小写照品牌原样）
+   ui.wordmark 是英文字标：Bricolage 800，字母 o 换成和字母一样高的实心圆，这个圆放大就是屏幕上的大圆 ui.disc */
 .s09 .v-logo{display:inline-flex;align-items:baseline;gap:10px;white-space:nowrap}
 .s09 .v-logo b{display:inline-block;font:400 32px/1 ${QK};letter-spacing:.02em;color:var(--hl);-webkit-text-stroke:.012em currentColor;transform:skewX(-10deg)}
-.s09 .v-logo em{font:800 14px/1 ${BG};font-style:normal;letter-spacing:.14em;color:var(--fg)}
+.s09 .v-logo em{display:inline-block;font:800 18px/1 ${BG};font-stretch:75%;font-style:normal;letter-spacing:0;color:var(--fg);transform:skewX(-10deg)}
 .s09 .v-wm{display:inline-flex;align-items:baseline;font-family:${BG};font-weight:800;line-height:1;letter-spacing:-.02em;white-space:nowrap}
-.s09 .v-wm i{display:inline-block;width:.54em;height:.54em;border-radius:50%;background:currentColor;margin:0 .03em 0 .04em;position:relative}
-.s09 .v-wm i::after{content:"";position:absolute;left:24%;top:22%;width:22%;height:22%;border-radius:50%;background:var(--hl2)}
+.s09 .v-wm i{display:inline-block;width:.54em;height:.54em;border-radius:50%;background:currentColor;margin:0 .03em 0 .04em}
+/* 两样信息的一行（ui.pair）：窄粗斜数字（日期、价格、时长）+ 一句粗字（地点、门店），中间 14px、基线对齐 */
+.s09 .v-pair{display:flex;align-items:baseline;gap:14px;white-space:nowrap}
+.s09 .v-pair b{display:inline-block;font:800 30px/1 ${BG};font-stretch:75%;letter-spacing:-.01em;font-variant-numeric:tabular-nums;color:var(--hl);transform:skewX(-8deg)}
+.s09 .v-pair span{font:700 16px/1.2 ${SANS}}
 /* 小程序顶栏左边的门店 / 城市切换 */
 .s09 .v-city{display:flex;align-items:center;gap:4px;padding-left:6px;font:600 16px/1 ${SANS};white-space:nowrap}
-/* 右上角小数据（会员积分、余额） */
+/* 右上角小数据（会员积分、余额）：数字在上，说明它是什么的词在下面，不加字距 */
 .s09 .v-pts{text-align:right;white-space:nowrap}
-.s09 .v-pts span{display:block;font:600 12px/1.4 ${SANS};opacity:.7}
-.s09 .v-pts b{display:block;margin-top:2px;font:800 30px/1 ${BG};font-stretch:75%;letter-spacing:-.01em}
+.s09 .v-pts b{display:block;font:800 30px/1 ${BG};font-stretch:75%;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.s09 .v-pts span{display:block;margin-top:4px;font:600 13px/1.3 ${SANS};opacity:.75}
 /* 二维码贴纸：白底圆角，歪着贴 */
 .s09 .v-qr{width:max-content;padding:16px;border-radius:24px;background:#fff;line-height:0}
 /* App 顶栏（小程序用 L.miniNav）：左右是墨黑小圆钮，标题斜的庆科体 */
 .s09 .v-nav{position:relative;height:56px;margin:0 16px;display:flex;align-items:center;justify-content:space-between}
 .s09 .v-nav .t{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) skewX(-10deg);font:400 26px/1 ${QK};letter-spacing:.02em;color:var(--hl);white-space:nowrap}
-/* 标签栏：荧光黄底（通常压在黄波浪上），当前项电光紫 + 字加粗 + 下面一个小圆点（不只靠颜色） */
+/* 标签栏：荧光黄底（通常压在黄波浪上）；当前项电光紫、字重 800、图标线 2.8（其余 500、2），不只靠颜色 */
 .s09 .v-tabs{position:absolute;left:0;right:0;bottom:0;height:84px;display:flex;justify-content:space-around;padding:8px 12px 0;background:var(--y);color:var(--k);z-index:6}
-.s09 .v-tabs>div{display:flex;flex-direction:column;align-items:center;gap:3px;width:64px;font:600 12px/1.2 ${SANS}}
+.s09 .v-tabs>div{display:flex;flex-direction:column;align-items:center;gap:3px;width:64px;font:500 12px/1.2 ${SANS}}
 .s09 .v-tabs>div.on{color:var(--p);font-weight:800}
-.s09 .v-tabs>div.on::after{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;margin-top:1px}
-/* 步骤：波浪线串起三四个圆，做完的填色带勾，当前的番茄红，没到的空心 */
+/* 步骤：波浪线串起三四个圆，做完的填色带勾，当前的番茄红，没到的空心；字和正文一样大 */
 .s09 .v-steps{position:relative;display:flex;justify-content:space-between}
-.s09 .v-steps>div{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;width:64px;font:600 13px/1.2 ${SANS};white-space:nowrap}
+.s09 .v-steps>div{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;width:72px;font:700 15px/1.2 ${SANS};white-space:nowrap}
 .s09 .v-steps i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:3px solid var(--fg);background:var(--bgc);color:#fff}
 .s09 .v-steps .done i{background:var(--p);border-color:var(--p)}
 .s09 .v-steps .cur i{background:var(--r);border-color:var(--r)}
 .s09 .v-steps>.sq{position:absolute;left:32px;top:6px;z-index:0;display:block}
 /* 底部购物条：墨黑胶囊，左边件数和价格，右边荧光黄胶囊按钮 */
 .s09 .v-bar{position:absolute;left:16px;right:16px;bottom:28px;height:62px;border-radius:31px;background:var(--k);color:#fff;display:flex;align-items:center;gap:12px;padding:0 6px 0 22px;z-index:6;white-space:nowrap}
-.s09 .v-bar .v-btn{margin-left:auto;height:50px;padding:0 26px;border-radius:25px;background:var(--y);color:var(--k);font-size:17px;letter-spacing:.08em}
+.s09 .v-bar .v-btn{margin-left:auto;height:50px;padding:0 26px;border-radius:25px;background:var(--y);color:var(--k);font-size:17px}
 /* 飘带：斜着横穿整屏的番茄红长条，大字名单中间夹闪星 */
 .s09 .v-rib{position:absolute;left:-40px;right:-40px;height:108px;background:var(--r);display:flex;align-items:center;justify-content:center;gap:56px;white-space:nowrap;overflow:hidden;transform:rotate(-2.5deg)}
 .s09 .v-rib span{flex:none;font:400 60px/1 ${QK};color:#fff;letter-spacing:.02em;-webkit-text-stroke:.01em currentColor;transform:skewX(-10deg) scaleX(1.12)}
@@ -138,7 +142,7 @@ module.exports = function starter(L, over = {}) {
 .s09.web{background:var(--p)}
 .s09 .v-wnav{position:absolute;left:56px;right:56px;top:34px;height:56px;display:flex;align-items:center;z-index:5}
 .s09 .v-wnav nav{display:flex;gap:40px;margin-left:72px;font:600 18px/1 ${SANS};color:#fff}
-.s09 .v-wnav .v-btn{margin-left:auto;height:50px;padding:0 28px;border-radius:25px;background:var(--y);color:var(--k);font-size:17px;letter-spacing:.06em}
+.s09 .v-wnav .v-btn{margin-left:auto;height:50px;padding:0 28px;border-radius:25px;background:var(--y);color:var(--k);font-size:17px}
 /* 色块语境：整块换底色，里面的字色、大字色、大数字色跟着换（根元素或任意块上都能用） */
 .s09.v-c-p,.s09 .v-c-p{background:var(--p);--fg:#fff;--hl:var(--y);--big:var(--y);--bgc:var(--p);color:var(--fg)}
 .s09.v-c-y,.s09 .v-c-y{background:var(--y);--fg:var(--k);--hl:var(--k);--big:var(--p);--bgc:var(--y);color:var(--fg)}
@@ -274,16 +278,17 @@ ${art ? `<div class="v-ab" style="left:${ax}px;top:${top + artY}px">${art}</div>
     //   top / bot 上下两层饮料色，fruit 果片 [肉, 皮]，straw 吸管色；mark 杯身圆标里的一个字（品牌首字），不传不画；simple: true 气泡少一半（132 以下的小杯用）
     //   默认是桃子；柠檬 { top: '#FFF7B0', bot: '#FFE03D', fruit: ['#FFF6C9', '#F2C600'], straw: T.bg }；葡萄 { top: '#C7B5FF', bot: '#8A63FF', fruit: ['#E2D6FF', '#5A2DF4'], straw: T.primary }
     cup,
-    // 气泡记号：dot(40, T.primary, T.bg)，实心圆 + 左上一点高光，参数是直径、圆色、高光色（品牌记号，也能放大当背景元素）
-    dot: (size, color = Y, hl = P) => `<span class="v-dot" style="width:${size}px;height:${size}px;background:${color};--hl2:${hl}"></span>`,
-    // 英文字标：字母 o 换成气泡（bobo → b●b●）；wordmark('loop', 30)
-    wordmark: (text, size = 30, color = Y, hl = P) => `<span class="v-wm" style="font-size:${size}px;color:${color};--hl2:${hl}">${[...text].map((ch) => (/[oO]/.test(ch) ? '<i></i>' : `<b style="font-weight:800">${ch}</b>`)).join('')}</span>`,
+    // 英文字标：wordmark('loop', 30)，参数是品牌英文名、字号（28 以上）、颜色；字母 o 换成和字母一样高的实心圆，名字里没有 o 就是普通的窄粗字
+    wordmark: (text, size = 30, color = Y) => `<span class="v-wm" style="font-size:${size}px;color:${color}">${[...text].map((ch) => (/[oO]/.test(ch) ? '<i></i>' : `<b style="font-weight:800">${ch}</b>`)).join('')}</span>`,
+    // 两样信息的一行：pair('11.07–08', '上海世博公园', { size: 30, pos: 'left:24px;top:578px' })
+    //   前一样是窄粗斜数字（日期、价格、时长，荧光黄），后一样是一句粗字（地点、门店），中间 14px；size 是数字字号，后面的字跟着变，不小于 16px
+    pair: (num, text, { size = 30, pos = '' } = {}) => at(`<div class="v-pair"><b style="font-size:${size}px">${num}</b><span style="font-size:${Math.max(16, Math.round(size * 0.55))}px">${text}</span></div>`, pos),
     // 小程序返回箭头（放在 miniNav 左边，能跟 ui.city 连着写）：miniNav({ light: true, left: ui.back() + ui.city('上海站') })；除了首页，每屏都要有回去的路
     back: () => `<span data-back>${icon('chevron-left', 26, 2.4)}</span>`,
     // 门店 / 城市切换（放在 miniNav 左边）：miniNav({ light: true, left: ui.city('三里屯店') })
     city: (name) => `<span class="v-city">${name}${icon('chevron-down', 18, 2.4)}</span>`,
-    // 右上角小数据：pts('会员积分', '1,280', 'right:24px;top:58px')
-    pts: (label, value, pos = '') => at(`<div class="v-pts"><span>${label}</span><b>${value}</b></div>`, pos),
+    // 右上角小数据：pts('会员积分', '1,286', 'right:24px;top:58px')，数字在上、说明词在下
+    pts: (label, value, pos = '') => at(`<div class="v-pts"><b>${value}</b><span>${label}</span></div>`, pos),
     // 二维码贴纸：qrCard(150, { rot: -4, seed: 11, pos: 'left:24px;top:446px' })，seed 换一张码
     qrCard: (size = 150, { rot = -4, seed = 7, pos = '' } = {}) => at(`<div class="v-qr" style="transform:rotate(${rot}deg)">${L.qr(size, K, '#fff', seed)}</div>`, pos),
     // 展示板背景（demo 里写 boardDeco: ui.stageDeco()）：图册舞台的做法，底色上两个大圆从对角撞出去（主色右上、番茄红左下，都同时出两条边），闪星落在板边空白处
@@ -294,14 +299,15 @@ ${art ? `<div class="v-ab" style="left:${ax}px;top:${top + artY}px">${art}</div>
       const star = (x, y, s, c) => `<div style="position:absolute;left:${Math.round(x - s / 2)}px;top:${Math.round(y - s / 2)}px">${spark(s, c)}</div>`;
       return `<i style="position:absolute;right:${-Math.round(w * .22)}px;top:${-Math.round(w * .24)}px;width:${da}px;height:${da}px;border-radius:50%;background:${a}"></i><i style="position:absolute;left:${-Math.round(w * .26)}px;bottom:${-Math.round(w * .26)}px;width:${db}px;height:${db}px;border-radius:50%;background:${b}"></i>${star(w * .49, top.y / 2, 44, '#fff')}${star(w - m, Math.max(h * .43, w * .38 + 60), 36, a)}${star(m, h * .17, 30, a)}`;
     },
-    // 中文字标：庆科体品牌名（斜）+ 宽字距英文：logo('半山咖啡', 'BANSHAN')
-    logo: (name, en = '', { size = 32, color = '' } = {}) => `<div class="v-logo"><b style="font-size:${size}px;${color ? `color:${color}` : ''}">${name}</b>${en ? `<em>${en}</em>` : ''}</div>`,
+    // 中文字标：庆科体品牌名（斜）：logo('半山咖啡')；品牌本来就有英文名才传第二个参数，照品牌原样的大小写：logo('环线音乐节', 'Loop')
+    //   英文是同样斜切的窄粗字，字号是中文的 .56 倍（不小于 14px），字距 0；size 是中文字号
+    logo: (name, en = '', { size = 32, color = '' } = {}) => `<div class="v-logo"><b style="font-size:${size}px;${color ? `color:${color}` : ''}">${name}</b>${en ? `<em style="font-size:${Math.max(14, Math.round(size * 0.56))}px">${en}</em>` : ''}</div>`,
     // App 顶栏：左右是墨黑小圆钮；小程序用 L.miniNav
     nav: ({ title = '', back = true, right = '', left = '' } = {}) => `<div class="v-nav">${left || (back ? `<div class="v-round" data-back>${icon('chevron-left', 22, 2.6)}</div>` : '<span></span>')}${title ? `<div class="t">${title}</div>` : ''}${right || '<span></span>'}</div>`,
     // 墨黑小圆钮（加号、收藏、返回）：round('plus', { attrs: 'data-go="cart"' })；on: true 时图标填实（表示已选，不只靠颜色）
     round: (ic, { size = 40, bg = K, color = Y, attrs = '', on = false } = {}) => `<span class="v-round" style="width:${size}px;height:${size}px;background:${bg};color:${color}" ${attrs}>${icon(ic, Math.round(size * 0.55), 3, on ? 'style="fill:currentColor"' : '')}</span>`,
-    // 底部标签栏：荧光黄底；当前项电光紫 + 加粗 + 小圆点
-    tabs: (items, cur = 0, go = [], { bg = Y } = {}) => `<div class="v-tabs" style="background:${bg}">${items.map(([ic, t], i) => `<div class="${i === cur ? 'on' : ''}" ${go[i] ? `data-go="${go[i]}"` : ''}>${icon(ic, 23, 2.2)}<span>${t}</span></div>`).join('')}</div>`,
+    // 底部标签栏：荧光黄底；当前项电光紫、字重 800、图标线 2.8，其余墨黑、500、2
+    tabs: (items, cur = 0, go = [], { bg = Y } = {}) => `<div class="v-tabs" style="background:${bg}">${items.map(([ic, t], i) => `<div class="${i === cur ? 'on' : ''}" ${go[i] ? `data-go="${go[i]}"` : ''}>${icon(ic, 23, i === cur ? 2.8 : 2)}<span>${t}</span></div>`).join('')}</div>`,
     // 主按钮：墨黑胶囊荧光黄字（放黄色块上）；紫底上加 cls 'y'；底部通栏加 'wide'；箭头类图标放字后面，别的图标放字前面
     btn: (text, { ic = 'arrow-right', cls = '', attrs = '' } = {}) => {
       const ico = ic ? icon(ic, 22, 2.6) : '';

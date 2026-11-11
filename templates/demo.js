@@ -1,10 +1,12 @@
-// __NAME__ 演示 —— 风格 __STYLE__（__KIND__）
+// __NAME__ 演示，风格 __STYLE__（__KIND__）
 // 规矩（详见技能的 审美守则.md 和 styles/ 里这个风格的说明）：
 //   每屏 375×812，根元素 <div class="scr 风格根类 p 屏名">；网页 1280×800，根元素 <div class="web 风格根类 p">
 //   顶部 statusBar(S.dark)；小程序每屏都要 miniNav（微信胶囊），App 用 S.ui.nav；底部 homeBar(S.dark)
 //   跳屏：任意元素加 data-go="屏幕编号"；返回：data-back
 //   图库图片 img('latte-pour')；客户给的图放项目 img/ 下，用 img('./img/文件名.jpg')
 //   不要说明性小字：标题下不加副标题、口号、提示语，不加「NEW」「HOT」角标
+//   去 AI 味（审美守则第二节）：不用「·」串信息、不画装饰圆点；不用等宽字体；不加眉题、编号、页码、加字距的小字和配的英文；
+//   不用破折号、套话、emoji 和箭头字符。render.sh 的自动检查会报，改到零
 module.exports = ({ img, icon, statusBar, miniNav, homeBar, style }) => {
   const S = style('__STYLE__');
   const { ui } = S;

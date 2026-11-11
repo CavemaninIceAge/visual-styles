@@ -20,12 +20,14 @@ m=re.search(r'<pre id=\"report\">(.*?)</pre>',sys.stdin.read(),re.S)
 if not m: print('自动检查没跑出结果'); sys.exit(0)
 d=json.loads(html.unescape(m.group(1)))
 json.dump(d,open('out/check.json','w'),ensure_ascii=False,indent=1)
-n=0
+n=0; w=0
 for k,v in d.items():
-  q=v['问题']; n+=len(q)
-  print(f'{k}：{v[\"元素\"]} 个元素' + ('' if not q else '，' + str(len(q)) + ' 处问题'))
-  for x in q[:12]: print(f'   {x[\"t\"]}「{x[\"s\"]}」{x[\"d\"]}')
+  q=v['问题']; t=v.get('提醒',[]); n+=len(q); w+=len(t)
+  print(f'{k}：{v[\"元素\"]} 个元素' + ('' if not q else '，' + str(len(q)) + ' 处问题') + ('' if not t else '，' + str(len(t)) + ' 条提醒'))
+  for x in q[:12]: print(f'   问题  {x[\"t\"]}「{x[\"s\"]}」{x[\"d\"]}')
   if len(q)>12: print(f'   …还有 {len(q)-12} 处，见 out/check.json')
-print('自动检查：' + ('没有问题' if n==0 else f'共 {n} 处，逐条看；故意出界的元素加 data-bleed'))
+  for x in t[:6]: print(f'   提醒  {x[\"t\"]}「{x[\"s\"]}」{x[\"d\"]}')
+  if len(t)>6: print(f'   …还有 {len(t)-6} 条提醒，见 out/check.json')
+print('自动检查：' + ('没有问题' if n==0 else f'共 {n} 处问题，要改到零（审美守则第二节；故意出界的元素加 data-bleed）') + ('' if not w else f'；{w} 条提醒，逐条看'))
 "
 ls out/png/*.png out/board.png 2>/dev/null | sed "s|^|$PWD/|"

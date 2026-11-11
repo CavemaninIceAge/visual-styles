@@ -1,5 +1,5 @@
-// 芽芽熊 演示 —— 风格 s08-playful（App）：儿童好习惯打卡（刷牙、阅读、早睡，亲子）
-// 首页「朵朵的周六」一条小路串起今天的习惯 → 刷牙计时 → 刷完得贴纸、看一周点阵；网页是给家长看的官网
+// 芽芽熊 演示，风格 s08-playful（App）：儿童好习惯打卡（刷牙、阅读、早睡，亲子）
+// 首页「朵朵的周六」一条小路串起今天的习惯，点开始进刷牙计时，刷完得贴纸、看这一周的早晚打卡；网页是给家长看的官网
 // 全部用起手包，项目没有自己的 CSS。场景里的小画（40×40 的 sunG、bowlG…）是这个品牌自己的插画，换品牌要重画
 module.exports = ({ statusBar, homeBar, style }) => {
   const S = style('s08-playful');
@@ -12,7 +12,7 @@ module.exports = ({ statusBar, homeBar, style }) => {
 
   // ── 习惯的小画（40×40 的格子） ──
   const sunG = (() => { let r = ''; for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; r += `<path d="M${(20 + Math.cos(a) * 13.5).toFixed(1)} ${(20 + Math.sin(a) * 13.5).toFixed(1)}L${(20 + Math.cos(a) * 18).toFixed(1)} ${(20 + Math.sin(a) * 18).toFixed(1)}" stroke="${C.y}" stroke-width="3.4" stroke-linecap="round"/>`; } return `${r}<circle cx="20" cy="20" r="10.5" fill="${C.y}"/><circle cx="16.5" cy="19" r="1.5" fill="${C.ink}"/><circle cx="23.5" cy="19" r="1.5" fill="${C.ink}"/><path d="M17 23q3 2.6 6 0" stroke="${C.ink}" stroke-width="1.6" stroke-linecap="round" fill="none"/>`; })();
-  const bowlG = `<path d="M14 10.5q-3-3.5 0-7M20 10.5q-3-3.5 0-7M26 10.5q-3-3.5 0-7" stroke="#9FD8F5" stroke-width="2.6" stroke-linecap="round" fill="none"/><path d="M7 19.5C9 12.5 31 12.5 33 19.5Z" fill="#FFE08A"/><circle cx="16" cy="16.2" r="1.6" fill="${C.o}"/><circle cx="23" cy="15.4" r="1.4" fill="${C.g}"/><path d="M4 19H36A16 15 0 0 1 4 19Z" fill="${C.o}"/><path d="M5.8 25.5h28.4" stroke="#fff" stroke-width="3" opacity=".6"/><rect x="13" y="32" width="14" height="4.5" rx="2.25" fill="${C.od}"/>`;
+  const bowlG = `<path d="M14 10.5q-3-3.5 0-7M20 10.5q-3-3.5 0-7M26 10.5q-3-3.5 0-7" stroke="#9FD8F5" stroke-width="2.6" stroke-linecap="round" fill="none"/><path d="M7 19.5C9 12.5 31 12.5 33 19.5Z" fill="#FFE08A"/><path d="M14.5 16.6C15.6 12.6 20.2 10.8 24.8 11.8C23.6 15.8 19 17.6 14.5 16.6Z" fill="${C.g}"/><path d="M4 19H36A16 15 0 0 1 4 19Z" fill="${C.o}"/><path d="M5.8 25.5h28.4" stroke="#fff" stroke-width="3" opacity=".6"/><rect x="13" y="32" width="14" height="4.5" rx="2.25" fill="${C.od}"/>`;
   const brushG = `<g transform="rotate(-38 20 21)"><rect x="1" y="23" width="26" height="7" rx="3.5" fill="${C.b}"/><rect x="2.5" y="27" width="23" height="3" rx="1.5" fill="${C.bd}" opacity=".4"/><rect x="26" y="22" width="13" height="8" rx="3" fill="${C.b}"/><rect x="27.5" y="13.5" width="10.5" height="9" rx="2" fill="#BFE6FF"/><path d="M31 14v8M34.5 14v8" stroke="#fff" stroke-width="1.5"/><path d="M27 14C26 10 29 8.2 31.5 10C32.5 7 36.5 7 37.5 9.8C40 10 40.5 13 38.5 14Z" fill="#6FD6A0"/><path d="M29.5 11.6q2 -1.4 4 0q2 -1.4 3.6 0" stroke="#fff" stroke-width="1.4" stroke-linecap="round" fill="none"/></g>`;
   const bookG = `<path d="M2 11V33C8 31 15 31.5 20 35C25 31.5 32 31 38 33V11Z" fill="${C.g}"/><path d="M20 34.6V12" stroke="${C.gd}" stroke-width="2"/><path d="M20 9C15 5.5 9 5 4 6.5V30C9 28.5 15 29 20 32.5Z" fill="#FFF6DE"/><path d="M20 9C25 5.5 31 5 36 6.5V30C31 28.5 25 29 20 32.5Z" fill="#FFE9B5"/><path d="M8 12.5c3.5-.8 6.5-.4 9 1M8 17.5c3.5-.8 6.5-.4 9 1M8 22.5c3.5-.8 6.5-.4 9 1M23 13.5c2.5-1.4 5.5-1.8 9-1M23 18.5c2.5-1.4 5.5-1.8 9-1" stroke="#EBCB85" stroke-width="2" stroke-linecap="round" fill="none"/>`;
   const moonG = `<path d="M15.6 9.2A13 13 0 1 0 30.8 24.4A11 11 0 0 1 15.6 9.2Z" fill="${C.y}"/><path d="M10.5 23.5q2.5 2.2 5 0" stroke="${C.ink}" stroke-width="1.8" stroke-linecap="round" fill="none"/><ellipse cx="11.5" cy="28" rx="2.6" ry="1.6" fill="${C.pink}"/><path d="M26.5 7.5h6l-6 6.5h6M34.5 1.5h4.2l-4.2 4.6h4.2" stroke="${C.b}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
@@ -32,7 +32,7 @@ ${art.ground(375, 440, 162)}
 ${art.road([[-30, 452], P1, [190, 388], P2, [322, 326], [262, 298], P3, [66, 254], P4, [150, 170], P5])}
 ${art.tree(340, 206, 22)}${art.tree(26, 292, 16)}
 ${art.tuft(196, 226)}${art.tuft(342, 410, .9)}${art.tuft(18, 368, .9)}${art.tuft(232, 430)}${art.tuft(176, 160, .9)}
-${art.bloom(214, 252, 4.5, '#FFB3C2')}${art.bloom(150, 214, 4.5)}${art.bloom(300, 420, 5)}${art.bloom(28, 420, 4.5, '#FFB3C2')}${art.bloom(330, 300, 4.5)}
+${art.bloom(150, 214, 6.5)}${art.bloom(304, 420, 7, '#FFB3C2')}${art.bloom(332, 296, 6)}
 ${art.tag(...P1, sunG, { state: 'done', s: 48 })}${art.tag(...P2, bowlG, { state: 'done', s: 48 })}
 ${art.tag(...P4, bookG, { state: 'todo', s: 46 })}${art.tag(...P5, moonG, { state: 'todo', s: 46 })}
 ${art.tag(...P3, brushG, { state: 'now', s: 66, glow: true })}`, { pos: 'left:0;top:172px' });
@@ -45,7 +45,8 @@ ${world}
 ${ui.tabs(TABS, 0, ['home', null, 'done', null])}${homeBar(S.dark)}</div>`;
 
   // ───── 刷牙：两分钟，四个地方各刷 30 秒 ─────
-  const bubbles = [[40, 70, 14], [70, 38, 7], [196, 52, 11], [222, 92, 6], [34, 150, 8], [214, 166, 13], [118, 30, 5]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="${C.foam}" stroke-width="2.5"/><ellipse cx="${x - r * .35}" cy="${y - r * .35}" rx="${r * .28}" ry="${r * .18}" fill="${C.foam}" transform="rotate(-35 ${x - r * .35} ${y - r * .35})"/>`).join('');
+  // 牙膏泡泡：四个大泡泡，高光是一道弧（不点小圆点）
+  const bubbles = [[44, 74, 14], [200, 58, 12], [36, 156, 10], [212, 160, 15]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="${C.foam}" stroke-width="2.5"/><path d="M${x - r * .58} ${y + r * .04}A${r * .58} ${r * .58} 0 0 1 ${x - r * .04} ${y - r * .58}" stroke="${C.foam}" stroke-width="2.6" stroke-linecap="round" fill="none"/>`).join('');
   const pane = `${ui.scene(244, 244, `${bubbles}<ellipse cx="122" cy="236" rx="120" ry="34" fill="#C4E9FB"/>`, { bg: C.ice, r: 122, pos: 'left:29px;top:29px' })}<div class="v-ab" style="left:66px;top:62px">${ui.buddy(168, { ...BEAR, arms: 'hand', mouth: 'foam', hold: brushHold, shadow: false })}</div>`;
   const brush = `<div class="scr s08 p brush">${statusBar(S.dark)}
 ${ui.nav({ right: ui.steps(4, 3, { shape: tooth, s: 24 }) })}
@@ -57,7 +58,7 @@ ${ui.ring(302, .93, { inner: pane, pos: 'left:36.5px;top:229px' })}
 <div class="v-ab" style="left:106px;right:24px;top:684px">${ui.btn('刷好啦', { cls: 'wide', attrs: 'data-go="done"' })}</div>
 ${homeBar(S.dark)}</div>`;
 
-  // ───── 刷完：得一张贴纸，看这周的早晚点阵 ─────
+  // ───── 刷完：得一张贴纸，看这周的早晚打卡 ─────
   const toothSticker = `<rect width="64" height="64" fill="${C.b}"/><g transform="translate(12.4 12) scale(1.64)"><path d="${TOOTH}" fill="#fff"/></g>${art.face(32, 27, .62)}`;
   const grid = ui.week({ rows: [['早', 'y', [1, 1, 1, 1, 1, 1, 1]], ['晚', 'n', [1, 1, 1, 1, 1, 1, 'next']]], days: ['日', '一', '二', '三', '四', '五', '六'], today: 6 });
   const keepOut = (x, y) => !(x > 96 && x < 290 && y > 96 && y < 410) && y > 130;
@@ -82,7 +83,7 @@ ${art.face(300, 520, 1.6)}
 <path d="M0 606 C200 586 420 620 640 610 S1040 580 1280 600 V800 H0 Z" fill="${C.grass}"/>
 <ellipse cx="640" cy="770" rx="260" ry="36" fill="${C.grass2}"/>
 ${art.tuft(260, 670, 1.6)}${art.tuft(1010, 720, 1.6)}${art.tuft(560, 770, 1.4)}${art.tuft(860, 660, 1.3)}
-${art.bloom(330, 710, 8)}${art.bloom(950, 772, 7, '#FFB3C2')}${art.bloom(480, 660, 6, '#FFB3C2')}${art.bloom(1080, 640, 6)}
+${art.bloom(330, 712, 12)}${art.bloom(478, 664, 10, '#FFB3C2')}${art.bloom(1070, 640, 10)}
 ${art.tree(150, 650, 26)}${art.tree(1150, 660, 30)}${art.tree(1210, 712, 18)}
 </svg>
 <div class="v-wnav">${logo(46, 32)}<nav><span>好习惯</span><span>家长中心</span><span>关于我们</span>${ui.key('登录', { c: 'w', w: 120, h: 50, r: 16, fs: 20 })}</nav></div>

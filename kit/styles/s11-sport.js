@@ -1,4 +1,4 @@
-// 11 运动能量 Sport —— 起手包
+// 11 运动能量 Sport 起手包
 // 色值、字体、字号、滤镜、线宽都照图册模块 catalog/pages/s11-sport.js（疾风 GALE）原样取
 // 用法：const S = style('s11-sport'); 屏幕根元素 <div class="scr s11">；组件见 S.ui
 // 这种风格的版式是「一屏几块按位置摆」：照片铺顶、得意黑标题、巨大的斜体数字、数据行、斜切按钮，各块用 .v-abs + style="top:…px" 摆
@@ -6,7 +6,7 @@ module.exports = (L) => {
   const { icon } = L;
   const V = '#D0FF1A';   // 荧光黄绿：数据和主按钮都用它
   const BG = '#0B0B0B';  // 夜黑
-  const GR = '#8A8A8A';  // 中灰：小标签、单位
+  const GR = '#8A8A8A';  // 中灰：单位、数字下面说明它是什么的词
   const DV = '#2C3608';  // 暗荧绿：进度环、进度条的底槽
   const T = {
     bg: BG,
@@ -32,8 +32,11 @@ module.exports = (L) => {
 .s11 .v-h2{font:400 30px/1.1 "Smiley Sans";letter-spacing:.02em}
 .s11 .v-h3{font:500 16px/1.3 "Noto Sans SC"}
 .s11 .v-tx{font:400 15px/1.6 "Noto Sans SC";color:#CFCFCF}
-.s11 .v-mut{font:400 13px/1.4 "Noto Sans SC";color:var(--sub);letter-spacing:.04em}
-.s11 .v-lb{display:block;font:400 12px/1.2 "Noto Sans SC";color:var(--gr);letter-spacing:.06em}
+.s11 .v-mut{font:400 13px/1.4 "Noto Sans SC";color:var(--sub)}
+/* 一行两样信息（ui.pair）：拆成两段，中间空 16px，不用点和竖线串 */
+.s11 .v-pair{display:flex;flex-wrap:wrap;column-gap:16px;row-gap:2px}
+/* 数字下面说明它是什么的词（配速、用时、千卡）：放在数字下面，13px 灰字，不加字距 */
+.s11 .v-lb{display:block;margin-top:8px;font:400 13px/1.3 "Noto Sans SC";color:var(--gr)}
 .s11 .v-num{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-style:italic;letter-spacing:-.01em}
 .s11 .v-num small{font:400 13px/1 "Noto Sans SC";font-style:normal;color:var(--gr);margin-left:4px;letter-spacing:0}
 .s11 .v-kv{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
@@ -45,12 +48,12 @@ module.exports = (L) => {
 .s11 .v-big.tm{font-size:164px}
 .s11 .v-big.md{font-size:92px;margin-left:-3px}
 .s11 .v-big.w{color:#fff}
-.s11 .v-unit{display:block;font:400 24px/1 "Smiley Sans";letter-spacing:.06em}
+.s11 .v-unit{display:block;font:400 24px/1 "Smiley Sans";letter-spacing:.04em}
 .s11 .v-v{color:var(--v)}
 .s11 .v-price{display:inline-flex;align-items:baseline;font:italic 900 34px/.8 "Barlow Condensed";letter-spacing:-.01em;color:#fff;white-space:nowrap}
 /* ¥ 是价格字号的 .34 倍，下限 16px：34px 的常规价格里 .34em 只剩一撇 */
 .s11 .v-price i{align-self:flex-start;font-size:max(.34em,16px);line-height:1;margin:.08em .08em 0 0}
-.s11 .v-price small{font:400 12px/1 "Noto Sans SC";color:var(--gr);margin-left:4px;letter-spacing:.02em}
+.s11 .v-price small{font:400 13px/1 "Noto Sans SC";color:var(--gr);margin-left:4px}
 /* 斜切按钮：底色是斜 12° 的平行四边形，字是正的；通栏时左右各收 6px，斜边正好落在 24px 页边上 */
 .s11 .v-btn{position:relative;isolation:isolate;height:56px;padding:0 30px;display:inline-flex;align-items:center;justify-content:center;gap:10px;color:var(--bg);font:400 22px/1 "Smiley Sans";letter-spacing:.02em;white-space:nowrap}
 .s11 .v-btn::before{content:"";position:absolute;inset:0;background:var(--v);transform:skewX(-12deg);z-index:-1}
@@ -71,11 +74,11 @@ module.exports = (L) => {
 .s11 .v-row{display:flex;align-items:center;gap:14px;min-height:58px;padding:10px 0;border-top:1px solid var(--ln)}
 .s11 .v-st{display:inline-flex;align-items:center;gap:4px;font:500 14px/1 "Noto Sans SC";color:var(--sub);white-space:nowrap}
 .s11 .v-st.on{color:var(--v)}
-/* 课表 / 场次行（ui.slot）：左边斜体大时间，中间名字 + 次要信息，右边状态 */
+/* 课表 / 场次行（ui.slot）：左边斜体大时间（tabular-nums，四行竖着对齐），中间课名 + 两段次要信息，右边状态字 */
 .s11 .v-slot{min-height:72px;padding:0}
-.s11 .v-slot .tm{width:78px;flex:none;font-size:32px;line-height:1}
+.s11 .v-slot .tm{width:78px;flex:none;font-size:32px;line-height:1;font-variant-numeric:tabular-nums}
 .s11 .v-slot .m{flex:1;min-width:0}
-.s11 .v-slot .m .v-mut{margin-top:5px}
+.s11 .v-slot .m .v-pair{margin-top:5px}
 /* 筛选：斜切小块，选中是白底黑字（荧光色只留给数据和主按钮） */
 .s11 .v-chips{display:flex;gap:12px;flex-wrap:wrap;padding:0 6px}
 .s11 .v-chip{position:relative;isolation:isolate;height:36px;padding:0 16px;display:inline-flex;align-items:center;gap:6px;font:500 14px/1 "Noto Sans SC";color:#CFCFCF;white-space:nowrap}
@@ -103,7 +106,7 @@ module.exports = (L) => {
 .s11 .v-photo>i.fade{background:linear-gradient(180deg,rgba(11,11,11,.6) 0%,rgba(11,11,11,0) 24%,rgba(11,11,11,0) 50%,${BG} 94%)}
 /* 数据：三列数字、分段条、进度条、进度环 */
 .s11 .v-stats{display:grid;grid-template-columns:repeat(3,1fr)}
-.s11 .v-stats b{display:block;margin-top:6px;font-size:36px;line-height:1;font-weight:800;white-space:nowrap}
+.s11 .v-stats b{display:block;font-size:36px;line-height:1;font-weight:800;white-space:nowrap}
 .s11 .v-stats small{font:400 13px/1 "Noto Sans SC";color:var(--gr);margin-left:3px;letter-spacing:0}
 .s11 .v-seg{display:flex;gap:4px}
 .s11 .v-seg i{flex:1;height:6px;background:var(--dv);transform:skewX(-20deg)}
@@ -113,17 +116,16 @@ module.exports = (L) => {
 .s11 .v-ring{position:relative;flex:none}
 .s11 .v-ring .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .s11 .v-ring .in b{line-height:1;color:#fff}
-.s11 .v-ring .in span{font:400 11px/1.2 "Noto Sans SC";color:var(--gr);letter-spacing:.04em;margin-top:3px}
-.s11 .v-ring .in span:first-child{margin:0 0 3px}
+.s11 .v-ring .in span{font:400 12px/1.2 "Noto Sans SC";color:var(--gr);margin-top:4px;white-space:nowrap}
 /* 目标进度（ui.goal）：92px 斜体数字 + 灰字目标 + 斜切进度条 */
 .s11 .v-goal .r{display:flex;align-items:baseline;gap:8px;margin-bottom:22px}
 .s11 .v-goal .r span:last-child{font:400 15px/1 "Noto Sans SC";color:#CFCFCF;white-space:nowrap}
 /* 排行 */
 .s11 .v-rank .v-row{display:grid;grid-template-columns:34px 40px 1fr auto;gap:12px;padding:0;height:58px}
-.s11 .v-rank .rk{font-size:26px;line-height:1;color:#6E6E6E}
+.s11 .v-rank .rk{font-size:26px;line-height:1;color:#6E6E6E;font-variant-numeric:tabular-nums}
 .s11 .v-rank b{font:500 16px/1.2 "Noto Sans SC"}
-.s11 .v-rank .km{font-size:28px;line-height:1;font-weight:800;white-space:nowrap}
-.s11 .v-rank .km small{font:400 12px/1 "Noto Sans SC";color:var(--gr);margin-left:3px}
+.s11 .v-rank .km{font-size:28px;line-height:1;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}
+.s11 .v-rank .km small{font:400 13px/1 "Noto Sans SC";color:var(--gr);margin-left:3px}
 .s11 .v-rank .me .rk,.s11 .v-rank .me .km{color:var(--v)}
 .s11 .v-av{width:40px;height:40px;border-radius:50%;background:var(--ln);color:#E6E6E6;display:grid;place-items:center;font:400 19px/1 "Smiley Sans"}
 .s11 .v-av.on,.s11 .v-rank .me .v-av{background:var(--v);color:var(--bg)}
@@ -135,13 +137,17 @@ module.exports = (L) => {
 .s11 .v-nav{position:relative;z-index:5;height:44px;margin:2px 20px 0;display:flex;align-items:center;justify-content:space-between}
 .s11 .v-nav .t{position:absolute;left:50%;transform:translateX(-50%);font:500 15px/1 "Noto Sans SC";white-space:nowrap}
 .s11 .v-ib{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);display:grid;place-items:center;color:#fff;flex:none}
+/* 顶栏里的门店 / 城市切换（ui.pick）：和圆钮同一种半透明胶囊，栏目、门店放这里，不压在大字上面 */
+.s11 .v-pick{height:40px;padding:0 12px 0 16px;border-radius:20px;background:rgba(255,255,255,.12);display:inline-flex;align-items:center;gap:4px;font:500 16px/1 "Noto Sans SC";color:#fff;white-space:nowrap}
+.s11 .v-pick .ic{color:var(--sub)}
 .s11 .v-logo{display:inline-flex;align-items:center;gap:8px;color:#fff;white-space:nowrap}
 .s11 .v-logo b{font-family:"Smiley Sans";font-weight:400;line-height:1;letter-spacing:.04em}
 .s11 .v-logo b.lat{font-family:"Barlow Condensed";font-weight:900;font-style:italic;letter-spacing:.02em}
-.s11 .v-logo em{font-family:"Barlow Condensed";font-weight:800;font-style:italic;line-height:1;letter-spacing:.12em;color:var(--gr);margin-left:2px}
+/* 品牌本来有的英文名：和品牌名同色，Barlow 窄体 900 斜，照原写法，不转大写、不拉字距 */
+.s11 .v-logo em{font-family:"Barlow Condensed";font-weight:900;font-style:italic;line-height:1;letter-spacing:.02em;margin-left:2px}
 .s11 .v-tabs{position:absolute;left:0;right:0;bottom:0;height:86px;background:var(--bg);border-top:1px solid var(--ln);display:flex;justify-content:space-around;padding-top:10px;z-index:6}
 .s11 .v-tabs>div{display:flex;flex-direction:column;align-items:center;gap:4px;color:#5E5E5E;width:64px}
-.s11 .v-tabs span{font:500 11px/1.2 "Noto Sans SC"}
+.s11 .v-tabs span{font:500 12px/1.2 "Noto Sans SC"}
 .s11 .v-tabs>div.on{color:#fff}
 /* 底部操作条（详情页：价格 + 按钮） */
 .s11 .v-bar{position:absolute;left:0;right:0;bottom:0;height:104px;background:var(--bg);border-top:1px solid var(--ln);display:flex;align-items:flex-start;justify-content:space-between;padding:18px 24px 0;z-index:6}
@@ -150,12 +156,10 @@ module.exports = (L) => {
 .s11 .v-wnav{position:absolute;top:34px;left:64px;right:64px;height:56px;display:flex;align-items:center;justify-content:space-between;z-index:5}
 .s11 .v-wnav nav{display:flex;align-items:center;gap:40px;font:400 17px/1 "Noto Sans SC";color:#E6E6E6}
 .s11 .v-wnav .v-btn{height:46px;padding:0 26px;font-size:18px}
-/* 网页顶栏压在照片上，字标的西文从中灰提到 #CFCFCF，不然碰到亮窗就看不见 */
-.s11 .v-wnav .v-logo em{color:#CFCFCF}
 /* 标题组放在右半边，左边让给照片里的人；.v-wh 和 .v-wst 的 left 跟着改就能整组挪 */
 .s11 .v-wh{position:absolute;left:556px;top:140px;z-index:2}
 .s11 .v-wh1{font:400 108px/1.04 "Smiley Sans";letter-spacing:.01em}
-.s11 .v-wt{margin-top:20px;font:400 20px/1.4 "Noto Sans SC";color:#CFCFCF;letter-spacing:.04em}
+.s11 .v-wt{margin-top:20px;font:400 20px/1.4 "Noto Sans SC";color:#CFCFCF}
 .s11 .v-wh .v-btn{height:60px;margin-top:30px;padding:0 40px}
 .s11 .v-wst{position:absolute;left:556px;right:64px;bottom:52px;z-index:2;display:flex;gap:44px;border-top:1px solid rgba(255,255,255,.18);padding-top:22px}
 .s11 .v-wst b{display:block;font-size:56px;line-height:.9;color:var(--v)}
@@ -176,9 +180,9 @@ module.exports = (L) => {
     bolt: [18, '<polygon points="12,0 4,9 9,9 6,16 18,6 12,6 17,0"/>'],
   };
   const mark = (h = 16, c = C.v, kind = 'wind') => { const [w, d] = MARKS[kind] || MARKS.wind; return `<svg width="${Math.round(h * w / 16)}" height="${h}" viewBox="0 0 ${w} 16" style="display:block;flex:none"><g fill="${c}" transform="skewX(-16)">${d}</g></svg>`; };
-  const ring = (s, p, { w = 10, top = '', value = '', sub = '', size = 0, color = C.v, track = C.dv } = {}) => {
+  const ring = (s, p, { w = 10, value = '', sub = '', size = 0, color = C.v, track = C.dv } = {}) => {
     const r = (s - w) / 2, c = 2 * Math.PI * r;
-    const inner = top || value || sub ? `<div class="in">${top ? `<span>${top}</span>` : ''}${value ? `<b class="v-num" style="font-size:${size || Math.round(s * .28)}px">${value}</b>` : ''}${sub ? `<span>${sub}</span>` : ''}</div>` : '';
+    const inner = value || sub ? `<div class="in">${value ? `<b class="v-num" style="font-size:${size || Math.round(s * .28)}px">${value}</b>` : ''}${sub ? `<span>${sub}</span>` : ''}</div>` : '';
     return `<div class="v-ring" style="width:${s}px;height:${s}px"><svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}" style="display:block;transform:rotate(-90deg)"><circle cx="${s / 2}" cy="${s / 2}" r="${r}" fill="none" stroke="${track}" stroke-width="${w}"/><circle cx="${s / 2}" cy="${s / 2}" r="${r}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-dasharray="${(c * p).toFixed(1)} ${c.toFixed(1)}"/></svg>${inner}</div>`;
   };
   // 平滑折线（Catmull-Rom 转贝塞尔）
@@ -205,15 +209,20 @@ module.exports = (L) => {
     },
     // ui.mark(高, 颜色, 种类)：mark(16)、mark(16, '#fff', 'bar')；种类见上面 MARKS
     mark,
-    // 字标：logo('千钧', 'KILO', { size: 24, sym: ui.mark(15, undefined, 'bar') })；记号 + 品牌名（中文用得意黑，纯西文用 Barlow 窄体 900 斜）+ 可选灰色西文；sym 传记号或自己的 SVG
+    // 字标：logo('千钧', '', { size: 24, sym: ui.mark(15, undefined, 'bar') })；记号 + 品牌名（中文用得意黑，纯西文用 Barlow 窄体 900 斜）；sym 传记号或自己的 SVG
+    // en 只给本来就有英文名的品牌（照品牌原写法传，比如 'LeFit'），和品牌名同色，字号是品牌名的 .7、最小 14px；中文品牌不编英文名
     logo: (name, en = '', { size = 24, sym = null, color = '#fff' } = {}) => {
       const lat = /^[A-Za-z0-9 .&'-]+$/.test(name);
-      return `<span class="v-logo" style="color:${color}">${sym || mark(Math.round(size * .62))}<b class="${lat ? 'lat' : ''}" style="font-size:${size}px">${name}</b>${en ? `<em style="font-size:${Math.round(size * .62)}px">${en}</em>` : ''}</span>`;
+      return `<span class="v-logo" style="color:${color}">${sym || mark(Math.round(size * .62))}<b class="${lat ? 'lat' : ''}" style="font-size:${size}px">${name}</b>${en ? `<em style="font-size:${Math.max(14, Math.round(size * .7))}px">${en}</em>` : ''}</span>`;
     },
     // App 顶栏：左右是半透明圆钮，title 可以是字或 ui.logo(...)；小程序用 L.miniNav
     nav: ({ title = '', back = true, right = '', left = '' } = {}) => `<div class="v-nav">${left || (back ? `<span class="v-ib" data-back>${icon('chevron-left', 22, 2)}</span>` : '<span></span>')}${title ? `<div class="t">${title}</div>` : ''}${right || '<span></span>'}</div>`,
     // 半透明圆钮：iconBtn('ellipsis')
     iconBtn: (name, attrs = '', size = 20) => `<span class="v-ib" ${attrs}>${icon(name, size, 2)}</span>`,
+    // 顶栏的门店 / 城市切换：pick('国贸店')，放进 ui.nav 的 left；attrs 原样放进标签
+    pick: (text, attrs = '') => `<span class="v-pick" ${attrs}>${text}${icon('chevron-down', 18, 2.2)}</span>`,
+    // 一行两样信息：pair('11月4日 19:00', '国贸店')，拆成两段、中间空 16px；cls 换字样（默认 'v-mut'，正文写 'v-tx'）
+    pair: (a, b = '', cls = 'v-mut') => `<div class="v-pair ${cls}"><span>${a}</span>${b ? `<span>${b}</span>` : ''}</div>`,
     // 底部标签栏：灰色图标 + 字，当前项变白（不用荧光色）
     tabs: (items, cur = 0, go = []) => `<div class="v-tabs">${items.map(([ic, t], i) => `<div class="${i === cur ? 'on' : ''}" ${go[i] ? `data-go="${go[i]}"` : ''}>${icon(ic, 22, 2)}<span>${t}</span></div>`).join('')}</div>`,
     // 斜切按钮；ic 图标名，at: 'end'（默认，箭头放字后）/ 'start'（分享、扫码这类放字前）
@@ -235,7 +244,7 @@ module.exports = (L) => {
       return `<div class="v-photo${color ? ' cl' : ''}" style="top:${top}px;height:${h}px"><svg width="0" height="0" style="position:absolute"><filter id="${id}" x="-20%" y="0" width="140%" height="100%"><feGaussianBlur stdDeviation="${sd} 0"/></filter></svg>
 <div class="ph" style="${bg};filter:${base} brightness(${b1})"></div><div class="ph mb" style="${bg};filter:url(#${id}) ${base} brightness(${b2})"></div>${dim ? `<i style="background:rgba(11,11,11,${dim})"></i>` : ''}${side ? `<i style="background:linear-gradient(90deg,rgba(11,11,11,${side}) 0%,rgba(11,11,11,0) 64%)"></i>` : ''}${veil ? `<i style="background:${veil}"></i>` : ''}${Array.isArray(fade) ? `<i style="background:linear-gradient(180deg,rgba(11,11,11,.6) 0%,rgba(11,11,11,0) 24%,rgba(11,11,11,0) ${fade[0] * 100}%,${BG} ${fade[1] * 100}%)"></i>` : (fade ? '<i class="fade"></i>' : '')}</div>`;
     },
-    // 进度环：ring(106, .864, { top: '十月', value: '86.4', sub: '/ 100 公里' })
+    // 进度环：ring(106, .864, { value: '86.4', sub: '/ 100 公里' })；环心是数字，下面一行灰字说明它是什么
     ring,
     // 分段进度（斜切小段）：seg(10, 6)
     seg: (n, f, { h = 6 } = {}) => `<div class="v-seg">${Array.from({ length: n }, (_, i) => `<i class="${i < f ? 'f' : ''}" style="height:${h}px"></i>`).join('')}</div>`,
@@ -243,9 +252,9 @@ module.exports = (L) => {
     prog: (p, { h = 8 } = {}) => `<div class="v-prog" style="height:${h}px"><i style="width:${(p * 100).toFixed(1)}%"></i></div>`,
     // 目标进度：goal('86.4', '/ 100 公里', .864)
     goal: (val, rest, p) => `<div class="v-goal"><div class="r"><span class="v-big md">${val}</span><span>${rest}</span></div>${ui.prog(p)}</div>`,
-    // 三列数据：stats([['配速', `5'12"`], ['用时', '54:11'], ['心率', '156', '次/分']], { size: 36, cols: '1fr 1fr 1fr' })；第四项 'v' 让这个数变荧光色
-    stats: (items, { size = 36, cols = '' } = {}) => `<div class="v-stats" ${cols ? `style="grid-template-columns:${cols}"` : ''}>${items.map(([l, v, u = '', c = '']) => `<div><span class="v-lb">${l}</span><b class="v-num ${c === 'v' ? 'v-v' : ''}" style="font-size:${size}px">${v}${u ? `<small>${u}</small>` : ''}</b></div>`).join('')}</div>`,
-    // 价格：¥ 缩小顶齐；price(28, '/次', { size: 132, color: '#D0FF1A' })
+    // 三列数据：stats([['配速', `5'12"`], ['用时', '54:11'], ['心率', '156', '次/分']], { size: 36, cols: '1fr 1fr 1fr' })；数字在上，说明词在下；第四项 'v' 让这个数变荧光色
+    stats: (items, { size = 36, cols = '' } = {}) => `<div class="v-stats" ${cols ? `style="grid-template-columns:${cols}"` : ''}>${items.map(([l, v, u = '', c = '']) => `<div><b class="v-num ${c === 'v' ? 'v-v' : ''}" style="font-size:${size}px">${v}${u ? `<small>${u}</small>` : ''}</b><span class="v-lb">${l}</span></div>`).join('')}</div>`,
+    // 价格：¥ 缩小顶齐；price(28, '/次', { size: 132, color: 'var(--v)' })
     price: (n, unit = '', { size = 34, color = '' } = {}) => `<span class="v-price" style="font-size:${size}px;${color ? `color:${color}` : ''}"><i>¥</i>${n}${unit ? `<small>${unit}</small>` : ''}</span>`,
     // 运动路线：route(201, 104)；深色街区 + 荧光路线（画布 200×116）；live: true 是正在跑（路线没闭合、终点带光晕）；
     // pts: [[30,86],[74,62],…] 换成客户自己的路线，按点连成平滑线（闭合路线首尾写同一点）
@@ -278,9 +287,12 @@ ${peak ? `<circle cx="${X(pk).toFixed(1)}" cy="${Y(vals[pk]).toFixed(1)}" r="11"
     },
     // 日期条：days([['周五','6'],['周六','7'],…], 0)；当前是白底
     days: (items, cur = 0, go = []) => `<div class="v-days">${items.map(([w, d], i) => `<div class="v-day ${i === cur ? 'on' : ''}" ${go[i] ? `data-go="${go[i]}"` : ''}><span>${w}</span><b class="v-num">${d}</b></div>`).join('')}</div>`,
-    // 课表 / 场次行，放在 .v-list 里：slot('19:30', '杠铃燃脂', '陈野 · 2 号操房 · 45 分钟', '剩 4 位')；
-    // on: true 是「我已约」——时间变荧光、状态换成 ✓ + onText；attrs 原样放进行（比如 'data-go="detail"'）
-    slot: (time, title, meta, status = '', { on = false, onText = '已约', attrs = '' } = {}) => `<div class="v-row v-slot" ${attrs}><b class="v-num tm ${on ? 'v-v' : ''}">${time}</b><div class="m"><div class="v-h3">${title}</div>${meta ? `<div class="v-mut">${meta}</div>` : ''}</div>${on ? `<span class="v-st on">${icon('check', 16, 2.8)}${onText}</span>` : (status ? `<span class="v-st">${status}</span>` : '')}</div>`,
+    // 课表 / 场次行，放在 .v-list 里：slot('19:30', '杠铃燃脂', ['陈野', '45 分钟'], '剩 4 位')；meta 最多两段，传数组拆成两段，传字符串就是一句话
+    // on: true 是「我已约」，时间变荧光，状态换成勾图标加 onText；attrs 原样放进行（比如 'data-go="detail"'）
+    slot: (time, title, meta, status = '', { on = false, onText = '已约', attrs = '' } = {}) => {
+      const [a, b] = Array.isArray(meta) ? meta : [meta];
+      return `<div class="v-row v-slot" ${attrs}><b class="v-num tm ${on ? 'v-v' : ''}">${time}</b><div class="m"><div class="v-h3">${title}</div>${a ? ui.pair(a, b) : ''}</div>${on ? `<span class="v-st on">${icon('check', 16, 2.8)}${onText}</span>` : (status ? `<span class="v-st">${status}</span>` : '')}</div>`;
+    },
     // 排行：rank([['1','江','江屿','132.6','公里'], …, ['6','我','我','86.4','公里',1]])；最后一个 1 表示「我」，整行荧光
     rank: (rows) => `<div class="v-rank v-list">${rows.map(([rk, ch, name, val, unit = '', me]) => `<div class="v-row ${me ? 'me' : ''}"><span class="rk v-num">${rk}</span><span class="v-av">${ch}</span><b>${name}</b><span class="km v-num">${val}${unit ? `<small>${unit}</small>` : ''}</span></div>`).join('')}</div>`,
     // 圆形控制钮：ctl('pause', { go: true }) 是 96px 荧光大钮，其余 60px 深灰；一行三个包在 <div class="v-ctls"> 里

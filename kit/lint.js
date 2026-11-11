@@ -2,6 +2,7 @@
 // 查起手包是否符合 起手包约定.md，以及风格说明的结构和色值。能用程序判断的都放这里，审稿只看审美。
 // 风格说明和样例由 tools/lint.sh 同步到 kit/.docs/ 下再查；没有 .docs 就跳过文档部分。
 // 报告分两档：错（必须改）、提醒（看一眼，可能有理由）。有错时退出码 1。
+// 去 AI 味（审美守则第二节）的静态部分也在这里：起手包、风格说明、样例里不许有点、等宽字、小标题组件、加字距的小字、破折号
 const fs = require('fs');
 const path = require('path');
 const L = require('./lib');
@@ -16,6 +17,33 @@ const NEED_SEL = [/\.v-btn\.wide\b/, /\.v-btn\.ghost\b/, /\.v-chip\.on\b/, /\.v-
 const PUBLIC = ['scr', 'web', 'sb', 'mn', 'cap', 'hb', 'dev', 'dev-s', 'dev-z', 'island', 'brw', 'ic'];
 const DOC_SECTIONS = ['客户在图册里看到的', '设计令牌', '一眼认出它的几样东西', '起手包', '换品牌时怎么变', '和相邻风格拉开', '别做', '参考图'];
 const REF_SHOTS = ['page-a', 'page-b', 'hero', 'b1', 'b2', 'web', 'cmp'];
+
+// 去 AI 味用到的规则
+const DOT_RE = /[·•・‧∙⋅●○◦◉]/;
+const DASH_RE = /[—―]/;
+const MONO_RE = /mono|courier|menlo|consolas|monaco/i;
+const MONO_CSS = /["']?(JetBrains Mono|Space Mono|Courier Prime|Courier New|SF Mono|Menlo|Monaco|Consolas)["']?|\bmonospace\b/gi;
+const KICKER_UI = /^(kick|kicker|eyebrow|overline|runhead|folio|dateline|issue)$/;
+const firstHit = (text, re) => text.split('\n').map((l) => l.trim()).find((l) => re.test(l)) || '';
+// 一条 CSS 规则：字距 ≥ 0.1em 且字号 < 24px（或用 em 写的字号），或全大写且字号 ≤ 16px，就是标签式小字 / 拉开字距的按钮
+// 字号没写在这条规则里时（继承来的），字距 ≥ 0.1em 也报：界面字一律 0–0.04em，大标题要拉字距就在同一条规则里写明字号
+function labelRule(rule) {
+  const ls = /letter-spacing\s*:\s*(-?[\d.]+)em/.exec(rule);
+  const fz = /font-size\s*:\s*([\d.]+)(px|em)/.exec(rule) || /(?:^|[;{\s])font\s*:[^;]*?([\d.]+)(px|em)/.exec(rule);
+  const size = fz ? parseFloat(fz[1]) : null; const unit = fz ? fz[2] : '';
+  const l = ls ? parseFloat(ls[1]) : 0;
+  if (l >= 0.1 && (size === null || unit === 'em' || size < 24)) return `${size === null ? '继承字号' : size + unit} 字距 ${ls[1]}em`;
+  if (/text-transform\s*:\s*uppercase/.test(rule) && (size === null || unit === 'em' || size <= 16)) return `${size === null ? '继承字号' : size + unit} 全大写`;
+  return '';
+}
+const KICK_CLASS = /\.v-(kick|kicker|eyebrow|overline|folio|issue|runhead|dateline|mono|pageno)(?![\w-])/;
+// 点和等宽字查全文（注释里的用法示例也会被照抄）；破折号只查会出现在界面上的部分（dashText）
+function aiTells(text, label, err, dashText = text) {
+  const dot = firstHit(text.split('\n').filter((l) => !l.includes('data-dot')).join('\n'), DOT_RE); if (dot) err(`${label}有「·」这类点：${dot.slice(0, 70)}`);
+  const dash = firstHit(dashText, DASH_RE); if (dash) err(`${label}有破折号「—」：${dash.slice(0, 70)}`);
+  const mono = [...new Set((text.match(MONO_CSS) || []).map((m) => m.replace(/["']/g, '')))];
+  if (mono.length) err(`${label}用了等宽字体：${mono.join('、')}`);
+}
 
 const stripComments = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"`])\/\/.*$/gm, '$1');
 
@@ -173,8 +201,15 @@ function lintStyle(key) {
     tryCall('ui.btn(text)', () => ui.btn('去看看'), (h) => { if (/undefined/.test(h)) err('ui.btn 只传 text 时输出了 undefined'); });
   }
 
-  // 组件不写死图册品牌（注释里提到可以）
+  // 去 AI 味：等宽字、点、破折号、小标题组件、标签式小字
   const code = stripComments(raw);
+  for (const [k, v] of Object.entries(T.fonts || {})) if (v && MONO_RE.test(String(v).split(',')[0])) err(`T.fonts.${k} 是等宽字体 ${v}：换成风格自己的字体，数字对齐用 tabular-nums`);
+  aiTells(raw, '起手包（含注释里的用法示例）', err);
+  for (const k of Object.keys(ui)) if (KICKER_UI.test(k)) err(`ui.${k} 是眉题 / 书眉 / 页码 / 期号组件：删掉，用到它的地方改掉`);
+  for (const { sel, rule } of sels) { const why = labelRule(rule); if (why) err(`标签式小字 / 拉开字距（${why}）：${sel}`); }
+  const kc = KICK_CLASS.exec(css); if (kc) err(`css 里有眉题 / 书眉 / 页码 / 等宽这类类名 ${kc[0]}：删掉，用到的地方改掉`);
+
+  // 组件不写死图册品牌（注释里提到可以）
   const own = catalogBrands.find((b) => b.key === key);
   if (own && code.includes(own.brand)) {
     const hits = code.split('\n').filter((l) => l.includes(own.brand)).map((l) => l.trim().slice(0, 70));
@@ -225,9 +260,31 @@ function lintDocs(key, S, cat) {
     for (const k of Object.keys(S.ui)) if (!['logo', 'nav', 'tabs', 'btn'].includes(k) && !md.includes(`ui.${k}`)) warn(`起手包有 ui.${k}，风格说明没写`);
   }
   if (md.length < 4000) warn(`风格说明才 ${md.length} 字，可能没写全`);
+  // 去 AI 味：「别做」可以点名这些东西，「客户在图册里看到的」是图册原文照抄，这两节不查；别的地方不许再推荐
+  const cut = (text, name) => text.replace(new RegExp('^##\\s+' + name + '[\\s\\S]*?(?=^##\\s|$(?![\\s\\S]))', 'm'), '');
+  const noDont = cut(cut(md, '别做'), '客户在图册里看到的');
+  const noRefs = cut(noDont, '参考图');
+  const codeParts = [...noDont.matchAll(/```[\s\S]*?```|`[^`\n]+`/g)].map((m) => m[0]).join('\n');
+  aiTells(noDont.replace(MONO_CSS, ''), '风格说明（「别做」以外）', err, codeParts);
+  const dotAll = firstHit(md, DOT_RE); if (dotAll && !DOT_RE.test(noDont)) err(`风格说明（「别做」或图册原文里）有「·」这类点：${dotAll.slice(0, 70)}`);
+  const monoNames = [...new Set((noRefs.match(MONO_CSS) || []).map((m) => m.replace(/["']/g, '')))];
+  if (monoNames.length) err(`风格说明写了等宽字体名（只能写在「别做」「参考图」里）：${monoNames.join('、')}`);
+  if (/等宽/.test(noRefs)) err(`风格说明提到等宽（只能写在「别做」「参考图」里）：${firstHit(noRefs, /等宽/).slice(0, 70)}`);
+  const KICK_WORDS = /眉题|书眉|页码|期号|kicker|eyebrow/i;
+  if (KICK_WORDS.test(noRefs)) err(`风格说明提到眉题 / 书眉 / 页码 / 期号（只能写在「别做」「参考图」里）：${firstHit(noRefs, KICK_WORDS).slice(0, 70)}`);
+  if (/^##\s+客户在图册里看到的/m.test(md) && /等宽|期号|页码|书眉/.test((md.match(/^##\s+客户在图册里看到的[\s\S]*?(?=^##\s)/m) || [''])[0]) && !/审美守则/.test((md.match(/^##\s+客户在图册里看到的[\s\S]*?(?=^##\s)/m) || [''])[0])) err('图册原文里有等宽字 / 期号 / 页码 / 书眉：在这一节写一句 demo 里怎么做到这条特征（审美守则第二节不许用这些）');
   const ex = path.join(DOCS, 'examples', key);
   for (const f of ['demo.js', 'board.png']) if (!fs.existsSync(path.join(ex, f))) err(`examples/${key}/${f} 还没有`);
+  if (fs.existsSync(path.join(ex, 'demo.js'))) lintDemo(path.join(ex, 'demo.js'), `examples/${key}/demo.js `, err);
   return { E, W };
+}
+
+// 样例 demo.js：去掉注释后不许有点、破折号、等宽字、标签式小字
+function lintDemo(file, label, err) {
+  const src = fs.readFileSync(file, 'utf8');
+  const code = stripComments(src);
+  aiTells(src, label, err);
+  for (const { sel, rule } of selectors((/const css = `([\s\S]*?)`;/.exec(code) || [])[1] || '')) { const why = labelRule(rule); if (why) err(`${label}标签式小字（${why}）：${sel}`); }
 }
 
 const all = fs.readdirSync(STY).filter((f) => /^s\d\d-.*\.js$/.test(f)).map((f) => f.replace(/\.js$/, '')).sort();
@@ -248,6 +305,19 @@ if (!want.length) {
   const missing = [];
   for (let i = 1; i <= 16; i++) if (!all.some((k) => k.startsWith('s' + String(i).padStart(2, '0') + '-'))) missing.push(String(i).padStart(2, '0'));
   if (missing.length) { console.log('还没有起手包：' + missing.join(' ')); nE += missing.length; }
+}
+// 不对应某个起手包的样例（混搭等）也查
+if (!want.length && fs.existsSync(path.join(DOCS, 'examples'))) {
+  for (const d of fs.readdirSync(path.join(DOCS, 'examples'))) {
+    if (all.includes(d)) continue;
+    const f = path.join(DOCS, 'examples', d, 'demo.js');
+    if (!fs.existsSync(f)) continue;
+    const E = [];
+    lintDemo(f, '', (m) => E.push(m));
+    nE += E.length;
+    console.log(`examples/${d}：${E.length ? E.length + ' 处错' : '没有错'}`);
+    E.forEach((m) => console.log('  错    ' + m));
+  }
 }
 if (Object.keys(sysFonts).length) console.log('用了系统字体的风格（安卓上会变字）：' + Object.entries(sysFonts).map(([k, v]) => `${k}（${v.join('、')}）`).join('；'));
 console.log(`接口检查：${pick.length} 种，${nE} 处错，${nW} 条提醒`);

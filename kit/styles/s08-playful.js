@@ -1,7 +1,10 @@
-// 08 插画童趣 Playful —— 起手包
+// 08 插画童趣 Playful，起手包
 // 色值、字体、字号、圆角、厚底按键、插画零件都照图册模块 catalog/pages/s08-playful.js（跳跳象）原样取
 // 用法：const S = style('s08-playful'); 屏幕根元素 <div class="scr s08">；组件见 S.ui，插画零件（SVG 片段）见 S.ui.art
 // 这个风格靠「自己画的平涂插画 + 一个吉祥物」撑起来，基本不用照片：插画平涂、不用渐变，宁可简单几何也要干净统一，别拿 emoji 顶替
+// 去 AI 味（审美守则第二节）：不用等宽字，不画装饰圆点，不做压在大字上的小字和编号；按钮、标签栏、选项的字距只在 0 到 .04em。
+// 插画里也不撒小圆点：小花是圆头花瓣、树冠高光是一道弧、杯面只有奶泡心形；小圆只留在五官上（眼睛、眼睛高光、鼻头、耳朵里的粉圈）
+// 「游戏感」靠三样补：同色深一档的厚底（按钮字底下也有 2px）、四种糖果色、圆胖大字；标签栏当前格用一块浅绿小垫子托住图标，不用圆点
 module.exports = (L) => {
   const { icon, rng } = L;
   // 全套颜色（图册模块的 C 原样）
@@ -52,14 +55,14 @@ module.exports = (L) => {
 /* 字：标题、正文、按钮全用站酷快乐体（圆头粗壮、只有一档字重，字重写 700 见 HD 的注释），数字 Fredoka 600，字卡上的汉字霞鹜文楷 */
 .s08 .v-h1{font:700 46px/1.1 var(--hd);letter-spacing:.04em;white-space:nowrap}
 .s08 .v-h2{font:700 30px/1.15 var(--hd);letter-spacing:.04em}
-.s08 .v-h3{font:700 22px/1.2 var(--hd);letter-spacing:.06em}
+.s08 .v-h3{font:700 22px/1.2 var(--hd);letter-spacing:.04em}
 /* 网页大标题：居中写在项目里（text-align:center） */
 .s08 .v-hero{font:700 74px/1.15 var(--hd);letter-spacing:.04em}
 .s08 .v-tx{font:700 17px/1.55 var(--hd);letter-spacing:.03em}
 .s08 .v-mut{font:700 16px/1.35 var(--hd);letter-spacing:.04em;color:var(--m)}
 .s08 .v-num{font-family:var(--nu);font-weight:600;letter-spacing:.01em}
 .s08 .v-mut .v-num,.s08 .v-tx .v-num{font-size:1.06em;margin:0 2px}
-.s08 .v-big{font:600 96px/1 var(--nu);letter-spacing:-.01em}
+.s08 .v-big{font:600 96px/1 var(--nu);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
 .s08 .v-price{display:inline-block;font:700 34px/1 var(--nu);color:var(--o);white-space:nowrap}
 .s08 .v-price::first-letter{font-size:22px}
 .s08 .v-price small{font:700 16px/1 var(--hd);color:var(--m);margin-left:3px;letter-spacing:.04em}
@@ -68,24 +71,24 @@ module.exports = (L) => {
 .s08 .v-wk{display:flex;align-items:baseline;gap:5px;font:700 17px/1 var(--hd);letter-spacing:.04em;color:${C.m2};white-space:nowrap}
 .s08 .v-wk b{font:600 28px/1 var(--nu);color:var(--od);letter-spacing:0;margin:0 1px}
 /* 攒的东西（水滴、星星、小芽）：图标 + Fredoka 数字 */
-.s08 .v-stat{display:flex;align-items:center;gap:5px;font:600 21px/1 var(--nu);white-space:nowrap}
-/* 厚按键：面 + 同色深一档的 6px 实心厚底，看着能按下去。b 天蓝 / g 草绿 / o 活力橙 / y 明黄 / w 白 */
-.s08 .v-tk{display:flex;align-items:center;justify-content:center;border-radius:20px;font:700 24px/1 var(--hd);letter-spacing:.08em;color:#fff;white-space:nowrap}
-.s08 .v-tk.b{background:var(--b);box-shadow:0 6px 0 var(--bd)}
-.s08 .v-tk.g{background:var(--g);box-shadow:0 6px 0 var(--gd)}
-.s08 .v-tk.o{background:var(--o);box-shadow:0 6px 0 var(--od)}
+.s08 .v-stat{display:flex;align-items:center;gap:5px;font:600 21px/1 var(--nu);font-variant-numeric:tabular-nums;white-space:nowrap}
+/* 厚按键：面 + 同色深一档的 6px 实心厚底，看着能按下去。b 天蓝 / g 草绿 / o 活力橙 / y 明黄 / w 白。彩色键上的白字底下也有一层 2px 同色深一档（字也有厚度） */
+.s08 .v-tk{display:flex;align-items:center;justify-content:center;border-radius:20px;font:700 24px/1 var(--hd);letter-spacing:.04em;color:#fff;white-space:nowrap}
+.s08 .v-tk.b{background:var(--b);box-shadow:0 6px 0 var(--bd);text-shadow:0 2px 0 var(--bd)}
+.s08 .v-tk.g{background:var(--g);box-shadow:0 6px 0 var(--gd);text-shadow:0 2px 0 var(--gd)}
+.s08 .v-tk.o{background:var(--o);box-shadow:0 6px 0 var(--od);text-shadow:0 2px 0 var(--od)}
 .s08 .v-tk.y{background:var(--y);color:var(--k);box-shadow:0 6px 0 var(--yd)}
 .s08 .v-tk.w{background:#fff;color:var(--k);box-shadow:0 6px 0 var(--ln),inset 0 0 0 3px var(--ln)}
-/* 主按钮：天蓝厚底，62 高、圆角 20、26px 字；ghost 白、g/o/y 换色 */
-.s08 .v-btn{height:62px;padding:0 30px;display:inline-flex;align-items:center;justify-content:center;gap:12px;border-radius:20px;background:var(--b);color:#fff;box-shadow:0 6px 0 var(--bd);font:700 26px/1 var(--hd);letter-spacing:.08em;white-space:nowrap}
-.s08 .v-btn>span{margin-right:-.08em}
+/* 主按钮：天蓝厚底，62 高、圆角 20、26px 字、字距 .04em；白字底下 2px 同色深一档，和按钮的厚底是一套。ghost 白、g/o/y 换色 */
+.s08 .v-btn{height:62px;padding:0 30px;display:inline-flex;align-items:center;justify-content:center;gap:12px;border-radius:20px;background:var(--b);color:#fff;box-shadow:0 6px 0 var(--bd);text-shadow:0 2px 0 var(--bd);font:700 26px/1 var(--hd);letter-spacing:.04em;white-space:nowrap}
+.s08 .v-btn>span{margin-right:-.04em}
 .s08 .v-btn.wide{display:flex;width:100%}
-.s08 .v-btn.ghost{background:#fff;color:var(--k);box-shadow:0 6px 0 var(--ln),inset 0 0 0 3px var(--ln)}
-.s08 .v-btn.g{background:var(--g);box-shadow:0 6px 0 var(--gd)}
-.s08 .v-btn.o{background:var(--o);box-shadow:0 6px 0 var(--od)}
-.s08 .v-btn.y{background:var(--y);color:var(--k);box-shadow:0 6px 0 var(--yd)}
+.s08 .v-btn.ghost{background:#fff;color:var(--k);box-shadow:0 6px 0 var(--ln),inset 0 0 0 3px var(--ln);text-shadow:none}
+.s08 .v-btn.g{background:var(--g);box-shadow:0 6px 0 var(--gd);text-shadow:0 2px 0 var(--gd)}
+.s08 .v-btn.o{background:var(--o);box-shadow:0 6px 0 var(--od);text-shadow:0 2px 0 var(--od)}
+.s08 .v-btn.y{background:var(--y);color:var(--k);box-shadow:0 6px 0 var(--yd);text-shadow:none}
 /* 按钮里的小黄字卡（「开始认 [水]」） */
-.s08 .v-btn .bt{display:grid;place-items:center;width:42px;height:42px;margin-right:-8px;border-radius:13px;background:var(--y);box-shadow:0 4px 0 var(--yd);font:500 30px/1 var(--kai);color:var(--k);letter-spacing:0;padding-bottom:3px}
+.s08 .v-btn .bt{display:grid;place-items:center;width:42px;height:42px;margin-right:-8px;border-radius:13px;background:var(--y);box-shadow:0 4px 0 var(--yd);font:500 30px/1 var(--kai);color:var(--k);letter-spacing:0;text-shadow:none;padding-bottom:3px}
 .s08 .v-btn .bt svg{display:block}
 /* 卡片：白、圆角 28、3px 浅灰内圈 + 6px 浅灰厚底；.lift 放在彩色底上（去内圈、厚底换浅蓝） */
 .s08 .v-card{position:relative;background:#fff;border-radius:28px;box-shadow:inset 0 0 0 3px var(--ln),0 6px 0 var(--ln)}
@@ -118,8 +121,8 @@ module.exports = (L) => {
 .s08 .v-alb svg{display:block}
 /* 贴纸册（ui.album）：标题行 + 四列贴纸 */
 .s08 .v-albm{padding:22px 18px 24px}
-.s08 .v-albm .hd{display:flex;align-items:baseline;margin:0 6px 22px;font:700 22px/1 var(--hd);letter-spacing:.06em}
-.s08 .v-albm .hd b{font:600 22px/1 var(--nu);color:var(--o);margin-left:10px;letter-spacing:0}
+.s08 .v-albm .hd{display:flex;align-items:baseline;margin:0 6px 22px;font:700 22px/1 var(--hd);letter-spacing:.04em}
+.s08 .v-albm .hd b{font:600 22px/1 var(--nu);color:var(--o);margin-left:10px;letter-spacing:0;font-variant-numeric:tabular-nums}
 .s08 .v-albm .hd small{font-size:18px;color:var(--off)}
 /* 空字卡位（字卡被拖走后留下的虚线框） */
 .s08 .v-gap{flex:none;border:3.5px dashed ${C.gapLn}}
@@ -127,14 +130,14 @@ module.exports = (L) => {
 .s08 .v-ring{position:relative;flex:none}
 .s08 .v-ring>svg{position:absolute;left:0;top:0;overflow:visible}
 .s08 .v-ring>.in{position:absolute;inset:0;display:grid;place-items:center}
-/* 一周点阵（ui.week）：早晚两行打卡币，最底下一行星期，今天那天是藏青小方块 */
+/* 一周打卡格（ui.week）：早晚两行打卡币，最底下一行星期，今天那天是藏青小方块 */
 .s08 .v-week{display:grid;row-gap:14px;align-items:center;justify-items:center}
 .s08 .v-week .rl{font:700 16px/1 var(--hd);letter-spacing:.04em;color:var(--m)}
 .s08 .v-week .d{font:700 15px/1 var(--hd);color:var(--m)}
 .s08 .v-week .d.now{color:#fff;background:var(--k);border-radius:9px;padding:5px 6px 4px}
 /* 顶栏：左右是白色厚底小方键，标题 28px 居中 */
 .s08 .v-nav{position:relative;height:46px;margin:6px 20px 0;display:flex;align-items:center;justify-content:space-between;z-index:5}
-.s08 .v-nav .t{position:absolute;left:50%;transform:translateX(-50%);font:700 28px/1 var(--hd);letter-spacing:.06em;padding-left:.06em;white-space:nowrap}
+.s08 .v-nav .t{position:absolute;left:50%;transform:translateX(-50%);font:700 28px/1 var(--hd);letter-spacing:.04em;padding-left:.04em;white-space:nowrap}
 .s08 .v-ib{width:46px;height:44px;border-radius:15px;display:grid;place-items:center;flex:none;background:#fff;color:var(--k);box-shadow:inset 0 0 0 3px var(--ln),0 6px 0 var(--ln)}
 .s08 .v-ib svg{display:block}
 .s08 .v-ib.b{width:54px;height:48px;border-radius:16px;background:var(--b);color:#fff;box-shadow:0 6px 0 var(--bd)}
@@ -142,12 +145,16 @@ module.exports = (L) => {
 .s08 .v-ib.o{background:var(--o);color:#fff;box-shadow:0 6px 0 var(--od)}
 .s08 .v-logo{display:flex;align-items:center;gap:8px;font:700 25px/1 var(--hd);letter-spacing:.04em;white-space:nowrap}
 .s08 .v-logo svg{display:block;flex:none}
-.s08 .v-logo em{font:600 14px/1 var(--nu);font-style:normal;letter-spacing:.1em;color:var(--m);margin-left:2px}
-/* 标签栏：白底、顶上一道 3px 浅线；图标是实心平涂的。当前格草绿图标 + 藏青字 + 字下面一个小圆点（不只靠颜色），其余图标 #9AA6B6、字灰蓝 */
-.s08 .v-tabs{position:absolute;left:0;right:0;bottom:0;height:88px;background:#fff;box-shadow:0 -3px 0 var(--ln2);display:flex;justify-content:space-around;padding:12px 10px 0;z-index:6}
-.s08 .v-tabs>div{width:64px;display:flex;flex-direction:column;align-items:center;gap:5px;font:700 14px/1 var(--hd);color:var(--m)}
+/* 字标里的英文（只给本来就有英文名的品牌）：Fredoka 600、品牌名的 0.68 倍（25px 字标配 17px）、不加字距、照原样大小写 */
+.s08 .v-logo em{font:600 .68em/1 var(--nu);font-style:normal;letter-spacing:0;color:var(--m);margin-left:4px}
+/* 标签栏：白底、顶上一道 3px 浅线；图标是实心平涂的，坐在 54×34 的小垫子里。
+   当前格：垫子是一块浅绿圆角块带 3px 浅绿内圈（和白卡的内圈一个做法，跟着 --g 变），图标草绿、字藏青；其余格没有垫子，图标 #9AA6B6、字灰蓝。
+   有没有垫子是形状上的区别，色弱也分得开 */
+.s08 .v-tabs{position:absolute;left:0;right:0;bottom:0;height:88px;background:#fff;box-shadow:0 -3px 0 var(--ln2);display:flex;justify-content:space-around;padding:9px 10px 0;z-index:6}
+.s08 .v-tabs>div{width:68px;display:flex;flex-direction:column;align-items:center;gap:4px;font:700 14px/1 var(--hd);letter-spacing:.02em;color:var(--m)}
+.s08 .v-tabs>div>i{display:grid;place-items:center;width:54px;height:34px;border-radius:13px}
 .s08 .v-tabs>div.on{color:var(--k)}
-.s08 .v-tabs>div.on::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--k);margin-top:-1px}
+.s08 .v-tabs>div.on>i{background:#E1F6EB;background:color-mix(in srgb,var(--g) 14%,#fff);box-shadow:inset 0 0 0 3px #BEEBD5;box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--g) 30%,#fff)}
 .s08 .v-tabs svg{display:block}
 /* 底部操作条（左价格右按钮） */
 .s08 .v-bar{position:absolute;left:0;right:0;bottom:0;height:112px;background:#fff;box-shadow:0 -3px 0 var(--ln2);display:flex;align-items:flex-start;justify-content:space-between;padding:18px 24px 0;z-index:6}
@@ -188,17 +195,20 @@ ${cap ? `<path d="M${px - 17} ${py + 15} Q${px} ${py - 5} ${px + 17} ${py + 15} 
   const ground = (w, h, y, c = C.grass) => `<path d="M0 ${y}C${f1(w * .19)} ${y - 14} ${f1(w * .4)} ${y + 8} ${f1(w * .61)} ${y - 4}S${f1(w * .91)} ${y - 16} ${w} ${y - 8}V${h}H0Z" fill="${c}"/>`;
   // 河：y 是上沿中线，从左到右横穿 w 宽
   const river = (w, y, hgt = 62) => `<path d="M-10 ${y + 6}C${f1(w * .19)} ${y - 10} ${f1(w * .4)} ${y + 26} ${f1(w * .61)} ${y + 12}S${f1(w * .91)} ${y - 8} ${w + 10} ${y}V${y + hgt}C${f1(w * .85)} ${y + hgt - 8} ${f1(w * .64)} ${y + hgt + 12} ${f1(w * .43)} ${y + hgt + 2}S${f1(w * .1)} ${y + hgt - 8} -10 ${y + hgt}Z" fill="${C.river}"/><path d="M${f1(w * .09)} ${y + 30}h18M${f1(w * .7)} ${y + 24}h22M${f1(w * .31)} ${y + 54}h16" stroke="${C.foam}" stroke-width="4" stroke-linecap="round"/>`;
-  const tree = (x, y, r = 20) => `<g><ellipse cx="${x}" cy="${f1(y + r * 1.55)}" rx="${f1(r * .85)}" ry="${f1(r * .18)}" fill="#1F3159" opacity=".1"/><rect x="${f1(x - r * .14)}" y="${f1(y + r * .4)}" width="${f1(r * .28)}" height="${f1(r * 1.1)}" rx="${f1(r * .12)}" fill="${C.trunk}"/><rect x="${x}" y="${f1(y + r * .4)}" width="${f1(r * .14)}" height="${f1(r * 1.1)}" fill="${C.trunkD}"/><circle cx="${x}" cy="${y}" r="${r}" fill="${C.leaf}"/><circle cx="${f1(x + r * .5)}" cy="${f1(y + r * .28)}" r="${f1(r * .6)}" fill="${C.leafD}"/><circle cx="${f1(x - r * .5)}" cy="${f1(y + r * .22)}" r="${f1(r * .62)}" fill="${C.leaf}"/><circle cx="${f1(x - r * .16)}" cy="${f1(y - r * .22)}" r="${f1(r * .7)}" fill="${C.leafL}"/><ellipse cx="${f1(x - r * .4)}" cy="${f1(y - r * .48)}" rx="${f1(r * .2)}" ry="${f1(r * .12)}" fill="#fff" opacity=".35" transform="rotate(-30 ${f1(x - r * .4)} ${f1(y - r * .48)})"/></g>`;
+  // 树：三团树冠 + 右边一团暗面，左上角一道弧形高光（不点小白点）
+  const tree = (x, y, r = 20) => `<g><ellipse cx="${x}" cy="${f1(y + r * 1.55)}" rx="${f1(r * .85)}" ry="${f1(r * .18)}" fill="#1F3159" opacity=".1"/><rect x="${f1(x - r * .14)}" y="${f1(y + r * .4)}" width="${f1(r * .28)}" height="${f1(r * 1.1)}" rx="${f1(r * .12)}" fill="${C.trunk}"/><rect x="${x}" y="${f1(y + r * .4)}" width="${f1(r * .14)}" height="${f1(r * 1.1)}" fill="${C.trunkD}"/><circle cx="${x}" cy="${y}" r="${r}" fill="${C.leaf}"/><circle cx="${f1(x + r * .5)}" cy="${f1(y + r * .28)}" r="${f1(r * .6)}" fill="${C.leafD}"/><circle cx="${f1(x - r * .5)}" cy="${f1(y + r * .22)}" r="${f1(r * .62)}" fill="${C.leaf}"/><circle cx="${f1(x - r * .16)}" cy="${f1(y - r * .22)}" r="${f1(r * .7)}" fill="${C.leafL}"/><path d="M${f1(x - r * .62)} ${f1(y - r * .26)}Q${f1(x - r * .6)} ${f1(y - r * .66)} ${f1(x - r * .22)} ${f1(y - r * .74)}" stroke="#fff" stroke-opacity=".4" stroke-width="${f1(r * .14)}" stroke-linecap="round" fill="none"/></g>`;
   const tuft = (x, y, k = 1) => `<path d="M${f1(x - 7 * k)} ${y} q${f1(2 * k)} ${f1(-8 * k)} ${f1(4 * k)} 0 q${f1(3 * k)} ${f1(-12 * k)} ${f1(6 * k)} 0 q${f1(2 * k)} ${f1(-8 * k)} ${f1(4 * k)} 0" stroke="${C.tuft}" stroke-width="${f1(2.6 * k)}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
-  // 五瓣小花：白或粉 #FFB3C2，黄芯
-  const bloom = (x, y, r = 5, c = '#fff') => `<g transform="translate(${x} ${y})">${[0, 72, 144, 216, 288].map((a) => `<circle cx="${f1(Math.cos((a - 90) * Math.PI / 180) * r * .9)}" cy="${f1(Math.sin((a - 90) * Math.PI / 180) * r * .9)}" r="${f1(r * .6)}" fill="${c}"/>`).join('')}<circle r="${f1(r * .42)}" fill="${C.y}"/></g>`;
+  // 五瓣小花：五片圆头花瓣（不是五颗小圆点拼的）+ 一颗花芯；r 是花瓣的长度单位，整朵直径约 3r。插画里一屏两三朵、r 不小于 6，别撒一片碎花
+  const petals = (r, c, turn) => [0, 72, 144, 216, 288].map((a) => `<path d="M0 ${f1(-r * .25)}C${f1(-r * .8)} ${f1(-r * .55)} ${f1(-r * .9)} ${f1(-r * 1.5)} 0 ${f1(-r * 1.5)}C${f1(r * .9)} ${f1(-r * 1.5)} ${f1(r * .8)} ${f1(-r * .55)} 0 ${f1(-r * .25)}Z" fill="${c}" transform="rotate(${a + turn})"/>`).join('');
+  // 白或粉 #FFB3C2，黄芯
+  const bloom = (x, y, r = 5, c = '#fff') => `<g transform="translate(${x} ${y})">${petals(r, c, 0)}<circle r="${f1(r * .45)}" fill="${C.y}"/></g>`;
   // 黄色小花（橙芯）
-  const flower = (x, y, r = 7, c = C.y) => `<g transform="translate(${x} ${y})">${[0, 72, 144, 216, 288].map((a) => `<circle cx="${f1(Math.cos(a * Math.PI / 180) * r * .9)}" cy="${f1(Math.sin(a * Math.PI / 180) * r * .9)}" r="${f1(r * .62)}" fill="${c}"/>`).join('')}<circle r="${f1(r * .42)}" fill="${C.o}"/></g>`;
+  const flower = (x, y, r = 7, c = C.y) => `<g transform="translate(${x} ${y})">${petals(r, c, 18)}<circle r="${f1(r * .45)}" fill="${C.o}"/></g>`;
   const duck = (x, y) => `<g transform="translate(${x} ${y})"><ellipse cx="0" cy="6" rx="15" ry="9" fill="${C.y}"/><circle cx="9" cy="-6" r="8" fill="${C.y}"/><path d="M15 -6 l8 2 -8 3 z" fill="${C.o}"/><circle cx="11" cy="-8" r="1.8" fill="${C.ink}"/><path d="M-6 4 q6 -6 10 2" stroke="${C.yd}" stroke-width="2.4" stroke-linecap="round" fill="none"/></g>`;
   const rock = (x, y) => `<g transform="translate(${x} ${y})"><ellipse cy="23" rx="42" ry="5.5" fill="#1F3159" opacity=".1"/><path d="M-36 20C-40 0-26-18-6-21C14-24 34-10 36 6C38 16 32 22 20 22H-28C-33 22-36 22-36 20Z" fill="${C.rock}"/><path d="M-6-21C14-24 34-10 36 6C38 16 32 22 20 22H8C22 9 17-8-6-21Z" fill="${C.rockD}"/></g>`;
   // 白天的淡黄月牙（遮罩挖一口）
   const moon = (x, y, r, fill = '#FFF0A8') => { const m = id('mn'); return `<defs><mask id="${m}" maskUnits="userSpaceOnUse" x="${x - r - 4}" y="${y - r - 4}" width="${2 * r + 8}" height="${2 * r + 8}"><rect x="${x - r - 4}" y="${y - r - 4}" width="${2 * r + 8}" height="${2 * r + 8}" fill="#fff"/><circle cx="${f1(x + r * .5)}" cy="${f1(y - r * .38)}" r="${f1(r * .84)}" fill="#000"/></mask></defs><circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" mask="url(#${m})"/>`; };
-  // 弯弯的小路（闯关路线）：pts 是路过的点 [[x,y],…]，自动连成圆滑曲线；dots 中间画一串小圆点
+  // 弯弯的小路（闯关路线）：pts 是路过的点 [[x,y],…]，自动连成圆滑曲线；lane 画路中间一道短虚线（路面标线，不是一串圆点）
   const smooth = (P) => {
     let d = `M${P[0][0]} ${P[0][1]}`;
     for (let i = 0; i < P.length - 1; i++) {
@@ -207,8 +217,8 @@ ${cap ? `<path d="M${px - 17} ${py + 15} Q${px} ${py - 5} ${px + 17} ${py + 15} 
     }
     return d;
   };
-  const road = (pts, { w = 34, dots = true, c = C.road, edge = C.road2 } = {}) => { const d = smooth(pts); return `<path d="${d}" stroke="${edge}" stroke-width="${w + 8}" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="${d}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>${dots ? `<path d="${d}" stroke="${edge}" stroke-width="5" stroke-dasharray="1 15" stroke-linecap="round" fill="none"/>` : ''}`; };
-  // 彩纸屑：在 w×h 里撒 n 片（绿、橙、蓝、黄，长条和圆点）；seed 换一种撒法；keep(x,y) 返回 false 的位置不撒（给角色留空）；gap 是片与片的最小距离，保证撒得匀
+  const road = (pts, { w = 34, lane = true, c = C.road, edge = C.road2 } = {}) => { const d = smooth(pts); return `<path d="${d}" stroke="${edge}" stroke-width="${w + 8}" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="${d}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>${lane ? `<path d="${d}" stroke="${edge}" stroke-width="5" stroke-dasharray="7 13" stroke-linecap="round" fill="none"/>` : ''}`; };
+  // 彩纸屑：在 w×h 里撒 n 片（绿、橙、蓝、黄，长条和圆角小三角）；seed 换一种撒法；keep(x,y) 返回 false 的位置不撒（给角色留空）；gap 是片与片的最小距离，保证撒得匀
   const confetti = (w, h, { n = 12, seed = 3, keep = null, gap = 58 } = {}) => {
     const r = rng(seed); const cs = ['var(--g)', 'var(--o)', 'var(--b)', 'var(--y)']; let s = ''; const pts = []; let tries = 0;
     while (pts.length < n && tries++ < 1500) {
@@ -217,7 +227,7 @@ ${cap ? `<path d="M${px - 17} ${py + 15} Q${px} ${py - 5} ${px + 17} ${py + 15} 
       if (pts.some(([a, b]) => Math.hypot(a - x, b - y) < gap)) continue;
       const k = pts.length, c = cs[k % 4], rot = Math.round(r() * 120 - 60);
       pts.push([x, y]);
-      s += k % 3 === 1 ? `<circle cx="${x}" cy="${y}" r="6" fill="${c}"/>` : `<rect x="${f1(x - 8)}" y="${f1(y - 4)}" width="16" height="8" rx="4" fill="${c}" transform="rotate(${rot} ${x} ${y})"/>`;
+      s += k % 3 === 1 ? `<path d="M${x} ${f1(y - 6)}L${f1(x + 6)} ${f1(y + 5)}H${f1(x - 6)}Z" fill="${c}" stroke="${c}" stroke-width="3" stroke-linejoin="round" transform="rotate(${rot} ${x} ${y})"/>` : `<rect x="${f1(x - 8)}" y="${f1(y - 4)}" width="16" height="8" rx="4" fill="${c}" transform="rotate(${rot} ${x} ${y})"/>`;
     }
     return s;
   };
@@ -228,11 +238,11 @@ ${cap ? `<path d="M${px - 17} ${py + 15} Q${px} ${py - 5} ${px + 17} ${py + 15} 
   const field = (x, y) => `<g transform="translate(${x} ${y})"><path d="M-40-20H38L46 22H-48Z" fill="${C.field}"/><path d="M-1-20 -1 22M-44 1H42" stroke="${C.fieldD}" stroke-width="3.2" stroke-linecap="round"/><path d="M-40-20H38L46 22H-48Z" fill="none" stroke="${C.fieldD}" stroke-width="3.2" stroke-linejoin="round"/></g>`;
   // 场景里的虚线落点（把东西拖到这里）：x,y 中心，s 边长；halo = true 外面再加一圈白色光圈，表示「就是这里」
   const gap = (x, y, s = 58, { halo = false } = {}) => `<rect x="${f1(x - s / 2)}" y="${f1(y - s / 2)}" width="${s}" height="${s}" rx="16" fill="#fff" fill-opacity=".45" stroke="#fff" stroke-width="3.5" stroke-dasharray="8 7" stroke-linecap="round"/>${halo ? `<circle cx="${x}" cy="${y}" r="${f1(s * .68)}" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="3"/>` : ''}`;
-  // 点点虚线箭头（拖动方向、下一步去哪）：pts 路过的点 [[x,y],…]，箭头画在最后一点
+  // 虚线箭头（拖动方向、下一步去哪）：短虚线 + 箭头：pts 路过的点 [[x,y],…]，箭头画在最后一点
   const trail = (pts, { c = 'var(--o)', w = 5 } = {}) => {
     const [a, b] = pts.slice(-2); const t = Math.atan2(b[1] - a[1], b[0] - a[0]);
     const wing = (d) => `${f1(b[0] - 15 * Math.cos(t + d))} ${f1(b[1] - 15 * Math.sin(t + d))}`;
-    return `<path d="${smooth(pts)}" stroke="${c}" stroke-width="${w}" stroke-dasharray="2 11" stroke-linecap="round" fill="none"/><path d="M${wing(.72)} L${b[0]} ${b[1]} L${wing(-.72)}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
+    return `<path d="${smooth(pts)}" stroke="${c}" stroke-width="${w}" stroke-dasharray="7 10" stroke-linecap="round" fill="none"/><path d="M${wing(.72)} L${b[0]} ${b[1]} L${wing(-.72)}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
   };
   // 牌子里的内容：一两个汉字用霞鹜文楷，其他当 SVG 片段（画在 40×40 的格子里）缩放进去
   const glyphG = (glyph, size, color = C.ink) => (/^[^<]{1,2}$/.test(glyph)
@@ -385,8 +395,8 @@ ${arms === 'hand' ? `${hold ? `<g transform="translate(96 75)">${hold}</g>` : ''
     nav: ({ title = '', back = true, right = '', left = '' } = {}) => `<div class="v-nav">${left || (back ? `<div class="v-ib" data-back>${ic.back()}</div>` : '<span></span>')}${title ? `<div class="t">${title}</div>` : ''}${right || '<span></span>'}</div>`,
     // 小方键：c = '' 白 / 'b' 天蓝（喇叭、播放）/ 'g' / 'o'；inner 是 lucide 名或现成的 svg
     iconBtn: (inner, { c = '', attrs = '', size = 22 } = {}) => `<div class="v-ib ${c}" ${attrs}>${inner.startsWith('<') ? inner : icon(inner, size, 3, c ? 'style="color:#fff"' : '')}</div>`,
-    // 底部标签栏：实心平涂图标，当前格图标草绿（走 --g）、字藏青、字下面一个小圆点；其余图标 #9AA6B6、字灰蓝
-    tabs: (items, cur = 0, go = []) => `<div class="v-tabs">${items.map(([n, t], i) => `<div class="${i === cur ? 'on' : ''}" ${go[i] ? `data-go="${go[i]}"` : ''}>${tabIc(n, i === cur ? 'var(--g)' : C.off)}<span>${t}</span></div>`).join('')}</div>`,
+    // 底部标签栏：tabs([['house', '今天'], ['user', '我的']], 0, ['home', 'me'])。当前格的图标坐在浅绿小垫子上、图标草绿（走 --g）、字藏青；其余没有垫子，图标 #9AA6B6、字灰蓝
+    tabs: (items, cur = 0, go = []) => `<div class="v-tabs">${items.map(([n, t], i) => `<div class="${i === cur ? 'on' : ''}" ${go[i] ? `data-go="${go[i]}"` : ''}><i>${tabIc(n, i === cur ? 'var(--g)' : C.off)}</i><span>${t}</span></div>`).join('')}</div>`,
     // 主按钮：天蓝厚底。ic = lucide 名（白、线宽 3）；tile = 按钮右头的小黄字卡（一个汉字或 40×40 的 SVG 片段）
     btn: (text, { ic: icn = '', tile = '', cls = '', attrs = '' } = {}) => `<div class="v-btn ${cls}" ${attrs}><span>${text}</span>${icn ? icon(icn, 24, 3) : ''}${tile ? `<span class="bt">${/^[^<]{1,2}$/.test(tile) ? tile : `<svg width="30" height="30" viewBox="0 0 40 40">${tile}</svg>`}</span>` : ''}</div>`,
     // 厚按键（任意尺寸）：key('登录', { c: 'w', w: 120, h: 50, fs: 20 })
@@ -421,12 +431,12 @@ ${arms === 'hand' ? `${hold ? `<g transform="translate(96 75)">${hold}</g>` : ''
       const st = `stroke-width="${sw}" stroke-linecap="round" fill="none"`;
       return `<div class="v-ring" style="width:${s}px;height:${s}px;${pos ? `position:absolute;${pos}` : ''}"><svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}"><circle cx="${m}" cy="${m + 5}" r="${R}" stroke="${C.lockd}" stroke-width="${sw}" fill="none"/><circle cx="${m}" cy="${m}" r="${R}" stroke="${C.lock}" stroke-width="${sw}" fill="none"/>${p > 0 ? `<path d="${arc}" transform="translate(0 5)" stroke="${dc}" ${st}/><path d="${arc}" stroke="${fc}" ${st}/>` : ''}</svg>${inner ? `<div class="in">${inner}</div>` : ''}</div>`;
     },
-    // 打卡币：dot('y', { s: 34 })，实心圆 + 厚底 + 勾；c = y 明黄 / n 夜蓝 / b / g / o
-    dot: (c = 'y', { s = 34 } = {}) => { const [fc, dc] = KEY[c] || KEY.y; return `<svg class="v-art" width="${s}" height="${s}" viewBox="0 0 30 30"><circle cx="15" cy="16.5" r="13" fill="${dc}"/><circle cx="15" cy="15" r="13" fill="${fc}"/><path d="M9.5 15.5l3.6 3.6 7.4-7.6" stroke="${c === 'y' ? C.ink : '#fff'}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`; },
-    // 一周点阵：week({ rows: [['早', 'y', [1, 1, 1, 1, 1, 1, 1]], ['晚', 'n', [1, 1, 1, 1, 1, 1, 'next']]], days: ['日', '一', '二', '三', '四', '五', '六'], today: 6 })
+    // 打卡币：coin('y', { s: 34 })，实心圆 + 厚底 + 勾；c = y 明黄 / n 夜蓝 / b / g / o
+    coin: (c = 'y', { s = 34 } = {}) => { const [fc, dc] = KEY[c] || KEY.y; return `<svg class="v-art" width="${s}" height="${s}" viewBox="0 0 30 30"><circle cx="15" cy="16.5" r="13" fill="${dc}"/><circle cx="15" cy="15" r="13" fill="${fc}"/><path d="M9.5 15.5l3.6 3.6 7.4-7.6" stroke="${c === 'y' ? C.ink : '#fff'}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`; },
+    // 一周打卡格：week({ rows: [['早', 'y', [1, 1, 1, 1, 1, 1, 1]], ['晚', 'n', [1, 1, 1, 1, 1, 1, 'next']]], days: ['日', '一', '二', '三', '四', '五', '六'], today: 6 })
     // rows 每行 [标签, 打卡币颜色, 每天状态]；状态 1 打勾 / 0 浅灰空位 / 'next' 天蓝虚线（今天还没打）；today 是今天的下标，s 是币的大小
-    week: ({ rows = [], days = [], today = -1, s = 34 } = {}) => `<div class="v-week" style="grid-template-columns:28px repeat(${days.length},1fr)">${rows.map(([lb, c, st]) => `<span class="rl">${lb}</span>${st.map((v) => `<div>${v === 'next' ? ui.slot({ s, next: true }) : v ? ui.dot(c, { s }) : ui.slot({ s })}</div>`).join('')}`).join('')}<span></span>${days.map((d, i) => `<span class="d${i === today ? ' now' : ''}">${d}</span>`).join('')}</div>`,
-    // 会笑的杯子：cup(190, { band: C.o, bandD: C.od })，w 宽（高 = w×1.05）；咖啡、奶茶这类店的产品角色，band / bandD 换杯身色带
+    week: ({ rows = [], days = [], today = -1, s = 34 } = {}) => `<div class="v-week" style="grid-template-columns:28px repeat(${days.length},1fr)">${rows.map(([lb, c, st]) => `<span class="rl">${lb}</span>${st.map((v) => `<div>${v === 'next' ? ui.slot({ s, next: true }) : v ? ui.coin(c, { s }) : ui.slot({ s })}</div>`).join('')}`).join('')}<span></span>${days.map((d, i) => `<span class="d${i === today ? ' now' : ''}">${d}</span>`).join('')}</div>`,
+    // 会笑的杯子：cup(190, { band: C.o, bandD: C.od })，w 宽（高 = w×1.05）；咖啡、奶茶这类店的产品角色，band / bandD 换杯身色带。杯面只画奶泡心形，图册里撒的三颗黄点去掉了
     cup: (w, { band = C.o, bandD = C.od } = {}) => `<svg class="v-art" width="${w}" height="${Math.round(w * 1.05)}" viewBox="0 0 160 168">
 <ellipse cx="78" cy="163" rx="66" ry="5.5" fill="#1F3159" opacity=".12"/>
 <ellipse cx="78" cy="157.5" rx="62" ry="10" fill="#D7E3EE"/><ellipse cx="78" cy="153.5" rx="66" ry="11" fill="#fff"/>
@@ -437,7 +447,6 @@ ${arms === 'hand' ? `${hold ? `<g transform="translate(96 75)">${hold}</g>` : ''
 <path d="M24 100 H132 L128 130 H28 Z" fill="${band}"/><path d="M115.5 100 H132 L128 130 H113.5 C115.5 120 116 110 115.5 100 Z" fill="${bandD}" opacity=".45"/>
 <ellipse cx="78" cy="52" rx="60" ry="15" fill="#fff"/><ellipse cx="78" cy="53" rx="53" ry="11.5" fill="#C98B55"/>
 <path d="M78 61.5 C68 57 62.5 53 65.5 49 C68 46 72.5 46.5 78 50.5 C83.5 46.5 88 46 90.5 49 C93.5 53 88 57 78 61.5 Z" fill="#FFF2DD"/>
-<circle cx="58" cy="51" r="2.2" fill="${C.y}"/><circle cx="99" cy="55" r="1.8" fill="${C.y}"/><circle cx="94" cy="47" r="1.5" fill="${C.y}"/>
 <circle cx="60" cy="80" r="5.4" fill="${C.ink}"/><circle cx="96" cy="80" r="5.4" fill="${C.ink}"/><circle cx="62" cy="78" r="1.9" fill="#fff"/><circle cx="98" cy="78" r="1.9" fill="#fff"/>
 <path d="M70 88 q8 8 16 0" stroke="${C.ink}" stroke-width="3.4" stroke-linecap="round" fill="none"/>
 <ellipse cx="48" cy="90" rx="7" ry="4.2" fill="${C.pink}"/><ellipse cx="108" cy="90" rx="7" ry="4.2" fill="${C.pink}"/>

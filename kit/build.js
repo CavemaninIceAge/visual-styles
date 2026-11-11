@@ -193,4 +193,4 @@ addEventListener('resize',()=>show(cur,false));
 const h0=decodeURIComponent(location.hash.slice(1));show(ids.includes(h0)?h0:(innerWidth<520?${JSON.stringify(desktop.has(start) ? (ids.find((x) => !desktop.has(x)) || start) : start)}:${JSON.stringify(start)}),false);
 </script></body></html>`);
 
-console.log(`${demo.name || ''}：${ids.length} 屏（网页 ${webs.length}）· 风格 ${S ? S.key : (demo.style || '无起手包')} → ${OUT}`);
+console.log(`${demo.name || ''}：${ids.length} 屏（网页 ${webs.length}），风格 ${S ? S.key : (demo.style || '无起手包')} → ${OUT}`);

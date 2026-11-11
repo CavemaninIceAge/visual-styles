@@ -1,4 +1,4 @@
-// 03 新中式 Neo-Chinese —— 起手包
+// 03 新中式 Neo-Chinese，起手包
 // 色值、字体、线宽、滤镜、印章、月洞门、扇面、远山、桂枝都照图册模块 catalog/pages/s03-oriental.js（一盏）原样取
 // 用法：const S = style('s03-oriental'); 屏幕根元素 <div class="scr s03">；组件见 S.ui
 module.exports = (L) => {
@@ -12,8 +12,8 @@ module.exports = (L) => {
     line: 'rgba(43,41,38,.14)',  // 列表分隔线；细框用 .3，外框用 .42
     primary: C.mo,           // 主按钮、选中的日期都是浓墨块；朱砂不做按钮
     onPrimary: C.xuan,
-    accents: { zhu: C.zhu, qing: C.qing },   // 朱砂：只给印章和「当前」的一个小点；青瓷：展示板、舞台
-    fonts: { title: '"Ma Shan Zheng"', body: '"Noto Serif SC"', num: '"Cormorant Garamond"', ui: '"LXGW WenKai"' },  // ui：按钮、字标
+    accents: { zhu: C.zhu, qing: C.qing },   // 朱砂：只给印章和选中的单选圈；青瓷：展示板、舞台
+    fonts: { title: '"Ma Shan Zheng"', body: '"Noto Serif SC"', num: '"Cormorant Garamond"', ui: '"LXGW WenKai"' },  // ui：按钮、字标、题款
     radius: 0,
     border: '1px solid rgba(43,41,38,.3)',   // 细框、月洞门的圈
     shadow: null,
@@ -31,67 +31,69 @@ module.exports = (L) => {
   // 宣纸：细颗粒 + 几处极淡的明暗
   const PAPER = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .33 0 0 0 0 .28 0 0 0 0 .2 .26 0 0 0 -.085'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E"),radial-gradient(90% 50% at 15% 8%,rgba(255,255,255,.45),transparent 70%),radial-gradient(70% 40% at 95% 70%,rgba(160,140,100,.07),transparent 70%)`;
   const LN = 'rgba(43,41,38,.14)', FR = 'rgba(43,41,38,.3)';
-  // 记号色：印章、标签栏小点、选中的单选圈都走它。项目 CSS 写 .p{--v03-mark:#3D4F63} 一处全换
+  // 记号色：印章、字标里的印、选中的单选圈都走它。项目 CSS 写 .p{--v03-mark:#3D4F63} 一处全换
   const MARK = `var(--v03-mark,${C.zhu})`;
 
   const css = `
 .s03{background:${PAPER},${C.xuan};color:${C.mo};font-family:"Noto Serif SC",serif;font-size:15px;line-height:1.6}
-.s03 .mn-t{font-family:"Noto Serif SC";font-weight:600;letter-spacing:.12em}
+.s03 .mn-t{font-family:"Noto Serif SC";font-weight:600;letter-spacing:.04em}
 .s03 .mn-l{color:${C.mo}}
 .s03 .v-pad{padding-left:24px;padding-right:24px}
-/* 字：标题马善政楷书（可竖排），正文思源宋体，数字 Cormorant，按钮和字标霞鹜文楷 */
+/* 字：标题马善政楷书（可竖排），正文思源宋体，数字 Cormorant，按钮、字标、题款霞鹜文楷 */
+/* 字距只给 24px 以上的楷书大字（标题、题字、网页字标）；比它小的字一律 0 到 .04em，疏朗靠留白、行距和楷书的笔画 */
 .s03 .v-h1{font:400 40px/1.1 "Ma Shan Zheng";letter-spacing:.2em;color:${C.mo}}
 .s03 .v-h2{font:400 34px/1 "Ma Shan Zheng";letter-spacing:.24em;color:${C.mo}}
-.s03 .v-h3{font:600 17px/1.4 "Noto Serif SC";letter-spacing:.08em}
-.s03 .v-tx{font:400 15px/1.8 "Noto Serif SC";letter-spacing:.06em}
-.s03 .v-mut{font:400 13px/1.5 "Noto Serif SC";letter-spacing:.2em;color:${C.dan}}
-/* 居中：大字距的字末尾多一格字距，左边补同样的内边距，字才正 */
+.s03 .v-h3{font:600 17px/1.4 "Noto Serif SC";letter-spacing:.04em}
+.s03 .v-tx{font:400 15px/1.9 "Noto Serif SC";letter-spacing:.02em}
+.s03 .v-mut{font:400 14px/1.6 "Noto Serif SC";letter-spacing:.02em;color:${C.dan}}
+/* 居中：大字距的标题末尾多一格字距，左边补同样的内边距，字才正 */
 .s03 .v-ctr{text-align:center}
-.s03 .v-ctr .v-h1,.s03 .v-ctr .v-mut{padding-left:.2em}
+.s03 .v-ctr .v-h1{padding-left:.2em}
 .s03 .v-ctr .v-h2{padding-left:.24em}
-.s03 .v-ctr .v-lb{padding-left:.3em}
-.s03 .v-lb{font:400 13px/1 "Noto Serif SC";letter-spacing:.3em;color:${C.dan}}
-.s03 .v-num{font-family:"Cormorant Garamond";font-weight:500;letter-spacing:.01em;font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
+.s03 .v-num{font-family:"Cormorant Garamond";font-weight:500;letter-spacing:.01em;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1,"tnum" 1}
 .s03 .v-big{font:500 64px/1 "Cormorant Garamond";letter-spacing:.02em;font-feature-settings:"lnum" 1}
 .s03 .v-price{display:inline-block;font:500 32px/1 "Cormorant Garamond";font-feature-settings:"lnum" 1;color:${C.mo}}
 .s03 .v-price::first-letter{font-size:20px;margin-right:2px}
-.s03 .v-price small{font:400 13px/1 "Noto Serif SC";letter-spacing:.2em;color:${C.dan};margin-left:4px}
-/* 竖排：大标题（题字）和题款 */
+.s03 .v-price small{font:400 15px/1 "Noto Serif SC";color:${C.dan};margin-left:4px}
+/* 数字的说明词：放在数字下面，和数字左对齐（「3071」下面「到店码」） */
+.s03 .v-cap{display:block;margin-top:8px;font:400 14px/1.2 "Noto Serif SC";letter-spacing:.02em;color:${C.dan}}
+/* 竖排：大标题（题字）和题款。题款是一列霞鹜文楷，淡墨，不拉字距：像画上题字边的落款 */
 .s03 .v-vt{writing-mode:vertical-rl;text-orientation:upright;font:400 60px/1 "Ma Shan Zheng";letter-spacing:.04em;color:${C.mo};white-space:nowrap}
-.s03 .v-ins{writing-mode:vertical-rl;text-orientation:upright;font:400 13px/1 "Noto Serif SC";letter-spacing:.5em;color:${C.dan};white-space:nowrap}
-/* 按钮：浓墨直角块，霞鹜文楷，字距拉开；ghost 是 1px 浓墨细框 */
-.s03 .v-btn{height:48px;min-width:164px;padding:0 24px 0 calc(24px + .4em);display:inline-flex;align-items:center;justify-content:center;gap:10px;background:${C.mo};color:${C.xuan};font:500 17px/1 "LXGW WenKai";letter-spacing:.4em;white-space:nowrap}
+.s03 .v-ins{writing-mode:vertical-rl;text-orientation:upright;font:400 18px/1 "LXGW WenKai";letter-spacing:.02em;color:${C.dan};white-space:nowrap}
+/* 按钮：浓墨直角块，霞鹜文楷，不拉字距；里面一道宣纸色细线，和月洞门、笺一样是双线。ghost 是浓墨细框 + 里面一道淡线 */
+.s03 .v-btn{height:48px;min-width:164px;padding:0 30px;display:inline-flex;align-items:center;justify-content:center;gap:10px;background:${C.mo};color:${C.xuan};font:500 18px/1 "LXGW WenKai";letter-spacing:.04em;white-space:nowrap;box-shadow:inset 0 0 0 3px ${C.mo},inset 0 0 0 4px rgba(242,238,227,.4)}
 .s03 .v-btn.wide{display:flex;width:100%}
-.s03 .v-btn.ghost{background:transparent;color:${C.mo};border:1px solid ${C.mo}}
-.s03 .v-btn.lg{height:56px;font-size:20px}
+.s03 .v-btn.ghost{background:transparent;color:${C.mo};border:1px solid ${C.mo};box-shadow:inset 0 0 0 2px transparent,inset 0 0 0 3px rgba(43,41,38,.22)}
+.s03 .v-btn.lg{height:56px;font-size:21px}
 /* 卡片：没有底色和阴影，只有一道细框，照片在框里缩进 8px */
 .s03 .v-card{position:relative;border:1px solid ${FR};padding:8px}
 .s03 .v-card>.ph{height:180px}
 .s03 .v-card .bd{padding:14px 8px 6px}
 /* 列表：行之间一道极淡的细线，首尾封口 */
 .s03 .v-list{border-bottom:1px solid ${LN}}
-.s03 .v-row{display:flex;align-items:center;justify-content:space-between;min-height:54px;border-top:1px solid ${LN};font:400 15px/1.4 "Noto Serif SC";letter-spacing:.06em}
-.s03 .v-row>i{font-style:normal;width:76px;flex:none;font-size:13px;color:${C.dan};letter-spacing:.3em}
-.s03 .v-row.kv{justify-content:flex-start;min-height:48px}
+.s03 .v-row{display:flex;align-items:center;justify-content:space-between;min-height:54px;border-top:1px solid ${LN};font:400 15px/1.4 "Noto Serif SC";letter-spacing:.02em}
+/* 参数行的字段名：和内容同字号，只换淡墨 */
+.s03 .v-row>i{font-style:normal;width:72px;flex:none;color:${C.dan}}
+.s03 .v-row.kv{justify-content:flex-start;min-height:52px}
 /* 约满：时间变淡，「已约满」保持淡墨原色，缩小了也读得出 */
 .s03 .v-row.off .v-num{opacity:.42}
-.s03 .v-row em{font-style:normal;font-size:14px;color:${C.dan};letter-spacing:.12em}
+.s03 .v-row em{font-style:normal;font-size:15px;color:${C.dan}}
 .s03 .v-row.on em{color:${C.mo}}
 .s03 .v-row .v-num{font-size:21px}
 /* 单选圈：选中涂记号色（同时字色变深，不只靠颜色） */
 .s03 .v-ck{display:inline-block;width:18px;height:18px;border-radius:50%;border:1px solid ${FR};margin-left:14px;vertical-align:-4px}
 .s03 .on>em>.v-ck,.s03 .v-ck.on{background:${MARK};border-color:${MARK}}
-/* 日期：周几一行小字，日期 Cormorant，选中是浓墨圆 */
+/* 日期：周几一行，日期 Cormorant，选中是浓墨圆 */
 .s03 .v-days{display:flex;justify-content:space-between}
 .s03 .v-day{width:40px;text-align:center;color:${C.dan}}
-.s03 .v-day i{display:block;font-style:normal;font-size:12px;line-height:1.4}
+.s03 .v-day i{display:block;font-style:normal;font-size:13px;line-height:1.4}
 .s03 .v-day b{display:block;margin:8px auto 0;width:40px;height:40px;border-radius:50%;font:500 21px/40px "Cormorant Garamond";font-feature-settings:"lnum" 1;color:${C.mo}}
 .s03 .v-day.on b{background:${C.mo};color:${C.xuan}}
 /* 筛选：细框直角，选中浓墨底 */
 .s03 .v-chips{display:flex;gap:10px;flex-wrap:wrap}
-.s03 .v-chip{height:34px;padding:0 12px 0 calc(12px + .2em);display:inline-flex;align-items:center;border:1px solid ${FR};font:400 14px/1 "Noto Serif SC";letter-spacing:.2em;color:${C.mo}}
+.s03 .v-chip{height:36px;padding:0 16px;display:inline-flex;align-items:center;border:1px solid ${FR};font:400 15px/1 "Noto Serif SC";letter-spacing:.02em;color:${C.mo}}
 .s03 .v-chip.on{background:${C.mo};border-color:${C.mo};color:${C.xuan}}
-.s03 .v-inp{height:48px;display:flex;align-items:center;gap:10px;border-bottom:1px solid ${FR};font:400 15px/1 "Noto Serif SC";letter-spacing:.06em;color:${C.dan}}
+.s03 .v-inp{height:48px;display:flex;align-items:center;gap:10px;border-bottom:1px solid ${FR};font:400 15px/1 "Noto Serif SC";letter-spacing:.02em;color:${C.dan}}
 /* 照片 */
 .s03 .ph{background-size:cover;background-position:center;filter:${T.photo}}
 /* 印章 */
@@ -105,32 +107,31 @@ module.exports = (L) => {
 .s03 .v-frame>.ph{width:100%;height:100%}
 /* 远山：水墨雾山叠在纸上，上下渐隐 */
 .s03 .v-hills{position:absolute;left:0;right:0;background-size:cover;filter:grayscale(1) sepia(.45) hue-rotate(108deg) saturate(.9) contrast(1.1) brightness(1.06);mix-blend-mode:multiply;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 38%,#000 62%,transparent 100%);pointer-events:none}
-/* 笺：竖排信笺，细双框 + 乌丝栏，第一列在最右 */
+/* 笺：竖排信笺，细双框 + 乌丝栏，第一列在最右。正文一列一句话，像写信，不拉字距 */
 .s03 .v-jian{position:relative;display:flex;flex-direction:row-reverse;border:1px solid rgba(43,41,38,.42);outline:1px solid rgba(43,41,38,.16);outline-offset:4px;background:rgba(255,253,247,.4)}
-.s03 .v-jian>div{writing-mode:vertical-rl;text-orientation:upright;padding:28px 0 0;border-left:1px solid ${LN};font:400 20px/1 "Noto Serif SC";letter-spacing:.24em;color:${C.mo};display:flex;align-items:center;white-space:nowrap}
+.s03 .v-jian>div{writing-mode:vertical-rl;text-orientation:upright;padding:32px 0 0;border-left:1px solid ${LN};font:400 22px/1 "Noto Serif SC";letter-spacing:.04em;color:${C.mo};display:flex;align-items:center;gap:12px;white-space:nowrap}
 .s03 .v-jian>div:last-child{border-left:none}
-.s03 .v-jian>div i{flex:none;height:68px;font-style:normal;font-size:12px;letter-spacing:.3em;color:${C.dan}}
+.s03 .v-jian>div i{flex:none;font-style:normal;color:${C.dan}}
 .s03 .v-jian>div.t{font:400 46px/1 "Ma Shan Zheng";letter-spacing:.12em;padding-top:32px}
-/* 底部操作条（价格 + 按钮） */
+/* 底部操作条（价格或号码 + 按钮） */
 .s03 .v-bar{position:absolute;left:24px;right:24px;bottom:40px;display:flex;align-items:center;justify-content:space-between;z-index:6}
-.s03 .v-bar>div>small{font-size:13px;color:${C.dan};letter-spacing:.2em;margin-right:10px}
 /* 顶栏、标签栏、字标 */
 .s03 .v-nav{position:relative;height:44px;margin:0 12px;display:flex;align-items:center;justify-content:space-between;z-index:5}
-.s03 .v-nav .t{position:absolute;left:50%;transform:translateX(-50%);font:600 17px/1 "Noto Serif SC";letter-spacing:.12em;white-space:nowrap}
-.s03 .v-wm{font:500 20px/1 "LXGW WenKai";letter-spacing:.32em;padding-left:12px;color:${C.mo};white-space:nowrap}
-.s03 .v-logo{display:flex;align-items:center;gap:22px}
-.s03 .v-logo b{font:500 34px/1 "LXGW WenKai";letter-spacing:.3em;white-space:nowrap}
-.s03 .v-logo em{font:500 13px/1 "Cormorant Garamond";font-style:normal;letter-spacing:.3em;color:${C.dan};text-transform:uppercase}
-.s03 .v-tabs{position:absolute;left:0;right:0;bottom:30px;height:48px;display:flex;justify-content:space-around;align-items:center;font:400 14px/1 "Noto Serif SC";letter-spacing:.2em;color:${C.dan};z-index:6}
-.s03 .v-tabs span{position:relative;padding-left:.2em}
+.s03 .v-nav .t{position:absolute;left:50%;transform:translateX(-50%);font:600 17px/1 "Noto Serif SC";letter-spacing:.04em;white-space:nowrap}
+.s03 .v-wm{font:500 22px/1 "LXGW WenKai";letter-spacing:.04em;padding-left:12px;color:${C.mo};white-space:nowrap}
+.s03 .v-logo{display:flex;align-items:center;gap:20px}
+.s03 .v-logo b{font:500 34px/1 "LXGW WenKai";letter-spacing:.24em;white-space:nowrap}
+.s03 .v-logo b.sm{letter-spacing:.04em}
+.s03 .v-logo em{font:italic 500 20px/1 "Cormorant Garamond";letter-spacing:.02em;color:${C.dan};white-space:nowrap}
+/* 标签栏：只有字，当前项浓墨加粗，别的淡墨；不画点、不画线 */
+.s03 .v-tabs{position:absolute;left:0;right:0;bottom:30px;height:48px;display:flex;justify-content:space-around;align-items:center;font:400 15px/1 "Noto Serif SC";letter-spacing:.04em;color:${C.dan};z-index:6}
 .s03 .v-tabs .on{color:${C.mo};font-weight:600}
-.s03 .v-tabs .on:after{content:"";position:absolute;left:50%;top:-10px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:${MARK}}
 /* 网页 */
 .s03.web{background:${PAPER},${C.xuan}}
 .s03 .v-wnav{position:absolute;left:80px;right:80px;top:40px;display:flex;align-items:center;z-index:5}
-.s03 .v-wnav nav{margin-left:auto;display:flex;gap:56px;font:400 24px/1 "Noto Serif SC";letter-spacing:.3em}
-.s03 .v-wnav .v-btn{margin-left:64px;height:56px;font:400 24px/1 "Noto Serif SC";letter-spacing:.3em;padding:0 28px 0 35px;min-width:0}
-.s03.web .v-ins{font-size:20px}
+.s03 .v-wnav nav{margin-left:auto;display:flex;gap:56px;font:400 22px/1 "Noto Serif SC";letter-spacing:.04em}
+.s03 .v-wnav .v-btn{margin-left:64px;height:52px;font-size:22px;padding:0 32px;min-width:0}
+.s03.web .v-ins{font-size:24px}
 `;
 
   // ── 印章：竖长方白文印，字撑满印面，边缘和印面有钤印的毛口 ──
@@ -202,7 +203,7 @@ module.exports = (L) => {
   const hills = ({ top = 380, h = 440, op = 0.34, pos = 'center 72%', src = img('mist-mountains-blue') } = {}) =>
     `<div class="v-hills" style="top:${top}px;height:${h}px;opacity:${op};background-image:url(${src});background-position:${pos}"></div>`;
 
-  // ── 一枝桂花（墨色没骨）：sprig(214, { flowers: true, at: 'left:0;top:594px' }) ──
+  // ── 一枝桂花（墨色没骨）：sprig(214, { flowers: true, at: 'left:0;top:594px' })；金色小圆瓣是叶腋里簇生的桂花，不是撒的点 ──
   function rnd(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
   function stroke(pts, w0, w1) {
     const n = pts.length, Lp = [], Rp = [];
@@ -286,36 +287,37 @@ module.exports = (L) => {
   const back = icon('chevron-left', 24, 1.4);
   const ui = {
     seal, moonGate, fan, frame, hills, sprig, lattice,
-    // 字标：印章 + 霞鹜文楷大字距（网页顶栏 34px，App 里传 size: 22）；en 可选（Cormorant 大写）；mark 是印章里的字，默认取品牌名前两个字；color 是印章颜色，默认跟记号色；seal: false 只要字
+    // 字标：印章 + 霞鹜文楷（网页顶栏 34px 拉开字距；App 里传 size: 22，24px 以下自动不拉字距）
+    // en 可选：品牌本来就有英文名才传，Cormorant 斜体 20px，不大写不拉字距；mark 是印章里的字，默认取品牌名前两个字；color 是印章颜色，默认跟记号色；seal: false 只要字
     logo: (name, en = '', { mark = [...name].slice(0, 2).join(''), seal: withSeal = true, w = 34, size = 34, color } = {}) =>
-      `<div class="v-logo">${withSeal ? seal(mark, { w, color }) : ''}<b style="font-size:${size}px">${name}</b>${en ? `<em>${en}</em>` : ''}</div>`,
+      `<div class="v-logo">${withSeal ? seal(mark, { w, color }) : ''}<b class="${size < 24 ? 'sm' : ''}" style="font-size:${size}px">${name}</b>${en ? `<em>${en}</em>` : ''}</div>`,
     // wm(name)：小程序左上角的字标（只有字，放进 miniNav 的 left）
     wm: (name) => `<span class="v-wm">${name}</span>`,
     // back(attrs)：返回箭头（细线 chevron，放进 miniNav 的 left）
     back: (attrs = 'data-back') => `<span ${attrs} style="display:flex">${back}</span>`,
     // App 顶栏：细线返回 + 居中宋体标题；小程序用 L.miniNav
     nav: ({ title = '', back: b = true, right = '', left = '' } = {}) => `<div class="v-nav">${left || (b ? `<span data-back style="display:flex">${back}</span>` : '<span></span>')}${title ? `<div class="t">${title}</div>` : ''}${right || '<span></span>'}</div>`,
-    // 底部标签栏：只有字（这个风格不画图标，items 里的图标名忽略），当前格字变浓墨加粗，头上一个朱砂小点
+    // 底部标签栏：只有字（这个风格不画图标，items 里的图标名忽略），当前格字变浓墨加粗，别的淡墨
     tabs: (items, cur = 0, go = []) => `<div class="v-tabs">${items.map(([, t], i) => `<span class="${i === cur ? 'on' : ''}" ${go[i] ? `data-go="${go[i]}"` : ''}>${t}</span>`).join('')}</div>`,
     // 主按钮：浓墨直角块；ic 默认不要图标
     btn: (text, { ic = '', cls = '', attrs = '' } = {}) => `<div class="v-btn ${cls}" ${attrs}>${text}${ic ? icon(ic, 18, 1.4) : ''}</div>`,
     // 竖排题字：vt('桂花乌龙', { size: 60, at: 'left:292px;top:426px' })
     vt: (text, { size = 60, at = '' } = {}) => `<div class="v-vt" style="font-size:${size}px;${at ? 'position:absolute;' + at : ''}">${text}</div>`,
-    // 竖排题款（节气、日期）：ins('丙午霜降', { at: 'left:266px;top:432px' })
-    ins: (text, { size = 13, at = '' } = {}) => `<div class="v-ins" style="font-size:${size}px;${at ? 'position:absolute;' + at : ''}">${text}</div>`,
+    // 竖排题款：ins('十一月七日起', { at: 'left:266px;top:432px' })，紧挨题字左边一列，写日期、节气这类真信息，不写「今日推荐」
+    ins: (text, { size = 18, at = '' } = {}) => `<div class="v-ins" style="font-size:${size}px;${at ? 'position:absolute;' + at : ''}">${text}</div>`,
     // 日期一行：days([['六', 7], ['日', 8], …], 0)
     days: (list, cur = 0) => `<div class="v-days">${list.map(([w, d], i) => `<div class="v-day ${i === cur ? 'on' : ''}"><i>${w}</i><b>${d}</b></div>`).join('')}</div>`,
-    // 时段一行：slot('14:00 — 16:00', '余一席', 'on' | 'off' | '')；放进 .v-list
+    // 时段一行：slot('14:00–16:00', '余一席', 'on')；state 写 'on'（选中）、'off'（约满）或不写；放进 .v-list
     slot: (time, note, state = '', attrs = '') => `<div class="v-row ${state}" ${attrs}><span class="v-num">${time}</span><em>${note}<i class="v-ck" ${state === 'off' ? 'style="opacity:0"' : ''}></i></em></div>`,
-    // 参数一行：kv('产地', '福建 · 安溪')；放进 .v-list
+    // 参数一行：kv('产地', '福建安溪')，字段名和内容同字号，字段名淡墨；放进 .v-list
     kv: (k, v) => `<div class="v-row kv"><i>${k}</i>${v}</div>`,
-    // 笺：竖排信笺，第一列在最右。cols = ['温阳灸', ['日期', '十一月七日'], …]；字符串列用题字大字，[标签, 内容] 列用宋体
-    // jian(cols, { cw: 56, h: 380, fs: 20, ts: 46, seal: seal('和缓', { w: 34 }), at })；cw 列宽，fs 正文字号，ts 题字字号；印章压在左下角
-    // 高度按最长一列定，留一点底（字占八成），整块放在留白中间，不要拉满一屏
-    jian: (cols, { cw = 56, h = 380, fs = 20, ts = 46, seal: sl = '', at = '' } = {}) => `<div class="v-jian" style="height:${h}px;${at ? 'position:absolute;' + at : 'margin:0 auto;width:max-content'}">${cols.map((c) => (Array.isArray(c)
-      ? `<div style="width:${cw}px;font-size:${fs}px"><i>${c[0]}</i>${c[1]}</div>`
-      : `<div class="t" style="width:${Math.round(cw * 1.3)}px;font-size:${ts}px">${c}</div>`)).join('')}${sl ? `<span style="position:absolute;left:14px;bottom:16px">${sl}</span>` : ''}</div>`,
-    // 网页顶栏：webNav(ui.logo('一盏'), ['茶席', '茶品'], '预约')
+    // 笺：jian(title, lines, { cw: 56, h: 360, fs: 22, ts: 46, seal: seal('和缓', { w: 34 }), at })，竖排信笺，题字一列在最右
+    // lines 一项一列：写成一句话（'午后两点至三点半'）；真要字段名就写 ['调理师', '陈素云']，字段名和内容同字号、淡墨
+    // cw 列宽，fs 正文字号，ts 题字字号；印章压在左下角。高度按最长一列定，留一点底，整块放在留白中间，不要拉满一屏
+    jian: (title, lines = [], { cw = 56, h = 360, fs = 22, ts = 46, seal: sl = '', at = '' } = {}) => `<div class="v-jian" style="height:${h}px;${at ? 'position:absolute;' + at : 'margin:0 auto;width:max-content'}">${title ? `<div class="t" style="width:${Math.round(cw * 1.3)}px;font-size:${ts}px">${title}</div>` : ''}${lines.map((c) => (Array.isArray(c)
+      ? `<div style="width:${cw}px;font-size:${fs}px"><i>${c[0]}</i><span>${c[1]}</span></div>`
+      : `<div style="width:${cw}px;font-size:${fs}px">${c}</div>`)).join('')}${sl ? `<span style="position:absolute;left:14px;bottom:16px">${sl}</span>` : ''}</div>`,
+    // 网页顶栏：webNav(ui.logo('一盏'), ['茶席', '茶品'], '预约', 'data-go="book"')，右边是细框按钮
     webNav: (logo, links = [], cta = '', ctaAttrs = '') => `<div class="v-wnav">${logo}<nav>${links.map((t) => `<span>${t}</span>`).join('')}</nav>${cta ? `<div class="v-btn ghost" ${ctaAttrs}>${cta}</div>` : ''}</div>`,
   };
   return { key: 's03-oriental', no: 3, name: '新中式', root: 's03', T, css, ui, stage: C.qing, dark: false };

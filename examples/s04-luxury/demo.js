@@ -1,4 +1,5 @@
-// 辰璧 CHENBI 高级珠宝腕表（新品、预约到店，App）—— 起手包 s04-luxury 试跑
+// 辰璧 高级珠宝腕表（新品、预约到店，App），起手包 s04-luxury 试跑
+// 品牌只有中文名：字标、表盘都写「辰璧」，不另编拼音英文名；西文的发丝笔画落在 Bodoni 大日期、价格和表径上
 module.exports = ({ img, statusBar, homeBar, style }) => {
   const S = style('s04-luxury');
   const { ui } = S;
@@ -55,9 +56,9 @@ ${dark ? `<g stroke="#fff" stroke-opacity=".035" stroke-width=".5">${rays}</g>` 
 <circle cx="${cx}" cy="${cy}" r="150" fill="none" stroke="${c.line}" stroke-width="1"/><circle cx="${cx}" cy="${cy}" r="140" fill="none" stroke="${c.line}" stroke-width="1"/>
 <g stroke="${c.line}" stroke-width="1.2">${ticks}</g>
 <g fill="${c.bat}">${bat}</g>
-<text x="${cx + 3}" y="${cy - 66}" text-anchor="middle" font-family="Bodoni Moda" font-size="${dark ? 15 : 22}" letter-spacing="${dark ? 4 : 6}" fill="${c.text}">CHENBI</text>
+<text x="${cx + (dark ? 3 : 4)}" y="${cy - 62}" text-anchor="middle" font-family="Noto Serif SC" font-weight="300" font-size="${dark ? 17 : 24}" letter-spacing="${dark ? 5 : 7}" fill="${c.text}">辰璧</text>
 <path d="M327 ${cy + 92} A48 48 0 0 1 423 ${cy + 92} Z" fill="url(#${u('sky')})"/>
-<g clip-path="url(#${u('win')})"><circle cx="${cx - 8}" cy="${cy + 66}" r="17" fill="url(#${u('mo')})"/><circle cx="${cx + 30}" cy="${cy + 60}" r="1.6" fill="#E8E4DA"/><circle cx="${cx + 14}" cy="${cy + 52}" r="1.2" fill="#E8E4DA"/><circle cx="${cx - 30}" cy="${cy + 62}" r="1.3" fill="#E8E4DA"/></g>
+<g clip-path="url(#${u('win')})"><circle cx="${cx - 8}" cy="${cy + 66}" r="17" fill="url(#${u('mo')})"/></g>
 <g clip-path="url(#${u('win')})"><circle cx="350" cy="${cy + 92}" r="23" fill="${c.hump}"/><circle cx="400" cy="${cy + 92}" r="23" fill="${c.hump}"/><path d="M327 ${cy + 92} A23 23 0 0 1 373 ${cy + 92} M377 ${cy + 92} A23 23 0 0 1 423 ${cy + 92}" fill="none" stroke="${c.arc}" stroke-width="1"/></g>
 <path d="M327 ${cy + 92} A48 48 0 0 1 423 ${cy + 92}" fill="none" stroke="${c.arc}" stroke-width="1"/>
 <g filter="url(#${u('hs')})" opacity=".22" transform="translate(4 7)">${hand(98, 9, 22, 304.5).replace(/fill="#[0-9A-Fa-f]+"/g, 'fill="#000"')}${hand(146, 7.5, 26, 54).replace(/fill="#[0-9A-Fa-f]+"/g, 'fill="#000"')}</g>
@@ -70,39 +71,38 @@ ${dark ? `<circle cx="${cx}" cy="${cy}" r="${R + 1}" fill="url(#${u('lit')})"/>`
 
   const css = '';
 
-  // 首页：新品系列的大片，一屏只讲望舒系列。墨黑表盘的微距，表壳从左边出血，下半截沉进黑里
+  // 首页：望舒系列三件作品的整屏大片，上下翻看；这一张是月相腕表墨黑表盘的微距，表壳从左边出血，下半截沉进黑里
   const home = `<div class="scr s04 p home">${ui.full(watch({ id: 'h', dark: true, w: 375, h: 812, box: '295.7 102.3 323.3 700', css: 'display:block' }), { veil: '#0D0C0B 0%,#0D0C0B 9%,rgba(13,12,11,.6) 13%,rgba(13,12,11,0) 19%,rgba(13,12,11,0) 57%,rgba(13,12,11,.74) 64%,rgba(13,12,11,.96) 68.5%,#0D0C0B 76%' })}${statusBar(true)}
-${ui.nav({ left: ui.glyph('menu'), title: ui.logo('辰璧', 'CHENBI') })}
-${ui.pager(1, 4, { top: 150 })}
-<div class="v-abs" style="top:560px">${ui.title('望舒系列', 'The Wangshu Collection')}</div>
+${ui.nav({ left: ui.glyph('menu'), title: ui.logo('辰璧'), right: ui.ic('search', 20) })}
+${ui.slides(1, 3, { top: 452 })}
+<div class="v-abs" style="top:594px">${ui.title('望舒系列')}</div>
 <div class="v-abs" style="top:670px">${ui.hair(44)}</div>
-<div class="v-abs" style="top:706px">${ui.btn('探索系列', { cls: 'wide', attrs: 'data-go="det"' })}</div>
+<div class="v-abs" style="top:706px">${ui.btn('查看系列', { cls: 'wide', attrs: 'data-go="det"' })}</div>
 ${homeBar(true)}</div>`;
 
-  // 单品：望舒月相腕表，浅灰底板上一只表
+  // 单品：望舒月相，浅灰底板上一只乳白表盘的表
   const det = `<div class="scr s04 v-iv p det">${statusBar(false)}
-${ui.nav({ title: ui.logo('辰璧', 'CHENBI', { size: 'sm' }), right: '02 / 04' })}
+${ui.nav({ title: ui.logo('辰璧', '', { size: 'sm' }) })}
 ${ui.plate(watch(), 'position:absolute;left:0;right:0;top:110px;height:420px')}
-<div class="v-abs" style="top:560px">${ui.title('望舒月相', 'Wangshu Moonphase')}</div>
-<div class="v-abs" style="top:654px">${ui.specs(['<span class="v-num">38 mm</span>', '18K 白金', ui.price('268,000')])}</div>
+<div class="v-abs" style="top:574px">${ui.title('望舒月相')}</div>
+<div class="v-abs" style="top:648px">${ui.specs(`18K 白金，表径 ${ui.num('38 mm')}`, ui.price('268,000'))}</div>
 <div class="v-abs" style="top:698px">${ui.btn('预约到店鉴赏', { cls: 'wide', attrs: 'data-go="ok"' })}</div>
 ${homeBar(false)}</div>`;
 
-  // 预约确认：只有日期、时间和三行信息
+  // 预约确认：标题和一根金线，两行大日期，三行信息
   const ok = `<div class="scr s04 p ok">${statusBar(true)}
-${ui.nav({ left: `<span data-go="home">${ui.glyph('close')}</span>`, title: ui.logo('辰璧', 'CHENBI', { size: 'sm' }) })}
-<div class="v-abs" style="top:170px">${ui.label('预约已确认')}</div>
-<div class="v-abs" style="top:204px">${ui.hair()}</div>
-<div class="v-abs" style="top:262px">${ui.big('11.08', '周日', '到店')}${ui.big('14:30', '金宝街', '精品店')}</div>
-<div class="v-abs" style="top:530px">${ui.rows([['鉴赏', '望舒月相 · 白金'], ['顾问', '沈清'], ['确认号', 'CB 2611 0814', true]])}</div>
+${ui.nav({ left: `<span data-go="home">${ui.glyph('close')}</span>`, title: ui.logo('辰璧', '', { size: 'sm' }) })}
+<div class="v-abs" style="top:156px"><div class="v-h2">预约已确认</div></div>
+<div class="v-abs" style="top:214px">${ui.hair()}</div>
+<div class="v-abs" style="top:268px">${ui.big('11.15', '周日', '到店')}${ui.big('14:30', '金宝街', '精品店')}</div>
+<div class="v-abs" style="top:512px">${ui.rows([['鉴赏', '望舒月相'], ['顾问', '沈清'], ['确认号', 'CB 2611 1507', true]])}</div>
 <div class="v-abs" style="top:712px">${ui.btn('加入日历', { cls: 'wide' })}</div>
 ${homeBar(true)}</div>`;
 
   // 官网：望舒是月神，首屏一轮黑白的月，正中一个大字标
   const web = `<div class="web s04 p" style="height:800px">${ui.full(img('moon-pink-clouds'), { pos: '50% 30%', veil: 'web', filter: 'grayscale(1) sepia(.07) contrast(1.3) brightness(1.4)' })}
-${ui.webNav('', ['高级珠宝', '腕表', '精品店'], '中 / EN', '预约到店', 'data-go="ok"')}
-${ui.logo('辰璧', 'CHENBI', { size: 'xl' })}
-${ui.pager(1, 4, { dir: 'h' })}
+${ui.webNav('', ['高级珠宝', '腕表', '精品店'], 'English', '预约到店', 'data-go="ok"')}
+${ui.logo('辰璧', '', { size: 'xl' })}
 ${ui.cue()}
 </div>`;
 
@@ -115,6 +115,6 @@ ${ui.cue()}
     start: 'home',
     url: 'chenbi.com',
     boardTitle: '',
-    boardDeco: ui.stage('辰璧', 'CHENBI'),
+    boardDeco: ui.stage('辰璧'),
   };
 };

@@ -1,7 +1,8 @@
-// 14 液态玻璃 Liquid Glass —— 起手包
-// 色值、字体、折射、亮边、阴影都照图册模块 catalog/pages/s14-glass.js（漫游）原样取
+// 14 液态玻璃 Liquid Glass，起手包
+// 色值、字体、折射、亮边、阴影都照图册模块 catalog/pages/s14-glass.js（漫游）原样取；图册里的中间点、宽字距大写字标、大标题上面的小字不取
 // 用法：const S = style('s14-glass'); 屏幕根元素 <div class="scr s14">，第一个子元素放 ui.bg(照片或颜色)，最后放 ui.defs()（折射滤镜）；底图对比强时根元素再加 v-calm
 // 玻璃靠 backdrop-filter 透出底下的照片：玻璃的祖先不能加 opacity、filter、mask、mix-blend-mode，加了就透不出来
+// 层级只靠字号和字重拉开：极细大字（100）压在照片静处，下面一行细体真实信息（300），数字一律 Outfit 加 tabular-nums；不靠加字距的小字、大写英文和中间点
 module.exports = (L) => {
   const { icon } = L;
   const T = {
@@ -50,17 +51,17 @@ ${calm(GLASS.filter((c) => c !== 'v-list').map((c) => (c === 'v-g' ? 'v-g:not(.t
 .s14 .v-ts{text-shadow:0 1px 16px rgba(0,18,26,.32)}
 .s14 .v-cir{display:grid;place-items:center}
 .s14 .v-grp{display:flex;align-items:center;justify-content:center;gap:18px}
-/* 字：标题苹方极细，越大越细；数字 Outfit 细体；次要信息不换色，只降不透明度 */
+/* 字：标题苹方极细，越大越细；数字 Outfit 细体、等高对齐；次要信息不换色，只降不透明度；字距一律 0 到 .04em，大字收紧 */
 .s14 .v-h1{font:100 76px/1.02 ${FH};letter-spacing:-.02em;margin-left:-4px}
 .s14 .v-h2{font:100 42px/1.1 ${FH};letter-spacing:-.01em;margin-left:-2px}
 .s14 .v-h3{font:400 23px/1.2 ${FH};letter-spacing:-.01em}
 .s14 .v-tx{font:400 15px/1.5 ${FN}}
-.s14 .v-mut{font:400 14px/1.4 ${FN};opacity:.84}
-.s14 .v-k{font:500 15px/1.3 ${FN};opacity:.92}
-.s14 .v-lb{font:500 13px/1.3 ${FN};opacity:.8}
-.s14 .v-num{font-family:"Outfit",sans-serif;font-weight:300;letter-spacing:0}
-.s14 .v-big{font:300 44px/1 "Outfit",sans-serif;letter-spacing:-.01em}
-.s14 .v-price{font:300 44px/1 "Outfit",sans-serif;letter-spacing:-.01em}
+.s14 .v-mut{font:400 14px/1.4 ${FN};opacity:.84;font-variant-numeric:tabular-nums}
+/* 大字下面那一行真实信息（歌手、日期、地点）：细体 19px，比极细大字重一档、比正文轻一档；两样时拆成两段，中间 14px */
+.s14 .v-info{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 14px;font:300 19px/1.35 ${FN};font-variant-numeric:tabular-nums;margin-top:10px;opacity:.88}
+.s14 .v-num{font-family:"Outfit",sans-serif;font-weight:300;letter-spacing:0;font-variant-numeric:tabular-nums}
+.s14 .v-big{font:300 44px/1 "Outfit",sans-serif;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.s14 .v-price{font:300 44px/1 "Outfit",sans-serif;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
 .s14 .v-price small{font:400 15px/1 ${FN};margin-left:3px;opacity:.72}
 /* 按钮：主操作是白胶囊，一屏一颗；次按钮是玻璃。导航条和分段条的当前项也是白胶囊，不算在内 */
 .s14 .v-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:46px;padding:0 24px;border-radius:23px;background:rgba(255,255,255,.94);color:var(--on);font:600 16px/1 ${FN};text-shadow:none;white-space:nowrap;box-shadow:0 8px 20px -8px rgba(0,0,0,.35)}
@@ -77,7 +78,7 @@ ${calm(GLASS.filter((c) => c !== 'v-list').map((c) => (c === 'v-g' ? 'v-g:not(.t
 .s14 .v-row .n{font:500 16px/1.25 ${FN};white-space:nowrap}
 .s14 .v-row .m{font:400 13px/1.25 ${FN};opacity:.8;margin-top:3px;white-space:nowrap}
 .s14 .v-row .tx{flex:1;min-width:0}
-.s14 .v-row .e{display:flex;align-items:center;gap:10px;font:300 16px/1 "Outfit",sans-serif;opacity:.84}
+.s14 .v-row .e{display:flex;align-items:center;gap:10px;font:300 16px/1 "Outfit",sans-serif;font-variant-numeric:tabular-nums;opacity:.84}
 .s14 .v-row.on{margin:0 -12px;padding:0 12px;border-top:none;border-radius:24px}
 .s14 .v-row.on+.v-row{border-top:none}
 /* 分段胶囊：一条玻璃里，当前项展开成白胶囊，其余收成小圆 */
@@ -93,10 +94,11 @@ ${calm(GLASS.filter((c) => c !== 'v-list').map((c) => (c === 'v-g' ? 'v-g:not(.t
 /* 顶栏：圆形玻璃按钮浮在照片上，不要底色 */
 .s14 .v-nav{position:relative;z-index:5;height:48px;margin:8px 20px 0;display:flex;align-items:center;justify-content:space-between}
 .s14 .v-nav .t{position:absolute;left:50%;transform:translateX(-50%);font:600 17px/1 ${FN};white-space:nowrap;text-shadow:0 1px 14px rgba(0,0,0,.45)}
-/* 字标：苹方中粗宽字距 + 宽字距 Outfit 英文，没有底色 */
-.s14 .v-logo{height:46px;display:flex;align-items:center;gap:10px;text-shadow:0 1px 14px rgba(0,0,0,.45)}
-.s14 .v-logo b{font:500 22px/1 ${FH};letter-spacing:.12em;white-space:nowrap}
-.s14 .v-logo em{font:500 12px/1 "Outfit",sans-serif;font-style:normal;letter-spacing:.2em;opacity:.85}
+/* 字标：一圈玻璃亮边做记号（ui.mark）+ 苹方中粗品牌名，字距收在 .02em，没有底色；品牌本来有英文名时跟在后面，Outfit 细体 17px；全大写的英文名里五个字母以上的词改成首字母大写，四个字母以内的缩写照原样 */
+.s14 .v-logo{height:46px;display:flex;align-items:center;gap:9px;text-shadow:0 1px 14px rgba(0,0,0,.45)}
+.s14 .v-logo svg{filter:drop-shadow(0 1px 6px rgba(0,18,26,.35))}
+.s14 .v-logo b{font:500 22px/1 ${FH};letter-spacing:.02em;white-space:nowrap}
+.s14 .v-logo em{font:300 17px/1 "Outfit",sans-serif;font-style:normal;letter-spacing:0;margin-left:3px;opacity:.85;white-space:nowrap}
 /* 悬浮标签栏：玻璃胶囊，当前项展开成带字的亮胶囊，其余收成图标；右边单独一颗圆按钮 */
 .s14 .v-tabs{position:absolute;z-index:6;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 6px}
 .s14 .v-tabs .on{height:52px;border-radius:26px;display:flex;align-items:center;gap:7px;padding:0 18px 0 16px;font:600 15px/1 ${FN};white-space:nowrap;background:rgba(255,255,255,.26);box-shadow:inset 0 1px 1px rgba(255,255,255,.55)}
@@ -112,7 +114,7 @@ ${calm(GLASS.filter((c) => c !== 'v-list').map((c) => (c === 'v-g' ? 'v-g:not(.t
 .s14 .v-bar .ac{display:flex;align-items:center;gap:16px}
 .s14 .v-cover{flex:none;background-size:cover;background-position:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
 /* 进度：白色细条 + 白胶囊把手，两头 Outfit 时间 */
-.s14 .v-seek{display:flex;align-items:center;gap:12px;width:100%;font:400 13px/1 "Outfit",sans-serif}
+.s14 .v-seek{display:flex;align-items:center;gap:12px;width:100%;font:400 14px/1 "Outfit",sans-serif;font-variant-numeric:tabular-nums}
 .s14 .v-seek span{opacity:.86;min-width:34px}
 .s14 .v-seek span:last-child{text-align:right}
 .s14 .v-seek .tr{position:relative;flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.26)}
@@ -122,40 +124,44 @@ ${calm(GLASS.filter((c) => c !== 'v-list').map((c) => (c === 'v-g' ? 'v-g:not(.t
 .s14 .v-stack>div{font:400 19px/1.5 ${FH};opacity:.62}
 .s14 .v-stack>div+div{margin-top:12px}
 .s14 .v-stack>.on{font:200 44px/1.2 ${FH};letter-spacing:-.01em;opacity:1;margin:20px 0}
-/* 数字组（公里、时长）：Outfit 细体 34px + 小单位 + 13px 标签 */
+/* 数字组（公里、时长）：Outfit 细体 34px + 小单位，下面一个说明它是什么的词（14px，和正文一样不加字距） */
 .s14 .v-stats{display:flex;gap:30px}
-.s14 .v-stats b{display:block;font:300 34px/1 "Outfit",sans-serif;letter-spacing:-.01em}
+.s14 .v-stats b{display:block;font:300 34px/1 "Outfit",sans-serif;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
 .s14 .v-stats b small{font-size:15px;font-weight:400;margin-left:3px;opacity:.72}
-.s14 .v-stats span{display:block;font-size:13px;opacity:.72;margin-top:8px}
+.s14 .v-stats span{display:block;font-size:14px;opacity:.76;margin-top:8px}
 /* 起止对：两头大数字，中间一颗小玻璃（入住退房、出发到达） */
 .s14 .v-dts{display:flex;align-items:flex-end;justify-content:space-between}
-.s14 .v-dts b{display:block;font:300 44px/1 "Outfit",sans-serif;letter-spacing:-.01em}
-.s14 .v-dts span{display:block;font-size:13px;opacity:.78;margin-top:8px}
+.s14 .v-dts b{display:block;font:300 44px/1 "Outfit",sans-serif;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.s14 .v-dts span{display:block;font-size:14px;opacity:.78;margin-top:8px}
 .s14 .v-dts .nt{display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;margin-bottom:22px}
 .s14 .v-hr{height:1px;background:rgba(255,255,255,.22);margin:20px 0 16px}
+/* 确认号一行：左边字段名和正文一样大，只降不透明度；右边 Outfit 常规体等高数字，字距不拉 */
 .s14 .v-cf{display:flex;justify-content:space-between;align-items:baseline;font-size:15px}
 .s14 .v-cf span{opacity:.78}
-.s14 .v-cf b{font:400 19px/1 "Outfit",sans-serif;letter-spacing:.06em}
-/* 地图：白色序号钉，当前一站更大、带一圈透明白；地名白字深色描边 */
-.s14 .v-pin{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:15px;display:grid;place-items:center;font:600 15px/1 "Outfit",sans-serif;background:#fff;color:${T.accents.night};box-shadow:0 0 0 1px rgba(0,0,0,.25),0 6px 14px -4px rgba(0,0,0,.6)}
+.s14 .v-cf b{font:400 19px/1 "Outfit",sans-serif;letter-spacing:0;font-variant-numeric:tabular-nums}
+/* 地图：白色停靠顺序钉（路线上第几站），当前一站更大、带一圈透明白；地名白字深色描边 */
+.s14 .v-pin{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:15px;display:grid;place-items:center;font:600 15px/1 "Outfit",sans-serif;font-variant-numeric:tabular-nums;background:#fff;color:${T.accents.night};box-shadow:0 0 0 1px rgba(0,0,0,.25),0 6px 14px -4px rgba(0,0,0,.6)}
 .s14 .v-pin.now{width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:19px;font-size:16px;box-shadow:0 0 0 1px rgba(0,0,0,.2),0 0 0 12px rgba(255,255,255,.2),0 8px 18px -4px rgba(0,0,0,.6)}
 .s14 .v-ml{position:absolute;font-size:14px;font-weight:600;white-space:nowrap;color:#fff;text-shadow:0 0 3px rgba(4,14,14,.9),0 0 8px rgba(4,14,14,.7),0 1px 2px rgba(0,0,0,.6)}
 /* 网页：玻璃模糊减到 7px，内容收在中间一栏 */
 .s14.web .v-g,.s14.web .v-card,.s14.web .v-chips,.s14.web .v-tabs{--bl:7px}
 .s14.web .v-bg{filter:brightness(.86) saturate(1.04)}
-.s14 .v-wmk{font:500 26px/1 "Outfit",sans-serif;letter-spacing:.2em;white-space:nowrap}
-.s14 .v-wmk small{font:400 17px/1 ${FH};letter-spacing:.2em;margin-left:12px;opacity:.88}
+/* 网页字标：和 App 字标同一套，放大一档（记号 28px、品牌名 26px） */
+.s14 .v-wmk{display:flex;align-items:center;gap:11px}
+.s14 .v-wmk svg{filter:drop-shadow(0 1px 8px rgba(0,18,26,.4))}
+.s14 .v-wmk b{font:500 26px/1 ${FH};letter-spacing:.02em;white-space:nowrap}
+.s14 .v-wmk em{font:300 20px/1 "Outfit",sans-serif;font-style:normal;letter-spacing:0;margin-left:3px;opacity:.85;white-space:nowrap}
 .s14 .v-wnav{display:flex;align-items:center;gap:6px;padding:0 6px;font:500 16px/1 ${FN}}
 .s14 .v-wnav span{height:40px;padding:0 20px;border-radius:20px;display:flex;align-items:center;opacity:.9;white-space:nowrap}
 .s14 .v-wnav span.on{background:rgba(255,255,255,.94);color:var(--on);opacity:1;font-weight:600;text-shadow:none}
 .s14 .v-wh1{font:100 80px/1.05 ${FH};text-align:center;letter-spacing:-.01em;text-shadow:0 2px 28px rgba(4,8,22,.5)}
-.s14 .v-wsub{font:400 19px/1.3 ${FN};text-align:center;opacity:.94;margin-top:16px;text-shadow:0 1px 14px rgba(4,8,22,.6)}
+.s14 .v-wh1+.v-info{justify-content:center;font-size:21px;margin-top:16px;opacity:.94;text-shadow:0 1px 14px rgba(4,8,22,.6)}
 .s14 .v-panel{padding:24px 32px}
 .s14 .v-phd{display:flex;align-items:baseline;justify-content:space-between}
 .s14 .v-phd b{font:400 22px/1 ${FH}}
 .s14 .v-phd span{font:400 16px/1 ${FN};opacity:.92}
 .s14 .v-wrow{display:grid;grid-template-columns:84px 1fr auto;align-items:center;padding:14px 0;border-top:1px solid rgba(255,255,255,.18);font-size:17px}
-.s14 .v-wrow .tt{font:400 18px/1 "Outfit",sans-serif;opacity:.84}
+.s14 .v-wrow .tt{font:400 18px/1 "Outfit",sans-serif;font-variant-numeric:tabular-nums;opacity:.84}
 .s14 .v-wrow .n{font-weight:500}
 .s14 .v-wrow .m{font-size:15px;opacity:.8}
 .s14 .v-wrow.ex{border-top:none;padding:0 20px;margin:12px -20px 4px}
@@ -183,6 +189,11 @@ ${calm(GLASS.filter((c) => c !== 'v-list').map((c) => (c === 'v-g' ? 'v-g:not(.t
     top: 'linear-gradient(180deg,rgba(14,18,12,.5),rgba(14,18,12,.12) 22%,rgba(14,18,12,0) 40%,rgba(14,18,12,0) 80%,rgba(14,18,12,.28))',
     web: 'linear-gradient(180deg,rgba(8,14,30,.6) 0%,rgba(8,14,30,.42) 24%,rgba(8,14,30,.12) 40%,rgba(8,14,30,0) 50%)',
   };
+  // 字标里的英文：全大写的英文名里，五个字母以上的词改成首字母大写（MANYOU 写成 Manyou），四个字母以内的缩写照原样（BMW、NIO、IKEA）；只有品牌本来就有英文名才传
+  const enCase = (en) => (/^[A-Z][A-Z0-9 &'.-]*$/.test(en) ? en.replace(/[^\s-]+/g, (w) => (w.replace(/[^A-Z]/g, '').length > 4 ? w[0] + w.slice(1).toLowerCase() : w)) : en);
+  const enTag = (en) => (en ? `<em>${enCase(en)}</em>` : '');
+  // 字标记号：一圈玻璃亮边，左上和右下亮、中段淡，和玻璃件的 1.3px 亮环同一个画法；线宽不随大小变
+  const mark = ({ d = 24, inner = '', sw = 1.7 } = {}) => `<svg width="${d}" height="${d}" viewBox="0 0 24 24" fill="none" style="flex:none;overflow:visible"><defs><linearGradient id="m14rim" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff"/><stop offset=".42" stop-color="#fff" stop-opacity=".4"/><stop offset=".62" stop-color="#fff" stop-opacity=".4"/><stop offset="1" stop-color="#fff" stop-opacity=".92"/></linearGradient></defs><circle cx="12" cy="12" r="10.4" stroke="url(#m14rim)" stroke-width="${sw}" vector-effect="non-scaling-stroke"/>${inner ? `<path d="${inner}" stroke="#fff" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>` : ''}</svg>`;
   const circle = (name, { d = 48, s, bl = 0, at = '', attrs = '', ic = 0, sw = 2 } = {}) => `<div class="v-g v-cir ${ab(at)}" style="${at}${lens(d, d, d / 2, s)}${blv(bl)}" ${attrs}>${/^</.test(name) ? name : icon(name, ic || Math.round(d * 0.44), sw)}</div>`;
   const ui = {
     lens,
@@ -193,10 +204,14 @@ ${calm(GLASS.filter((c) => c !== 'v-list').map((c) => (c === 'v-g' ? 'v-g:not(.t
     bg: (src, { pos = '50% 50%', scrim = src ? 'hero' : 'none', style = '', fill = '', shapes = [] } = {}) => `${src ? `<img class="v-bg" src="${src}" style="object-position:${pos};${style}">` : `<div class="v-bg" style="background:${fill || T.accents.night};${style}">${shapes.map(({ d = 0, w = d, h = d, r = d / 2, x = 0, y = 0, c = '#fff', rot = 0 }) => `<i style="position:absolute;left:${x}px;top:${y}px;width:${w}px;height:${h}px;border-radius:${r}px;background:${c};${rot ? `transform:rotate(${rot}deg);` : ''}"></i>`).join('')}</div>`}${scrim === 'none' ? '' : `<div class="v-scrim" style="background:${SCRIM[scrim] || scrim}"></div>`}`,
     // 展示板背景（demo 里写 boardDeco: ui.stageBg(img('x'), { pos: '40% 50%' })）：同一张照片糊开，和图册舞台一样；tint 是压暗层的不透明度，亮照片调到 .3 左右，白标题才看得清；sat 是饱和度；纯色背景的项目 ui.stageBg(null, { fill: 'linear-gradient(…)' })
     stageBg: (src, { pos = '40% 50%', blur = 26, tint = .12, sat = 1.2, fill = '' } = {}) => `<div style="position:absolute;inset:0;background:${fill || `url(${src}) ${pos}/cover`}"></div><div style="position:absolute;inset:0;-webkit-backdrop-filter:blur(${blur}px) saturate(${sat});backdrop-filter:blur(${blur}px) saturate(${sat});background:rgba(10,28,36,${tint})"></div>`,
-    // 字标：苹方中粗宽字距 + 可选 Outfit 英文，没有底色；sym 放一段 SVG 记号（默认不要）
-    logo: (name, en = '', sym = '') => `<div class="v-logo">${sym}<b>${name}</b>${en ? `<em>${en}</em>` : ''}</div>`,
-    // 网页字标：wordmark('MANYOU', '漫游', 'left:238px;top:43px')，英文在前、中文小字在后
-    wordmark: (en, name = '', at = '') => `<div class="v-wmk v-ts ${ab(at)}" style="${at}">${en}${name ? `<small>${name}</small>` : ''}</div>`,
+    // 字标：logo('听澜', '', ui.mark({ inner: '…' }))；苹方中粗 22px、字距 .02em，没有底色。en 只给本来就有英文名的品牌（Outfit 细体 17px，不拉字距；全大写的英文名里五个字母以上的词自动改成首字母大写，四个字母以内的缩写照原样）；sym 放记号：ui.mark() 或客户 logo 的白色单色 SVG，高 20–24
+    logo: (name, en = '', sym = '') => `<div class="v-logo">${sym}<b>${name}</b>${enTag(en)}</div>`,
+    // 记号：mark({ d: 24, inner, sw })，一圈玻璃亮边；inner 是 24×24 坐标里的一段路径，画品牌自己的一笔（水纹 'M6.5 13.5c1.8-1.5 3.7-1.5 5.5 0s3.7 1.5 5.5 0'、山形、叶子），不写就是空圈；d 放大到 240 以上压在照片静处，就是背景元素
+    mark,
+    // 网页字标：wordmark('听澜', { sym: ui.mark({ d: 28 }), en, at: 'left:238px;top:38px' })；和 App 字标同一套放大一档（品牌名 26px，英文 20px）
+    wordmark: (name, { en = '', sym = '', at = '' } = {}) => `<div class="v-wmk v-ts ${ab(at)}" style="${at}">${sym}<b>${name}</b>${enTag(en)}</div>`,
+    // 大标题：title('水中山', '陈向晚', { at: 'left:24px;top:132px', size: 76 })；info 是标题下面一行真实信息（歌手、日期、地点、数量），19px 细体；两样传数组 ['陈向晚', '《静水》']，拆成两段隔 14px；标题上面不压字
+    title: (text, info = '', { at = '', size = 0 } = {}) => `<div class="v-ts ${ab(at)}" style="${at}"><div class="v-h1"${size ? ` style="font-size:${size}px"` : ''}>${text}</div>${info ? `<div class="v-info">${[].concat(info).map((t) => `<span>${t}</span>`).join('')}</div>` : ''}</div>`,
     // App 顶栏：左右是圆形玻璃按钮，不要底色；首页写 left: ui.logo(…)
     nav: ({ title = '', back = true, right = '', left = '' } = {}) => `<div class="v-nav">${left || (back ? circle('chevron-left', { ic: 24, sw: 2.2, attrs: 'data-back' }) : '<span></span>')}${title ? `<div class="t">${title}</div>` : ''}${right || '<span></span>'}</div>`,
     // 圆形玻璃按钮：circle('share', { d: 48, s: 30, bl: 7, at: 'right:16px;top:498px', attrs: 'data-go="x"' })；name 也可以传一段 SVG，ic 改图标大小；s 是折射强度，bl 是模糊半径（下面几个玻璃件都有这两个参数）
@@ -230,7 +245,7 @@ ${calm(GLASS.filter((c) => c !== 'v-list').map((c) => (c === 'v-g' ? 'v-g:not(.t
     input: (text, { ic = 'search', w = 283, at = '' } = {}) => `<div class="v-inp ${ab(at)}" style="${at}${lens(w, 48, 24)}">${icon(ic, 19, 2.1)}<span>${text}</span></div>`,
     // 卡片：card({ src: img('x'), h: 168, title: '云杉谷木屋', meta: '2 晚', w: 343, ht: 280, attrs })；w、ht 是整张卡的尺寸（有它才折射）
     card: ({ src = '', h = 168, pos = '50% 50%', title = '', meta = '', w = 0, ht = 0, attrs = '' } = {}) => `<div class="v-card" style="${w ? lens(w, ht, 30) : ''}" ${attrs}>${src ? `<div class="ph" style="height:${h}px;background-image:url(${src});background-position:${pos}"></div>` : ''}<div class="bd"><div class="v-h3">${title}</div>${meta ? `<div class="v-mut" style="margin-top:8px">${meta}</div>` : ''}</div></div>`,
-    // 列表行：row({ lead, title, meta, end, on, w: 343, attrs })，放在 .v-list 里；lead 是左边的序号或图标，end 是右边的时长；on 为 true 时展开成玻璃胶囊，w 写胶囊宽度
+    // 列表行：row({ lead, title, meta, end, on, w: 343, attrs })，放在 .v-list 里；lead 是左边的封面（ui.cover）或图标，end 是右边的时长；on 为 true 时展开成玻璃胶囊，w 写胶囊宽度
     row: ({ lead = '', title = '', meta = '', end = '', on = false, w = 327, h = 64, attrs = '' } = {}) => `<div class="v-row ${on ? 'on v-g' : ''}" ${on ? `style="${lens(w, h, 24, 26)}"` : ''} ${attrs}>${lead}<div class="tx"><div class="n">${title}</div>${meta ? `<div class="m">${meta}</div>` : ''}</div>${end ? `<div class="e">${end}</div>` : ''}</div>`,
     // 方形封面：cover(img('x'), { d: 44, r: 12 })
     cover: (src, { d = 44, r = 12, pos = '50% 50%' } = {}) => `<div class="v-cover" style="width:${d}px;height:${d}px;border-radius:${r}px;background-image:url(${src});background-position:${pos}"></div>`,
@@ -246,7 +261,7 @@ ${calm(GLASS.filter((c) => c !== 'v-list').map((c) => (c === 'v-g' ? 'v-g:not(.t
     span: (a, b, mid = '') => `<div class="v-dts"><div><b>${a[0]}</b><span>${a[1]}</span></div>${mid ? `<div class="v-g nt" style="${lens(62, 34, 17)}">${mid}</div>` : ''}<div style="text-align:right"><b>${b[0]}</b><span>${b[1]}</span></div></div>`,
     // 确认号一行：kv('确认号', 'MY-48217')，前面通常放一条 <div class="v-hr"></div>
     kv: (k, v) => `<div class="v-cf"><span>${k}</span><b>${v}</b></div>`,
-    // 地图钉：pin(1, { x: 236, y: 464, now: true })；地名：mapLabel('梦莲湖', { x: 164, y: 494 })
+    // 地图停靠顺序钉：pin(1, { x: 236, y: 464, now: true })；地名：mapLabel('梦莲湖', { x: 164, y: 494 })
     pin: (n, { x = 0, y = 0, now = false } = {}) => `<div class="v-pin ${now ? 'now' : ''}" style="left:${x}px;top:${y}px">${n}</div>`,
     mapLabel: (text, { x = 0, y = 0 } = {}) => `<div class="v-ml" style="left:${x}px;top:${y}px">${text}</div>`,
     // 网页导航胶囊：wnav(['行程', '地图'], 0, { w: 322, at: 'left:479px;top:30px', go: [] })；当前项白胶囊

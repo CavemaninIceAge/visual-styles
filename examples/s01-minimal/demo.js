@@ -1,4 +1,5 @@
-// 素物 SUWU 家居器物（香薰、花器）App —— 起手包 s01-minimal 试跑
+// 素物，家居器物（香薰、花器）App，起手包 s01-minimal 试跑
+// 文案按审美守则第二节：一行最多两样信息，状态写字，大数字的说明词放在数字下面；字标不配拼音英文名
 module.exports = ({ statusBar, homeBar, style }) => {
   const S = style('s01-minimal');
   const { ui } = S;
@@ -27,61 +28,65 @@ module.exports = ({ statusBar, homeBar, style }) => {
     { prof: [[137, 13.8], [152, 13.8]], tone: WOOD, top: 'open', lip: 3.2 },
   ], over: reeds });
 
-  // 三件商品：详情页、已下单页都按这张表出，点哪件就是哪件
-  const MEI = { detail: 'detail', done: 'done', name: '素物 梅瓶', spec: '花器　月白釉　高 28 cm', unit: '月白釉', price: '¥680', big: vase(244), small: vase(150), sw: [GLAZE.yuebai.mid, GLAZE.qinghui.mid] };
-  const SONG = { detail: 'detail2', done: 'done2', name: '素物 松间', spec: '香薰蜡烛　青灰釉　220 g', unit: '青灰釉', price: '¥198', big: candle(290), small: candle(188), sw: [GLAZE.qinghui.mid, GLAZE.yuebai.mid] };
-  const CHA = { detail: 'detail3', done: 'done3', name: '素物 白茶', spec: '无火香薰　墨黑　200 ml', unit: '墨黑', price: '¥268', big: diffuser(180), small: diffuser(112), sw: [GLAZE.mo.mid, GLAZE.yuebai.mid] };
+  // 三件商品：详情页、已下单页都按这张表出，点哪件就是哪件。出 demo 是 11 月 11 日，送达日期按各自仓库排在后面两三天
+  const MEI = { detail: 'detail', done: 'done', name: '素物 梅瓶', cat: '花器', size: '高 28 cm', unit: '月白釉', eta: '11 月 15 日送达', price: '¥680', big: vase(244), small: vase(150), sw: [GLAZE.yuebai.mid, GLAZE.qinghui.mid] };
+  const SONG = { detail: 'detail2', done: 'done2', name: '素物 松间', cat: '香薰蜡烛', size: '220 g', unit: '青灰釉', eta: '11 月 13 日送达', price: '¥198', big: candle(290), small: candle(188), sw: [GLAZE.qinghui.mid, GLAZE.yuebai.mid] };
+  const CHA = { detail: 'detail3', done: 'done3', name: '素物 白茶', cat: '无火香薰', size: '200 ml', unit: '墨黑', eta: '11 月 14 日送达', price: '¥268', big: diffuser(180), small: diffuser(112), sw: [GLAZE.mo.mid, GLAZE.yuebai.mid] };
 
   const css = `
 .p.home .v-nav+.v-tile{margin-top:10px}
 .p.dt .info{margin-top:32px}
-.p.dt .info .v-mut{margin-top:4px}
+.p.dt .info .v-spec{margin-top:4px}
 .p.dt .info .v-between{margin-top:20px}
 .p .act{margin-top:32px}
 .p .v-h1.sm{margin-top:34px}
 .p.done .v-card{margin:30px 28px 0;height:262px}
 .p.done .it{margin-top:24px}
-.p.done .it .v-mut{margin-top:4px}
+.p.done .it .v-h3+*{margin-top:4px}
 .p.done .v-kv{margin-top:44px}
 .p.ord .v-list{margin-top:32px}
 .p.ord .v-row{padding:18px 0}
 `;
 
-  const home = `<div class="scr s01 p home">${statusBar()}${ui.nav({ back: false, left: ui.logo('素物', '', ui.mark(14, 'base')), right: ui.bag('data-go="bag"'), pad: 38 })}
-${ui.tile({ name: MEI.name, sub: '花器', price: MEI.price, obj: vase(196), h: 392, objTop: 104, attrs: 'data-go="detail"' })}
-${ui.tile({ name: SONG.name, sub: '香薰蜡烛', obj: candle(196), h: 300, objTop: 100, attrs: 'data-go="detail2"' })}
+  const home = `<div class="scr s01 p home">${statusBar()}${ui.nav({ back: false, left: ui.logo('素物'), right: ui.bag('data-go="bag"'), pad: 38 })}
+${ui.tile({ name: MEI.name, sub: MEI.cat, price: MEI.price, obj: vase(196), h: 392, objTop: 104, attrs: 'data-go="detail"' })}
+${ui.tile({ name: SONG.name, sub: SONG.cat, obj: candle(196), h: 300, objTop: 100, attrs: 'data-go="detail2"' })}
 ${ui.tabs(TABS, 0, GO)}${homeBar()}</div>`;
 
   const pdp = (p) => `<div class="scr s01 p dt">${statusBar()}${ui.nav({ right: ui.bag('data-go="bag"') })}
 ${ui.stage(p.big, { h: 508, dy: 8 })}
-<div class="v-pad info"><div class="v-h1">${p.name}</div><div class="v-mut lg">${p.spec}</div>
+<div class="v-pad info"><div class="v-h1">${p.name}</div>${ui.spec(p.cat, p.size, 'lg')}
 <div class="v-between"><span class="v-price">${p.price}</span>${ui.swatches(p.sw, 0)}</div>
 <div class="act">${ui.btn('购买', { attrs: `data-go="${p.done}"` })}</div></div>
 ${homeBar()}</div>`;
 
-  // 购物袋和已下单是同一个版式：页标题、浅灰卡里一件产品、合计、一个按钮
-  const sheet = (title, p, note, btn) => `<div class="scr s01 p done">${statusBar()}
+  // 购物袋和已下单是同一个版式：页标题、浅灰卡里一件产品、金额、一个按钮
+  const sheet = (title, p, note, sum, btn) => `<div class="scr s01 p done">${statusBar()}
 <div class="v-pad"><div class="v-h1 sm">${title}</div></div>
 <div class="v-card show">${p.small}</div>
-<div class="v-pad"><div class="it"><div class="v-h3">${p.name}</div><div class="v-mut">${note}</div></div>
-${ui.kv('合计', p.price)}
+<div class="v-pad"><div class="it"><div class="v-h3">${p.name}</div>${note}</div>
+${ui.kv(sum, p.price)}
 <div class="act">${btn}</div></div>
 ${ui.tabs(TABS, 2, GO)}${homeBar()}</div>`;
-  const placed = (p) => sheet('已下单', p, `${p.unit}　1 件　11 月 9 日送达`, ui.btn('查看订单', { attrs: 'data-go="orders"' }));
-  const bag = sheet('购物袋', MEI, `${MEI.unit}　1 件`, ui.btn('结算', { attrs: `data-go="${MEI.done}"` }));
+  const placed = (p) => sheet('已下单', p, `<div class="v-mut">${p.unit} 1 件，${p.eta}</div>`, '实付', ui.btn('查看订单', { attrs: 'data-go="orders"' }));
+  const bag = sheet('购物袋', MEI, ui.spec(MEI.unit, '1 件'), '合计', ui.btn('结算', { attrs: `data-go="${MEI.done}"` }));
 
   const orders = `<div class="scr s01 p ord">${statusBar()}
 <div class="v-pad"><div class="v-h1 sm">我的订单</div>
-<div class="v-list sep">${[MEI, SONG, CHA].map((p) => `<div class="v-row" data-go="${p.detail}"><div><div class="v-h3">${p.name}</div><div class="v-mut">待发货　11 月 9 日送达</div></div><span class="v-price">${p.price}</span></div>`).join('')}</div></div>
+<div class="v-list">${[MEI, SONG, CHA].map((p) => `<div class="v-row" data-go="${p.detail}"><div><div class="v-h3">${p.name}</div><div class="v-mut">待发货，${p.eta}</div></div><span class="v-price">${p.price}</span></div>`).join('')}</div></div>
 ${ui.tabs(TABS, 3, GO)}${homeBar()}</div>`;
 
   const web = `<div class="web s01 p" style="height:800px">
-${ui.webNav(ui.logo('素物', '', ui.mark(17, 'base')), ['香薰', '花器', '蜡烛', '门店'])}
+${ui.webNav(ui.logo('素物', '', ui.mark(20)), ['香薰', '花器', '蜡烛', '门店'])}
 ${ui.webHero({ title: CHA.name, price: CHA.price, btn: ui.btn('购买', { cls: 'lg', attrs: `data-go="${CHA.detail}"` }), objs: [diffuser(210, GLAZE.mo), diffuser(210, GLAZE.yuebai)] })}
 </div>`;
 
-  // 展示板：字标记号放大成一道细线大圆；板上的品牌名也用细字重、拉开字距（不用默认的粗体标题）
-  const boardDeco = `<div class="s01" style="position:absolute;left:96px;top:54px;background:none"><span class="v-logo" style="gap:18px">${ui.mark(30, 'base')}<b style="font-size:38px;font-weight:300">素物</b></span></div>`;
+  // 展示板：字标记号放大成一道细线大圆，圈在网页那一屏后面（图册参考页的做法）；左上角是放大的字标，细字重，不用默认的粗体标题
+  const boardDeco = (geo) => {
+    const w = geo.webs[0];
+    const ring = w ? ui.ring(Math.round(w.h * 1.22), { x: `${Math.round(w.x + w.w / 2)}px`, y: `${Math.round(w.y + w.h / 2)}px` }) : '';
+    return `${ring}<div class="s01" style="position:absolute;left:96px;top:54px;background:none"><span class="v-logo" style="gap:16px">${ui.mark(34)}<b style="font-size:38px">素物</b></span></div>`;
+  };
   return {
     name: '素物', css, start: 'home', url: 'suwuhome.com', boardTitle: '', boardDeco,
     screens: { home, detail: pdp(MEI), done: placed(MEI), web, bag, orders, detail2: pdp(SONG), done2: placed(SONG), detail3: pdp(CHA), done3: placed(CHA) },

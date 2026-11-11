@@ -1,4 +1,4 @@
-// 16 清晰专业 Pro —— 起手包
+// 16 清晰专业 Pro，起手包
 // 色值、字体、字号、线宽都照图册模块 catalog/pages/s16-pro.js（工时）原样取
 // 用法：const S = style('s16-pro'); 屏幕根元素 <div class="scr s16">，后台根元素 <div class="web s16" style="height:800px">；组件见 S.ui
 // 这种风格的主角是电脑后台：手机屏用 nav / week / today / row，后台用 side / head / kpis / table / timeline
@@ -30,7 +30,7 @@ module.exports = (L) => {
   const css = `
 .s16{--b:${B};--bt:${BT};--k:${K};--t2:${T2};--t3:${T3};--l:${LN};--bg:${BG};--gr:${GR};--am:${AM};--rd:${RD};background:#fff;color:var(--k);font-family:${FB};font-size:15px;line-height:1.45}
 .s16 .v-pad{padding-left:20px;padding-right:20px}
-/* 字号只有几档：54 / 34 / 28 / 26 / 24 / 20 / 17 / 15 / 14 / 13 / 12，标题苹方中粗，数字 Inter 等宽 */
+/* 字号只有几档：54 / 34 / 28 / 26 / 24 / 20 / 17 / 15 / 14 / 13 / 12，标题苹方中粗，数字 Inter 加 tabular-nums，上下位数对得齐 */
 .s16 .v-h1{font:600 26px/1.15 ${FT};letter-spacing:.01em}
 .s16 .v-h2{font:600 24px/1.2 ${FT}}
 .s16 .v-h3{font:600 15px/1.2 ${FB}}
@@ -81,9 +81,11 @@ module.exports = (L) => {
 .s16 .v-seg{height:34px;padding:3px;border-radius:9px;background:#F0F1F4;display:inline-flex}
 .s16 .v-seg span{padding:0 14px;border-radius:7px;display:flex;align-items:center;font:500 14px/1 ${FB};color:var(--t2);white-space:nowrap}
 .s16 .v-seg .on{background:#fff;color:var(--k);box-shadow:0 1px 2px rgba(17,24,39,.12),0 0 0 .5px rgba(17,24,39,.06)}
-/* 状态：小圆点（形状也不同）+ 文字，红黄绿只在这里出现 */
-.s16 .v-dot{display:inline-block;flex:none;vertical-align:middle}
+/* 状态：带勾、叹号、叉、钟的小图标 + 文字，形状和颜色一起变；红黄绿只在这里出现 */
+.s16 .v-sg{display:inline-block;flex:none;vertical-align:middle}
 .s16 .v-st{display:inline-flex;align-items:center;gap:6px;font:400 13px/1 ${FB};color:var(--t2);white-space:nowrap}
+/* 两样信息并排：拆成两个元素，中间空 12px，不拿符号串 */
+.s16 .v-pr{display:inline-flex;align-items:baseline;gap:12px;white-space:nowrap}
 .s16 .v-lg{margin-left:auto;display:flex;gap:16px;font:400 14px/1 ${FB};color:var(--t2)}
 .s16 .v-lg span{display:flex;align-items:center;gap:6px;white-space:nowrap}
 /* 日期条：七格，当天蓝底圆角 12 */
@@ -94,16 +96,17 @@ module.exports = (L) => {
 .s16 .v-wk .off b{color:var(--t3);font-weight:500}
 .s16 .v-wk .on{background:var(--b)}
 .s16 .v-wk .on span,.s16 .v-wk .on b{color:#fff}
-/* 今日主卡：一行标签、一个 34px 时间、一行地点配按钮 */
+/* 今日主卡：34px 时段打头、状态靠右；下面一句话说这段时间是什么；最后一行地点配按钮 */
 .s16 .v-td{margin:16px 20px 0;border:1px solid var(--l);border-radius:14px;padding:16px}
-.s16 .v-td .r1{display:flex;justify-content:space-between;align-items:center;font:500 14px/1 ${FB};color:var(--t2)}
+.s16 .v-td .r1{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .s16 .v-td .r1 .v-st{font:400 14px/1 ${FB}}
-.s16 .v-td .v-tm{margin-top:12px}
+.s16 .v-td .r2{margin-top:8px;font:500 15px/1.3 ${FB};color:var(--k)}
 .s16 .v-td .r3{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .s16 .v-td .r3>span{display:flex;align-items:center;gap:5px;font:400 14px/1 ${FB};color:var(--t2);white-space:nowrap}
-/* 小节头：13px 灰字，右边数字 */
-.s16 .v-lh{margin:22px 20px 8px;display:flex;justify-content:space-between;align-items:baseline;font:500 13px/1 ${FB};color:var(--t3)}
-.s16 .v-lh b{font:600 13px/1 ${FN};color:var(--t2);${TN}}
+/* 区块标题：17px 中粗墨色的真标题，右边一个灰色汇总数字或图例；比正文大，不做灰色小字的小节头 */
+.s16 .v-lh{margin:24px 20px 4px;min-height:24px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.s16 .v-lh>b{font:600 17px/1.2 ${FT};color:var(--k);white-space:nowrap}
+.s16 .v-lh>span{font:500 14px/1 ${FN};color:var(--t2);white-space:nowrap;${TN}}
 /* 线条页签：下面 2px 蓝线 */
 .s16 .v-tb{margin:10px 20px 0;display:flex;gap:24px;border-bottom:1px solid var(--l)}
 .s16 .v-tb span{height:40px;display:flex;align-items:center;gap:6px;font:500 15px/1 ${FB};color:var(--t2);position:relative}
@@ -149,7 +152,8 @@ module.exports = (L) => {
 .s16 .v-nav.c .t{position:absolute;left:50%;transform:translateX(-50%);font-size:17px;letter-spacing:0}
 .s16 .v-logo{display:flex;align-items:center;gap:10px;height:32px}
 .s16 .v-logo b{font:600 20px/1 ${FT};letter-spacing:.02em;white-space:nowrap}
-.s16 .v-logo span{font:600 12px/1 ${FN};letter-spacing:.12em;color:var(--t3);margin-top:2px;white-space:nowrap}
+/* 英文名只在品牌本来有时写：15px Inter 中等字重、灰色、不拉字距、不全大写，像软件的产品名跟在中文后面 */
+.s16 .v-logo span{font:500 15px/1 ${FN};letter-spacing:0;color:var(--t3);margin-top:2px;white-space:nowrap}
 .s16 .v-tabs{position:absolute;left:0;right:0;bottom:0;height:84px;background:#fff;border-top:1px solid var(--l);display:grid;padding-top:9px;z-index:6}
 /* 当前项不只变蓝：字加粗，格子顶上压一条 2px 蓝线（和线条页签、表格当前列同一种记号），色弱也分得开 */
 .s16 .v-tabs>div{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--t3);font:500 12px/1 ${FB}}
@@ -160,7 +164,7 @@ module.exports = (L) => {
 .s16 .v-bar .v-btn{flex:1}
 .s16 .v-bar .v-btn.ghost{flex:none;width:96px;height:52px;font-size:17px}
 .s16 .v-bar .v-btn:not(.ghost){height:52px;font-size:17px}
-/* ——— 后台 ——— */
+/* 后台 */
 .s16.web{display:flex;background:#fff}
 .s16 .v-side{width:200px;flex:none;background:var(--bg);border-right:1px solid var(--l);padding:22px 14px;position:relative}
 .s16 .v-side .v-logo{padding:0 8px}
@@ -184,8 +188,9 @@ module.exports = (L) => {
 .s16 .v-kp{margin-top:26px;display:grid;border:1px solid var(--l);border-radius:12px}
 .s16 .v-kp>div{padding:16px 20px;border-left:1px solid var(--l);position:relative}
 .s16 .v-kp>div:first-child{border-left:none}
-.s16 .v-kp span{display:flex;align-items:center;gap:6px;font:400 14px/1 ${FB};color:var(--t2)}
-.s16 .v-kp b{display:block;margin-top:12px;font:600 28px/1 ${FN};letter-spacing:-.01em;${TN}}
+/* 数字在上，说明它是什么的词在下：词是信息，不压在数字上面当小标签 */
+.s16 .v-kp b{display:block;font:600 28px/1 ${FN};letter-spacing:-.01em;${TN}}
+.s16 .v-kp b+span{display:flex;align-items:center;gap:6px;margin-top:10px;font:400 14px/1 ${FB};color:var(--t2)}
 .s16 .v-kp b small{font:500 15px/1 ${FN};color:var(--t3);margin-left:4px}
 .s16 .v-kp .wd{display:flex;align-items:flex-end;justify-content:space-between}
 .s16 .v-bars{display:flex;align-items:flex-end;gap:14px}
@@ -212,7 +217,7 @@ module.exports = (L) => {
 .s16 .v-em small{display:block;margin-top:4px;font:400 13px/1 ${FB};color:var(--t3);white-space:nowrap}
 .s16 .v-cp{position:relative;height:34px;border-radius:8px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;padding:0 6px;font:500 14px/1 ${FN};color:#2B3342;white-space:nowrap;${TN}}
 .s16 .v-cp.rs{background:none;color:#B9BFCA;font:400 14px/1 ${FB};justify-content:flex-start;padding-left:10px}
-.s16 .v-cp .v-dot,.s16 .v-bk .v-dot{position:absolute;top:-3px;right:-3px}
+.s16 .v-cp .v-sg,.s16 .v-bk .v-sg{position:absolute;top:-5px;right:-5px}
 .s16 .v-cp.op{background:none;border:1px dashed #CDD2DA;color:var(--t3)}
 .s16 .v-cp.sel{background:var(--bt);border:1.5px solid var(--b);color:var(--b)}
 /* 资源时间轴：左列人或椅位，横向是一天的小时，块按时间摆；约、排、订这类后台的主角 */
@@ -225,9 +230,12 @@ module.exports = (L) => {
 .s16 .v-tl .bd{position:relative}
 .s16 .v-tl .ov{position:absolute;top:0;bottom:0;pointer-events:none}
 .s16 .v-tl .ov>i{position:absolute;top:0;bottom:0;width:1px;background:#F0F1F4}
-.s16 .v-tl .ov>.off{position:absolute;top:0;bottom:0;padding-bottom:24px;background:var(--bg);display:flex;align-items:flex-end;justify-content:center;font:400 13px/1 ${FB};color:var(--t3);letter-spacing:.2em}
+/* 午休这类全列时段带：浅灰整列，底部一个线性图标配 14px 灰字，字距不拉开 */
+.s16 .v-tl .ov>.off{position:absolute;top:0;bottom:0;padding-bottom:22px;background:var(--bg);display:flex;align-items:flex-end;justify-content:center}
+.s16 .v-tl .ov>.off>span{display:flex;align-items:center;gap:6px;font:400 14px/1 ${FB};color:var(--t3);white-space:nowrap}
+/* 现在线：1.5px 蓝线，顶头一个朝下的小三角，像剪辑软件的播放头；不画圆点 */
 .s16 .v-tl .ov>i.now{width:1.5px;background:var(--b)}
-.s16 .v-tl .ov>i.now:before{content:"";position:absolute;left:-3.25px;top:-4px;width:8px;height:8px;border-radius:50%;background:var(--b)}
+.s16 .v-tl .ov>i.now:before{content:"";position:absolute;left:-4.25px;top:0;border-style:solid;border-width:6px 5px 0;border-color:var(--b) transparent transparent}
 .s16 .v-tl .rw{position:relative;display:flex;align-items:center;border-bottom:1px solid #EEF0F3;z-index:1}
 .s16 .v-tl .rw:last-child{border-bottom:none}
 .s16 .v-tl .rw .ln{align-self:stretch}
@@ -253,20 +261,30 @@ module.exports = (L) => {
 .s16 .v-pop .v-acts{margin-top:10px}
 .s16 .v-pop .v-acts .v-btn{flex:1}
 `;
-  // 状态记号：形状和颜色一起变，色弱也分得开。ok 绿圆、warn 黄三角、bad 红方、idle 灰空心圆、done 灰勾；on / fill / dash 是图例用的小方块
-  const SHAPES = {
-    ok: (c) => `<circle cx="5" cy="5" r="3.5" fill="${c || GR}"/>`,
-    warn: (c) => `<path d="M5 1.5 8.8 8.3H1.2Z" fill="${c || AM}" stroke="${c || AM}" stroke-linejoin="round" stroke-width=".8"/>`,
-    bad: (c) => `<rect x="1.6" y="1.6" width="6.8" height="6.8" rx="1" fill="${c || RD}"/>`,
-    idle: () => '<circle cx="5" cy="5" r="2.9" fill="none" stroke="#B4BAC5" stroke-width="1.6"/>',
-    done: () => `<path d="m1.4 5.3 2.5 2.5 4.7-5.4" fill="none" stroke="${T3}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>`,
-    on: () => '<rect x=".8" y=".8" width="8.4" height="8.4" rx="2" style="fill:var(--b)"/>',
-    fill: () => '<rect x=".8" y=".8" width="8.4" height="8.4" rx="2" fill="#D9DDE4"/>',
-    dash: () => '<rect x="1.2" y="1.2" width="7.6" height="7.6" rx="2" fill="none" stroke="#B9BFCA" stroke-width="1" stroke-dasharray="2 1.4"/>',
+  // 状态记号：每种是一个看得懂的小图标，形状、颜色、里面的字形三样一起变，色弱也分得开；不用小圆点
+  //   ok 绿圆白勾（已到诊、正常、通过）、warn 黄三角白叹号（待确认、迟到）、bad 红方白叉（爽约、缺卡、驳回）、
+  //   alert 红方白叹号（过敏、禁忌）、idle 灰线钟（未开始、待上班）、done 灰勾（已完成）；on / fill / dash 是图例用的小方块
+  //   base 是底形（c 传颜色，压角时用它画白边），mark 是白色字形
+  const W2 = 'fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"';
+  const SIGNS = {
+    ok: { base: (c) => `<circle cx="7" cy="7" r="6.3" fill="${c || GR}"/>`, mark: `<path d="m4.3 7.2 1.9 1.9 3.6-4" ${W2}/>` },
+    warn: { base: (c) => `<path d="M6 2.1a1.15 1.15 0 0 1 2 0l5 8.6c.45.78-.1 1.75-1 1.75H2c-.9 0-1.45-.97-1-1.75Z" fill="${c || AM}"/>`, mark: `<path d="M7 5.6v2.6" ${W2}/><circle cx="7" cy="10.35" r=".9" fill="#fff"/>` },
+    bad: { base: (c) => `<rect x=".9" y=".9" width="12.2" height="12.2" rx="3" fill="${c || RD}"/>`, mark: `<path d="m5 5 4 4m0-4-4 4" ${W2}/>` },
+    alert: { base: (c) => `<rect x=".9" y=".9" width="12.2" height="12.2" rx="3" fill="${c || RD}"/>`, mark: `<path d="M7 3.9v3.5" ${W2}/><circle cx="7" cy="9.9" r=".9" fill="#fff"/>` },
+    idle: { base: (c) => `<circle cx="7" cy="7" r="5.7" fill="${c || '#fff'}" stroke="${c || T3}" stroke-width="1.5"/>`, mark: `<path d="M7 4.3V7l1.8 1.2" fill="none" stroke="${T3}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>` },
+    done: { base: (c) => (c ? `<path d="m2.8 7.3 2.7 2.7 5.7-6.2" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>` : ''), mark: `<path d="m2.8 7.3 2.7 2.7 5.7-6.2" fill="none" stroke="${T3}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>` },
+    on: { base: () => '<rect x="1.5" y="1.5" width="11" height="11" rx="3" style="fill:var(--b)"/>', mark: '' },
+    fill: { base: () => '<rect x="1.5" y="1.5" width="11" height="11" rx="3" fill="#D9DDE4"/>', mark: '' },
+    dash: { base: () => '<rect x="2" y="2" width="10" height="10" rx="2.6" fill="none" stroke="#B9BFCA" stroke-width="1" stroke-dasharray="2 1.4"/>', mark: '' },
   };
-  const dot = (kind = 'ok', s = 10) => `<svg class="v-dot" width="${s}" height="${s}" viewBox="0 0 10 10">${(SHAPES[kind] || SHAPES.ok)()}</svg>`;
-  // 压在格子角上的记号：外面多一圈白描边
-  const pin = (kind) => { const w = `<svg class="v-dot" width="13" height="13" viewBox="-1.5 -1.5 13 13">`; const body = (SHAPES[kind] || SHAPES.ok)('#fff').replace(/stroke-width="\.8"/, ''); return `${w}<g stroke="#fff" stroke-width="3" stroke-linejoin="round">${body}</g>${(SHAPES[kind] || SHAPES.ok)()}</svg>`; };
+  const sign = (kind = 'ok', s = 14) => { const g = SIGNS[kind] || SIGNS.ok; return `<svg class="v-sg" width="${s}" height="${s}" viewBox="0 0 14 14">${g.base()}${g.mark}</svg>`; };
+  // 压在格子角上的记号：底形先用白色加粗描一圈，再画本身，压在灰格子上轮廓清楚
+  const pin = (kind) => { const g = SIGNS[kind] || SIGNS.ok; return `<svg class="v-sg" width="17" height="17" viewBox="-1.5 -1.5 17 17"><g stroke="#fff" stroke-width="3" stroke-linejoin="round">${g.base('#fff')}</g>${g.base()}${g.mark}</svg>`; };
+  // 一行最多两样：传数组时拆成两个元素中间空 12px，多出来的不要
+  const pair = (a, b) => `<span class="v-pr"><span>${a}</span>${b != null && b !== '' ? `<span>${b}</span>` : ''}</span>`;
+  const two = (x) => (Array.isArray(x) ? pair(x[0], x[1]) : x);
+  // 全大写的长英文名（拼音大写这种）改成首字母大写；缩写（不超过四个字母）照写
+  const enCase = (en) => (/^[A-Z]{5,}$/.test(en) ? en[0] + en.slice(1).toLowerCase() : en);
   // 品牌记号：蓝色圆角方块里一个白色线性小图形，24×24。clock 表盘（图册工时）、peak 山、tooth 牙、cross 十字、check 勾、stack 三层、chart 三根柱
   const MARKS = {
     clock: '<circle cx="12" cy="12" r="6.6" fill="none" stroke="#fff" stroke-width="2"/><path d="M12 8.6V12l2.4 1.6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
@@ -282,9 +300,10 @@ module.exports = (L) => {
   const hrs = (t) => { if (typeof t === 'number') return t; const [h, m] = String(t).split(':').map(Number); return h + m / 60; };
   const ui = {
     mark,   // mark(28) / mark(28, 'tooth') / mark(30, 'peak', '#2F4FE0')；不传颜色时跟着 --b 走
-    dot,    // 状态记号：dot('ok') / dot('warn', 12)，种类见 SHAPES
-    // 字标：蓝方块记号 + 中文 + 字距开的英文；sym 传记号名或一段 SVG；s 是记号边长（后台 28，手机首页 30）
-    logo: (name, en = '', sym = 'clock', s = 28) => `<div class="v-logo">${MARKS[sym] ? mark(s, sym) : sym}<b>${name}</b>${en ? `<span>${en}</span>` : ''}</div>`,
+    sign,   // 状态记号：sign('ok') / sign('alert', 16)，单独放在键值行的值前面也行；种类见 SIGNS
+    pair,   // 两样信息并排：pair('女', '34 岁')，中间空 12px；who 的 meta、row 的 t2、today 的 label 和 foot 直接传数组也一样
+    // 字标：蓝方块记号 + 20px 中文，品牌本来有英文名才传 en（15px 灰字，不拉字距，全大写的长词改成首字母大写）；sym 传记号名或一段 SVG；s 是记号边长（后台 28，手机首页 30）
+    logo: (name, en = '', sym = 'clock', s = 28) => `<div class="v-logo">${MARKS[sym] ? mark(s, sym) : sym}<b>${name}</b>${en ? `<span>${enCase(en)}</span>` : ''}</div>`,
     // App 顶栏：back 为 false 时是一级页，左边 26px 大标题（或传 left 放字标）；back 为 true 时是二级页，标题 17px 居中
     nav: ({ title = '', back = true, right = '', left = '' } = {}) => (back
       ? `<div class="v-nav c">${left || `<div class="v-ib" data-back>${IC('chevron-left', 20)}</div>`}${title ? `<div class="t">${title}</div>` : ''}${right || '<span></span>'}</div>`
@@ -302,24 +321,25 @@ module.exports = (L) => {
     seg: (items, cur = 0, go = []) => `<div class="v-seg">${items.map((t, i) => `<span class="${i === cur ? 'on' : ''}" ${go[i] ? `data-go="${go[i]}"` : ''}>${t}</span>`).join('')}</div>`,
     // 七格日期条：week([['一', 2], ['二', 3], ['三', 4, 'on'], ['四', 5, 'off'], …])，第三项 on 是当天、off 是没有安排的灰字
     week: (days) => `<div class="v-wk">${days.map(([w, d, c]) => `<div class="${c || ''}"><span>${w}</span><b>${d}</b></div>`).join('')}</div>`,
-    // 状态：st('已到诊', 'ok')，小记号 + 文字，kind 见 dot；绝不只放颜色
-    st: (text, kind = 'ok') => `<span class="v-st">${dot(kind)}${text}</span>`,
+    // 状态：st('已到诊', 'ok')，小图标 + 文字，kind 见 SIGNS；绝不只放颜色
+    st: (text, kind = 'ok') => `<span class="v-st">${sign(kind)}${text}</span>`,
     // 图例（筛选行右边）：legend([['ok', '已到诊'], ['warn', '待确认'], ['bad', '爽约']])
-    legend: (items) => `<div class="v-lg">${items.map(([k, t]) => `<span>${dot(k)}${t}</span>`).join('')}</div>`,
-    // 今日主卡：today({ label: '今天 · 中班', st: ui.st('待上班', 'idle'), time: '10:00 – 18:00', foot: '国贸三期店', ic: 'map-pin', btn: ui.btn('上班打卡', { ic: 'log-in' }) })
-    today: ({ label = '', st = '', time = '', foot = '', ic = 'map-pin', btn = '', attrs = '' } = {}) => `<div class="v-td" ${attrs}><div class="r1"><span>${label}</span>${st}</div><div class="v-tm">${time}</div><div class="r3"><span>${ic ? IC(ic, 15) : ''}${foot}</span>${btn}</div></div>`,
-    // 小节头：lh('本周 5 个班', '40.0 h')，左灰字、右数字
-    lh: (l, r = '') => `<div class="v-lh"><span>${l}</span>${r ? `<b>${r}</b>` : ''}</div>`,
+    legend: (items) => `<div class="v-lg">${items.map(([k, t]) => `<span>${sign(k)}${t}</span>`).join('')}</div>`,
+    // 今日主卡：today({ time: '10:00 – 18:00', st: ui.st('待上班', 'idle'), label: '今天的中班', foot: '国贸三期店', ic: 'map-pin', btn: ui.btn('上班打卡', { ic: 'log-in' }) })
+    //   时段打头、状态靠右，label 是时段下面一句话（说明这段时间是什么），foot 是最后一行的地点；label、foot 传数组就拆成两个元素
+    today: ({ label = '', st = '', time = '', foot = '', ic = 'map-pin', btn = '', attrs = '' } = {}) => `<div class="v-td" ${attrs}><div class="r1"><div class="v-tm">${time}</div>${st}</div>${label ? `<div class="r2">${two(label)}</div>` : ''}<div class="r3"><span>${ic ? IC(ic, 15) : ''}${two(foot)}</span>${btn}</div></div>`,
+    // 区块标题：lh('本周 5 个班', '40.0 h')，左边 17px 中粗真标题，右边灰色数字；右边也可以放 ui.legend
+    lh: (l, r = '') => `<div class="v-lh"><b>${l}</b>${r ? `<span>${r}</span>` : ''}</div>`,
     // 线条页签：tabline([['待处理', 3], ['已处理'], ['我发起的']], 0)，数字可不写
     tabline: (items, cur = 0) => `<div class="v-tb">${items.map(([t, n], i) => `<span class="${i === cur ? 'on' : ''}">${t}${n != null ? `<em>${n}</em>` : ''}</span>`).join('')}</div>`,
     // 排班式的行（放在 .v-list 里）：row({ a: '周一', a2: '10/26', t: '早班', t2: '07:00–15:00', st: ui.st('正常'), n: '8.0', attrs })
-    row: ({ a = '', a2 = '', t = '', t2 = '', st = '', n = '', attrs = '' } = {}) => `<div class="v-row sch" ${attrs}><div class="d">${a}<small>${a2}</small></div><div class="s">${t}<small>${t2}</small></div><div>${st}</div><div class="h">${n}</div></div>`,
+    row: ({ a = '', a2 = '', t = '', t2 = '', st = '', n = '', attrs = '' } = {}) => `<div class="v-row sch" ${attrs}><div class="d">${a}<small>${a2}</small></div><div class="s">${t}<small>${two(t2)}</small></div><div>${st}</div><div class="h">${n}</div></div>`,
     // 空档行：虚线小框，休息、午休、没有安排都用它：rest({ a: '周四', a2: '10/29', text: '休息', ic: 'coffee' })
     rest: ({ a = '', a2 = '', text = '', ic = 'coffee' } = {}) => `<div class="v-row sch rest"><div class="d">${a}<small>${a2}</small></div><div class="s">${IC(ic, 17)}${text}</div></div>`,
-    // 键值行（放在 .v-list 或 .v-list.box 里）：kv('牙位', '36')，kv('门店', '东四店', { ic: 'map-pin' })；值可以是 ui.st
+    // 键值行（放在 .v-list 或 .v-list.box 里）：kv('牙位', '36')，kv('门店', '东四店', { ic: 'map-pin' })；值可以是 ui.st，或 ui.sign('alert') + '青霉素'
     kv: (label, value, { ic = '' } = {}) => `<div class="v-row kv"><span>${ic ? IC(ic, 18) : ''}${label}</span><b>${value}</b></div>`,
-    // 人物条（审批、患者、学员）：who({ ch: '郑', name: '郑磊 · 请假', meta: '事假 10/31', st: ui.st('待审批', 'warn'), acts: ui.btn('通过', { cls: 'sm' }), lg: true })；lg 是详情页 48px 大头像
-    who: ({ ch = '', name = '', meta = '', st = '', acts = '', lg = false, attrs = '' } = {}) => `<div class="v-who ${lg ? 'lg' : ''}" ${attrs}><div class="v-av">${ch}</div><div><b>${name}</b>${meta ? `<p>${meta}</p>` : ''}${acts ? `<div class="v-acts">${acts}</div>` : ''}</div>${st || '<span></span>'}</div>`,
+    // 人物条（审批、患者、学员）：who({ ch: '郑', name: '郑磊的事假', meta: ['10/31 周六', '14:00–22:00'], st: ui.st('待审批', 'warn'), acts: ui.btn('通过', { cls: 'sm' }), lg: true })；meta 传数组拆成两个元素；lg 是详情页 48px 大头像
+    who: ({ ch = '', name = '', meta = '', st = '', acts = '', lg = false, attrs = '' } = {}) => `<div class="v-who ${lg ? 'lg' : ''}" ${attrs}><div class="v-av">${ch}</div><div><b>${name}</b>${meta ? `<p>${two(meta)}</p>` : ''}${acts ? `<div class="v-acts">${acts}</div>` : ''}</div>${st || '<span></span>'}</div>`,
     // 时段格：slots([['09:00', 'off'], ['10:00', 'on'], ['10:30']], 3)，on 选中、off 不可选（灰字划线），第二个参数是列数
     slots: (items, cols = 3) => `<div class="v-slots" style="grid-template-columns:repeat(${cols},1fr)">${items.map(([t, c, go]) => `<div class="v-slot ${c || ''}" ${go ? `data-go="${go}"` : ''}>${t}</div>`).join('')}</div>`,
     // 小格矩阵（牙位图、座位图、工位图）：cells([{ html: '<svg…>', t: '36', cls: 'on' }, …], 16)，html 放图形、t 放编号
@@ -349,7 +369,7 @@ ${range ? `<circle cx="168" cy="110" r="54" fill="${GR}" fill-opacity=".08" stro
 <g transform="translate(168 110)"><path d="M0 0c-8-9-12-15-12-21a12 12 0 0 1 24 0c0 6-4 12-12 21Z" fill="${K}"/><circle cx="0" cy="-21" r="4.5" fill="#fff"/></g>
 ${label ? `<text x="168" y="134" text-anchor="middle" font-size="11" font-weight="600" fill="#3A4252" style="paint-order:stroke" stroke="#DADFE7" stroke-width="3">${label}</text>` : ''}
 <circle cx="140" cy="152" r="11" fill="${K}" fill-opacity=".1"/><circle cx="140" cy="152" r="6" fill="${K}" stroke="#fff" stroke-width="2.5"/></svg></div>`,
-    // 后台左侧导航：side({ logo: ui.logo('工时', 'GONGSHI'), store: '国贸三期店', items: [['calendar-days', '排班', true], ['file-check-2', '审批', false, 3, 'go编号']], me: { ch: '赵', name: '赵敏', role: '店长' } })；items 每项 [图标, 文字, 是否当前, 数字, 跳转]
+    // 后台左侧导航：side({ logo: ui.logo('工时'), store: '国贸三期店', items: [['calendar-days', '排班', true], ['file-check-2', '审批', false, 3, 'go编号']], me: { ch: '赵', name: '赵敏', role: '店长' } })；items 每项 [图标, 文字, 是否当前, 数字, 跳转]
     side: ({ logo = '', store = '', items = [], me = null } = {}) => `<div class="v-side">${logo}${store ? `<div class="v-store">${IC('store', 18)}${store}${IC('chevrons-up-down', 16)}</div>` : ''}<div class="v-nv">${items.map(([ic, t, on, n, go]) => `<div class="${on ? 'on' : ''}" ${go ? `data-go="${go}"` : ''}>${IC(ic, 19)}${t}${n != null ? `<em>${n}</em>` : ''}</div>`).join('')}</div>${me ? `<div class="v-me"><div class="v-av">${me.ch}</div><div>${me.name}<small>${me.role}</small></div></div>` : ''}</div>`,
     // 后台页头：head({ title: '排班', mid: ui.dateSw('10/26 – 11/01') + ui.btn('本周', { cls: 'ghost d' }), right: ui.btn('导出', …) + ui.btn('发布', …) })，右边靠右
     head: ({ title = '', mid = '', right = '' } = {}) => `<div class="v-mh"><div class="v-h2">${title}</div>${mid}<div class="sp"></div>${right}</div>`,
@@ -359,7 +379,7 @@ ${label ? `<text x="168" y="134" text-anchor="middle" font-size="11" font-weight
     kpis: (items) => {
       const wide = items.some((i) => i.bars);
       const cols = wide ? `repeat(${items.length - 1},198.67px) 1fr` : `repeat(${items.length},1fr)`;
-      const one = ({ k, v, u, st }) => `<span>${st ? dot(st) : ''}${k}</span><b>${v}${u ? `<small>${u}</small>` : ''}</b>`;
+      const one = ({ k, v, u, st }) => `<b>${v}${u ? `<small>${u}</small>` : ''}</b><span>${st ? sign(st) : ''}${k}</span>`;
       return `<div class="v-kp" style="grid-template-columns:${cols}">${items.map((i) => (i.bars ? `<div class="wd"><div>${one(i)}</div>${i.bars}</div>` : `<div>${one(i)}</div>`)).join('')}</div>`;
     },
     // 小柱图：bars([['一', 48], ['二', 48], ['三', 44, true]], { k: .68, gap: 14 })；第三项 true 是当前（蓝），k 是每单位多少 px
@@ -374,9 +394,10 @@ ${label ? `<text x="168" y="134" text-anchor="middle" font-size="11" font-weight
     cp: (text, { st = '', cls = '' } = {}) => `<div class="v-cp ${cls}">${st ? pin(st) : ''}${text}</div>`,
     // 通用表格：table({ cols: ['140px', '', '', '94px'], head: ['员工', ['三 10/28', true], '工时'], rows: [[ui.emp(…), ui.cp(…), '40.0']] })；head 项写成 [文字, true] 是当前列，末列靠右，末列写成 [数字, 'lo'] 是灰字退后
     table: ({ cols = [], head = [], rows = [] } = {}) => `<table class="v-tbl"><colgroup>${cols.map((w) => `<col${w ? ` style="width:${w}"` : ''}>`).join('')}</colgroup><tr>${head.map((h) => (Array.isArray(h) ? `<th class="cur">${h[0]}</th>` : `<th>${h}</th>`)).join('')}</tr>${rows.map((r) => `<tr>${r.map((c, i) => (i === r.length - 1 ? `<td class="hr ${Array.isArray(c) ? c[1] : ''}">${Array.isArray(c) ? c[0] : c}</td>` : `<td>${c}</td>`)).join('')}</tr>`).join('')}</table>`,
-    // 资源时间轴：timeline({ from: 9, to: 18, head: '椅位', tail: '分钟', now: '09:41', off: [['12:00', '13:30', '午休']], rows: [{ ch: '林', name: '林医生', meta: '2 号椅', tail: '300', items: [{ s: '10:00', e: '11:00', t: '陈某', d: '根管', st: 'ok', cls: 'sel', go: 'detail' }] }] })
+    // 资源时间轴：timeline({ from: 9, to: 18, head: '椅位', tail: '分钟', now: '09:41', off: [['12:00', '13:30', '午休', 'coffee']], rows: [{ ch: '林', name: '林医生', meta: '2 号椅', tail: '300', items: [{ s: '10:00', e: '11:00', t: '陈某', d: '根管', st: 'ok', cls: 'sel', go: 'detail' }] }] })
     //   items 每块：s/e 起止、t 主字、d 副字、st 角上记号（ok/warn/bad）、cls 'done' 已结束 / 'sel' 选中 / 'op' 虚线空档、ic 主字前的线性图标、go 跳转
     //   rows 每行：add: true 是虚线加号（待分配），lo: true 是右列数字退后；c1、c2 是左右两列宽度
+    //   off 每段：[起, 止, 字, 线性图标]，整列浅灰带；now 是现在线，顶头一个朝下的小三角
     timeline: ({ from = 9, to = 18, head = '', tail = '', now = null, off = [], rows = [], c1 = 148, c2 = 64, rh = 62 } = {}) => {
       const span = to - from;
       const X = (t) => ((hrs(t) - from) / span * 100).toFixed(3) + '%';
@@ -386,7 +407,7 @@ ${label ? `<text x="168" y="134" text-anchor="middle" font-size="11" font-weight
       const row = (r) => `<div class="rw" style="height:${rh}px"><div class="c1" style="width:${c1}px">${ui.emp(r)}</div><div class="ln">${(r.items || []).map(bk).join('')}</div><div class="c2 ${r.lo ? 'lo' : ''}" style="width:${c2}px">${r.tail == null ? '' : r.tail}</div></div>`;
       const pos = `left:${c1}px;right:${c2}px`;
       return `<div class="v-tl"><div class="hd"><div class="c1" style="width:${c1}px">${head}</div><div class="ln">${hours.map((h) => `<span style="left:${X(h)};width:${W(h, h + 1)}">${String(h).padStart(2, '0')}:00</span>`).join('')}</div><div class="c2" style="width:${c2}px">${tail}</div></div>
-<div class="bd"><div class="ov" style="${pos}">${off.map(([s, e, t]) => `<div class="off" style="left:${X(s)};width:${W(s, e)}">${t || ''}</div>`).join('')}${hours.slice(1).map((h) => `<i style="left:${X(h)}"></i>`).join('')}${now == null ? '' : `<i class="now" style="left:${X(now)}"></i>`}</div>${rows.map(row).join('')}</div></div>`;
+<div class="bd"><div class="ov" style="${pos}">${off.map(([s, e, t, ic]) => `<div class="off" style="left:${X(s)};width:${W(s, e)}"><span>${ic ? IC(ic, 16) : ''}${t || ''}</span></div>`).join('')}${hours.slice(1).map((h) => `<i style="left:${X(h)}"></i>`).join('')}${now == null ? '' : `<i class="now" style="left:${X(now)}"></i>`}</div>${rows.map(row).join('')}</div></div>`;
     },
     // 浮层：pop({ left: 566, top: 340, w: 300, html: ui.who(…) + ui.kv(…) + … })，放在 .v-main 里，定位相对 .v-main；点开表格里一条时用，全套唯一悬浮的一层；里面的按钮全用 ghost，蓝底按钮留给页头
     pop: ({ left = 0, top = 0, w = 300, html = '' } = {}) => `<div class="v-pop" style="left:${left}px;top:${top}px;width:${w}px">${html}</div>`,
