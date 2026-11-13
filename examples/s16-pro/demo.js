@@ -1,8 +1,8 @@
-// 诊序口腔诊所预约管理（医生端 App + 前台电脑后台），风格 s16-pro 清晰专业试跑
-// 望京门诊，2026 年 11 月 6 日周五早上 09:41；林知远医生 2 号椅，下一位陈思远 10:00 根管治疗第 2 次
+// 诊序口腔诊所管理（前台电脑后台 + 医生端 App），风格 s16-pro 清晰专业（照飞书的设计语言）试跑
+// 望京门诊，2026 年 11 月 6 日周五早上 09:41；前台苏晴在看患者列表和今天的预约；林知远医生 2 号椅，下一位陈思远 10:00 根管治疗第 2 次
 module.exports = ({ statusBar, homeBar, style }) => {
   const S = style('s16-pro');
-  const { ui, T } = S;
+  const { ui } = S;
   const TABS = [['calendar-days', '接诊'], ['users-round', '患者'], ['clipboard-check', '待办'], ['user-round', '我的']];
 
   // 全诊所今天的预约：一份数据，后台时间轴、汇总数字、医生 App 都从这里取
@@ -37,6 +37,27 @@ module.exports = ({ statusBar, homeBar, style }) => {
   }));
   rows.push({ add: true, name: '待分配', meta: `${WAIT.length} 个预约`, lo: true, tail: sum(WAIT), items: WAIT.map(([s, e, t, d]) => ({ s, e, t, d, cls: 'op' })) });
 
+  // 患者列表：全诊所 1,286 位，治疗中 214、待回访 37、已结束 1,035；这一页是最近就诊排前面的 7 位
+  // [名字, 手机, 主治医生, 最近就诊, 下次预约, 项目, 状态文字, 状态种类]
+  const PATIENTS = [
+    ['陈思远', '138 **** 6024', '林知远', '11/06', '11/13 10:00', '根管治疗', '治疗中', 'info'],
+    ['石磊', '137 **** 4108', '唐一鸣', '11/06', '12/18 09:30', '种植一期', '治疗中', 'info'],
+    ['何建军', '135 **** 7742', '林知远', '11/06', '-', '补牙', '已结束', 'done'],
+    ['邵阳', '186 **** 0935', '方若', '10/30', '-', '正畸复诊', '爽约 1 次', 'bad'],
+    ['魏子涵', '158 **** 3361', '林知远', '10/16', '11/06 14:40', '补牙', '待回访', 'warn'],
+    ['白露', '152 **** 9480', '周明澈', '10/09', '11/06 16:20', '补牙', '待回访', 'warn'],
+    ['邓楠', '139 **** 5216', '许安然', '10/02', '11/06 09:00', '冠修复', '治疗中', 'info'],
+  ];
+  const ptRows = PATIENTS.map(([n, tel, doc, last, next, item, st, k]) => [
+    ui.emp({ ch: n[0], name: n, meta: tel }),
+    doc,
+    `<span class="v-num">${last}</span>`,
+    next === '-' ? '<span class="dim">-</span>' : `<span class="v-num">${next}</span>`,
+    ui.tag(item),
+    ui.st(st, k),
+    ui.ops([['详情', { attrs: n === '陈思远' ? 'data-go="detail"' : '' }], ['约复诊', { attrs: n === '陈思远' ? 'data-go="rebook"' : '' }]], true),
+  ]);
+
   // 牙位图：国际牙位编号，线性小牙形，本次 36、已治疗 16 26 46、缺失 18 48
   const TOOTH = {
     i: 'M10 2.2c-1.4 0-2.4 3.6-3 7.6-.4 2.6-.9 4.4-1.6 6.2-.7 1.9-.9 4.2-.5 6 .4 1.7 1.6 3 5.1 3s4.7-1.3 5.1-3c.4-1.8.2-4.1-.5-6-.7-1.8-1.2-3.6-1.6-6.2-.6-4-1.6-7.6-3-7.6Z',
@@ -48,36 +69,76 @@ module.exports = ({ statusBar, homeBar, style }) => {
   const STATE = { 36: 'on', 16: 'fill', 26: 'fill', 46: 'fill', 18: 'miss', 48: 'miss' };
   const tooth = (n, low) => {
     const s = STATE[n];
-    const fill = s === 'on' ? 'var(--b)' : s === 'fill' ? '#D9DDE4' : 'none';
-    const stroke = s === 'on' ? 'var(--b)' : s === 'fill' ? T.accents.mute : s === 'miss' ? '#CDD2DA' : '#B4BAC5';
+    const fill = s === 'on' ? 'var(--b)' : s === 'fill' ? 'var(--bt2)' : 'none';
+    const stroke = s === 'on' ? 'var(--b)' : s === 'fill' ? '#5083FB' : 'var(--td)';
     return `<svg width="18" height="25" viewBox="0 0 20 28"><g ${low ? 'transform="matrix(1 0 0 -1 0 28)"' : ''}><path d="${TOOTH[kindOf(n)]}" style="fill:${fill};stroke:${stroke}" stroke-width="1.3" stroke-linejoin="round" ${s === 'miss' ? 'stroke-dasharray="2.4 2.2"' : ''}/></g></svg>`;
   };
   const upper = [18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28];
   const lower = [48, 47, 46, 45, 44, 43, 42, 41, 31, 32, 33, 34, 35, 36, 37, 38];
   const arch = (l, low) => ui.cells(l.map((n) => ({ html: tooth(n, low), t: n, cls: STATE[n] === 'on' ? 'on' : '' })), 16);
 
-  // 本项目只管位置和牙位图的十字线，样子全在起手包里
+  // 本项目只管位置、牙位图的十字线和白色分组卡，样子全在起手包里
   const css = `
-.p .chart{position:relative;margin:0 20px;padding:14px 10px;border:1px solid var(--l);border-radius:14px}
+.p .chart{position:relative;margin:0 16px;padding:14px 8px;background:#fff;border-radius:10px}
 .p .chart .low{margin-top:13px}
 .p .chart .low .v-cells>div{flex-direction:column-reverse}
-.p .chart:before{content:"";position:absolute;left:10px;right:10px;top:50%;height:1px;background:var(--l)}
+.p .chart:before{content:"";position:absolute;left:12px;right:12px;top:50%;height:1px;background:var(--l)}
 .p .chart:after{content:"";position:absolute;left:50%;top:14px;bottom:14px;width:1px;background:var(--l)}
-.p.dt .hdr{margin:12px 20px 0}
-.p.dt .v-lh{margin:22px 20px 10px}
-.p.dt .v-lg{gap:12px;font-size:13px}
-.p.dt .v-list{margin-top:6px}
-.p.dt .xr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 20px}
-.p.rb .hdr{margin:12px 20px 0}
-.p.rb .v-lh{margin:20px 20px 10px}
-.p.rb .v-blank{margin:0 20px}
+.p .hdr{margin:8px 16px 0;padding:16px;background:#fff;border-radius:10px}
+.p .dim{color:var(--td)}
+.p .fr{margin-left:auto;display:flex;gap:8px}
+.p .v-note{margin-top:16px}
+.p.dt .v-lg{gap:12px}
+.p.dt .xr{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 16px}
+.p.dt .xr .v-skimg{background:#fff}
+.p.dt .v-list{margin-top:12px}
+.p.rb .v-blank{margin:0 16px}
 .p.rb .v-list{margin-top:12px}
 `;
 
+  const top = ui.topbar({ logo: ui.logo('诊序', '', 'tooth'), search: '搜索患者、预约、医生', right: ui.iconBtn('bell') + ui.iconBtn('circle-help'), me: { ch: '苏' } });
+  const side = (cur) => ui.side({
+    store: '望京门诊',
+    items: [['layout-dashboard', '概览'], ['calendar-days', '预约', cur === 'sched', null, 'sched'], ['users-round', '患者', cur === 'web', null, 'web'], ['receipt-text', '收费'], ['phone-call', '回访', false, 37], ['chart-column', '报表'], ['settings', '设置']],
+  });
+
+  const web = `<div class="web s16 p" style="height:800px">${top}${side('web')}
+<div class="v-main">
+${ui.head({ title: '患者', right: ui.btn('导入', { cls: 'ghost' }) + ui.btn('新建患者', { ic: 'plus' }) })}
+${ui.tabline([['全部患者', 1286], ['治疗中', 214], ['待回访', 37], ['已结束', 1035]], 0)}
+${ui.notice('37 位患者待回访，其中 5 位超过 14 天没联系', { link: '去回访' })}
+<div class="v-fl">${ui.search('搜索姓名或手机号', 240)}${ui.filter('主治医生', '全部')}${ui.filter('最近就诊', '近 90 天')}<div class="fr">${ui.btn('导出', { ic: 'download', cls: 'ghost' })}</div></div>
+${ui.table({ cols: ['', '96px', '96px', '124px', '108px', '112px', '156px'], head: ['患者', '主治医生', '最近就诊', '下次预约', '项目', '状态', '操作'], rows: ptRows, last: 'ops', check: true, sel: [0] })}
+${ui.pager({ total: 1286, cur: 1, size: 20 })}
+</div></div>`;
+
+  const sched = `<div class="web s16 p" style="height:800px">${top}${side('sched')}
+<div class="v-main">
+${ui.head({
+    title: '预约',
+    mid: ui.dateSw('11/06 周五') + ui.btn('今天', { cls: 'ghost' }) + ui.seg(['日', '周'], 0),
+    right: ui.btn('导出', { ic: 'download', cls: 'ghost' }) + ui.btn('新建预约', { ic: 'plus', attrs: 'data-go="rebook"' }),
+  })}
+${ui.kpis([
+    { k: '今日预约', v: all.length, u: '位' },
+    { k: '已到诊', v: arrived, u: '位' },
+    { k: '待确认', v: pending, st: 'warn' },
+    { k: '椅位使用率', v: rate, u: '%', bars: ui.bars(perHour.map((m, i) => [9 + i, m, i === 0]), { k: 36 / Math.max(...perHour), gap: 10 }) },
+  ])}
+<div class="v-fl">${ui.filter('医生', '全部')}${ui.filter('项目', '全部')}${ui.search('搜索患者或手机号', 220)}${ui.legend([['ok', '已到诊'], ['warn', '待确认'], ['bad', '爽约']])}</div>
+${ui.timeline({ from: 9, to: 18, head: '椅位', tail: '分钟', now: '09:41', off: [['12:00', '13:30', '午休', 'coffee']], rows, rh: 56 })}
+${ui.pop({
+    left: 357, top: 286, w: 280,
+    html: ui.who({ ch: '陈', name: '陈思远', meta: '女，34 岁', st: ui.st('已到诊', 'ok') })
+      + `<div class="v-list">${ui.kv('时间', '10:00–11:00')}${ui.kv('项目', '根管治疗')}${ui.kv('手机', '138 **** 6024')}${ui.kv('过敏史', ui.sign('alert') + '青霉素')}</div>`
+      + `<div class="v-acts">${ui.btn('改约', { cls: 'ghost sm' })}${ui.btn('叫号', { cls: 'ghost sm', attrs: 'data-go="detail"' })}</div>`,
+  })}
+</div></div>`;
+
   const home = `<div class="scr s16 p home">${statusBar()}
-${ui.nav({ title: '今日接诊', back: false, right: ui.seg(['我的', '全诊所'], 0, [null, 'web']) })}
+${ui.nav({ title: '今日接诊', back: false, left: ui.av('林', 32), right: ui.seg(['我的', '全诊所'], 0, [null, 'sched']) })}
 ${ui.week([['一', 2], ['二', 3], ['三', 4], ['四', 5], ['五', 6, 'on'], ['六', 7], ['日', 8, 'off']])}
-${ui.today({ time: '10:00 – 11:00', st: ui.st('已到诊', 'ok'), label: '陈思远，根管治疗第 2 次', foot: '2 号椅', ic: 'armchair', btn: ui.btn('开始接诊', { ic: 'stethoscope', attrs: 'data-go="detail"' }) })}
+${ui.today({ time: '10:00–11:00', st: ui.st('已到诊', 'ok'), label: '陈思远，根管治疗第 2 次', foot: '2 号椅', ic: 'armchair', btn: ui.btn('开始接诊', { ic: 'stethoscope', attrs: 'data-go="detail"' }) })}
 ${ui.lh('今日 6 位', '300 分钟')}
 <div class="v-list v-pad">
 ${ui.row({ a: '09:00', a2: '09:40', t: '何建军', t2: '补牙', st: ui.st('已完成', 'done'), n: 40 })}
@@ -87,16 +148,15 @@ ${ui.row({ a: '13:30', a2: '14:30', t: '蒋文博', t2: '根管治疗', n: 60 })
 ${ui.row({ a: '14:40', a2: '15:20', t: '魏子涵', t2: '补牙', st: ui.st('待确认', 'warn'), n: 40 })}
 ${ui.row({ a: '15:30', a2: '16:30', t: '罗婉清', t2: '嵌体修复', n: 60 })}
 </div>
-${ui.tabs(TABS, 0, [null, 'detail', 'rebook', null])}${homeBar()}</div>`;
+${ui.tabs(TABS, 0, [null, 'web', 'rebook', null])}${homeBar()}</div>`;
 
   const detail = `<div class="scr s16 p dt">${statusBar()}
 ${ui.nav({ title: '接诊', right: ui.iconBtn('ellipsis') })}
-<div class="hdr">${ui.who({ ch: '陈', name: '陈思远', meta: '女，34 岁', st: ui.st('接诊中', 'ok'), lg: true })}</div>
+<div class="hdr">${ui.who({ ch: '陈', name: '陈思远', meta: '女，34 岁', st: ui.st('接诊中', 'info'), lg: true })}</div>
 ${ui.lh('牙位图', ui.legend([['on', '本次'], ['fill', '已治疗'], ['dash', '缺失']]))}
 <div class="chart">${arch(upper)}<div class="low">${arch(lower, true)}</div></div>
 <div class="v-list v-pad">
 ${ui.kv('项目', '根管治疗第 2 次')}
-${ui.kv('时间', '10:00–11:00')}
 ${ui.kv('上次', '10/23 开髓封药')}
 ${ui.kv('过敏史', ui.sign('alert') + '青霉素')}
 </div>
@@ -112,39 +172,10 @@ ${ui.week([['一', 9], ['二', 10], ['三', 11], ['四', 12], ['五', 13, 'on'],
 ${ui.lh('上午', '可约 3 个')}
 <div class="v-pad">${ui.slots([['09:00', 'off'], ['09:30', 'off'], ['10:00', 'on'], ['10:30'], ['11:00'], ['11:30', 'off']], 3)}</div>
 ${ui.lh('下午')}
-${ui.err({ title: '加载失败', btn: '重试', h: 132 })}
+${ui.err({ title: '加载失败', btn: '重试', h: 124 })}
 <div class="v-list v-pad">${ui.kv('医生', '林知远')}${ui.kv('短信提醒', '提前 1 天')}</div>
 <div class="v-bar">${ui.btn('确认 <span class="v-num">11/13</span> 周五 <span class="v-num">10:00</span>', { attrs: 'data-go="home"' })}</div>
 ${homeBar()}</div>`;
 
-  const web = `<div class="web s16 p" style="height:800px">
-${ui.side({
-    logo: ui.logo('诊序', '', 'tooth'),
-    store: '望京门诊',
-    items: [['layout-dashboard', '概览'], ['calendar-days', '预约', true], ['users-round', '患者', false, null, 'detail'], ['receipt-text', '收费'], ['phone-call', '回访', false, pending], ['chart-column', '报表'], ['settings', '设置']],
-    me: { ch: '苏', name: '苏晴', role: '前台' },
-  })}
-<div class="v-main">
-${ui.head({
-    title: '预约',
-    mid: ui.dateSw('11/06 周五') + ui.btn('今天', { cls: 'ghost d' }) + ui.seg(['日', '周'], 0),
-    right: ui.btn('导出', { ic: 'download', cls: 'ghost' }) + ui.btn('新建预约', { ic: 'plus', attrs: 'data-go="rebook"' }),
-  })}
-${ui.kpis([
-    { k: '今日预约', v: all.length, u: '位' },
-    { k: '已到诊', v: arrived, u: '位' },
-    { k: '待确认', v: pending, st: 'warn' },
-    { k: '椅位使用率', v: rate, u: '%', bars: ui.bars(perHour.map((m, i) => [9 + i, m, i === 0]), { k: 36 / Math.max(...perHour), gap: 11 }) },
-  ])}
-<div class="v-fl">${ui.filter('医生', '全部')}${ui.filter('项目', '全部')}${ui.search('搜索患者或手机号', 220)}${ui.legend([['ok', '已到诊'], ['warn', '待确认'], ['bad', '爽约']])}</div>
-${ui.timeline({ from: 9, to: 18, head: '椅位', tail: '分钟', now: '09:41', off: [['12:00', '13:30', '午休', 'coffee']], rows })}
-${ui.pop({
-    left: 364, top: 362, w: 282,
-    html: ui.who({ ch: '陈', name: '陈思远', meta: '女，34 岁', st: ui.st('已到诊', 'ok') })
-      + `<div class="v-list">${ui.kv('时间', '10:00–11:00')}${ui.kv('项目', '根管治疗')}${ui.kv('手机', '138 **** 6024')}${ui.kv('过敏史', ui.sign('alert') + '青霉素')}</div>`
-      + `<div class="v-acts">${ui.btn('改约', { cls: 'ghost sm' })}${ui.btn('叫号', { cls: 'ghost sm', attrs: 'data-go="detail"' })}</div>`,
-  })}
-</div></div>`;
-
-  return { name: '诊序', css, screens: { home, detail, rebook, web }, desktop: ['web'], start: 'web', url: 'app.zhenxu.cn', boardFont: "'PingFang SC','Noto Sans SC',sans-serif" };
+  return { name: '诊序', css, screens: { web, sched, home, detail, rebook }, desktop: ['web', 'sched'], start: 'web', url: 'app.zhenxu.cn' };
 };
