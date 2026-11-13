@@ -6,7 +6,7 @@ source "$(dirname "$0")/common.sh"
 on "mkdir -p '$REMOTE_KIT' '$REMOTE_DEMOS'"
 sync_kit
 on "set -e; $NODE_PATH_CMD; cd '$REMOTE_KIT'
-  [ -d node_modules/lucide-static ] || npm ci --omit=dev --no-audit --no-fund
+  [ -d node_modules/sharp ] || npm ci --omit=dev --no-audit --no-fund
   [ -x .venv/bin/pyftsubset ] || { python3 -m venv .venv && .venv/bin/pip install -q fonttools brotli; }
   python3 fetch_assets.py
   [ -d assets/总览 ] || node sheet.js

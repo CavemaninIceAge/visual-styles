@@ -20,6 +20,7 @@ module.exports = (L) => {
     shadow: null,
     margin: 24,
     photo: 'grayscale(1) contrast(1.3) brightness(.9)',   // 再叠 mix-blend-mode:multiply，白处透出纸色
+    icon: { stroke: 1.6, cap: 'square', join: 'miter', fill: 'none' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   const SANS = '"Noto Sans SC",sans-serif';
   const SERIF = '"Noto Serif SC",serif';

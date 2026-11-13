@@ -28,6 +28,7 @@ module.exports = (L) => {
     shadow: '0 20px 36px -24px rgba(70,80,92,.36)',   // 又淡又散；浮起的条加一层 0 3px 10px -6px
     margin: 24,
     photo: 'saturate(.68) contrast(.9) brightness(1.05) sepia(.12)',
+    icon: { stroke: 1.6, cap: 'round', join: 'round', fill: 'tint' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   const { pink: PK, blue: BL, dusk: DK, shade: SH } = T.accents;
   const MILK = T.surface, INK = T.ink;
@@ -214,7 +215,7 @@ module.exports = (L) => {
     iconBtn: (name, attrs = '') => `<div class="v-ib" ${attrs}>${icon(name, 18, 1.8)}</div>`,
     // 底部浮起的标签栏；选中项图标垫燕麦色圆角块
     tabs: (items, cur = 0, go = []) => `<div class="v-tabs">${items.map(([ic, t], i) => `<div class="${i === cur ? 'on' : ''}" ${go[i] ? `data-go="${go[i]}"` : ''}><i>${icon(ic, 22, 1.6)}</i><span>${t}</span></div>`).join('')}</div>`,
-    // 主按钮：默认不带图标（这个风格的按钮只有字）；ic 传 lucide 名字时图标在字前
+    // 主按钮：默认不带图标（这个风格的按钮只有字）；ic 传图标名时图标在字前
     btn: (text, { ic = '', cls = '', attrs = '' } = {}) => `<div class="v-btn ${cls}" ${attrs}>${ic ? icon(ic, 18, 1.8) : ''}<span>${text}</span></div>`,
     // 大圆：disc(271, '#E3C8C1', 'left:52px;top:150px')；op 小于 1 时是半透明的第二个圆，从屏幕边探进来，给空的大色块加一层
     disc: (size, color = PK, pos = '', op = 1) => `<div class="v-disc" style="width:${size}px;height:${size}px;background:${color};${op < 1 ? `opacity:${op};` : ''}${pos}"></div>`,

@@ -19,6 +19,7 @@ module.exports = (L) => {
     shadow: '6px 6px 0 #111111',   // 小件 3px 3px 0，贴纸 4px 4px 0
     margin: 24,
     photo: 'contrast(1.2) brightness(.94) saturate(1.08)',
+    icon: { stroke: 2.6, cap: 'square', join: 'miter', fill: 'none' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   const { pink: P, blue: B, mint: G } = T.accents;
   const Y = T.primary, K = T.ink;

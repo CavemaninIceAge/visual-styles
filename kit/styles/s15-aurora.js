@@ -22,6 +22,7 @@ module.exports = (L) => {
     shadow: '0 1px 0 rgba(255,255,255,.9) inset,0 0 0 1px rgba(20,19,27,.035),0 10px 30px -16px rgba(60,40,120,.2)',
     margin: 24,                       // 文字离边 24，卡片和输入框离边 20
     photo: 'saturate(.92) brightness(1.06) contrast(.97)',
+    icon: { stroke: 1.8, cap: 'round', join: 'round', fill: 'tint' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   const { peach: C1, pink: C2, violet: C3, blue: C4 } = T.accents;
   const K = T.ink, G = T.ink2;

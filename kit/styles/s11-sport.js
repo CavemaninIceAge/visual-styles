@@ -23,6 +23,7 @@ module.exports = (L) => {
     shadow: null,
     margin: 24,
     photo: 'grayscale(1) contrast(1.75) brightness(.86)',
+    icon: { stroke: 2, cap: 'square', join: 'miter', fill: 'none' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   const css = `
 .s11{--v:${V};--bg:${BG};--gr:${GR};--dv:${DV};--ln:#1E1E1E;--pn:#1C1C1C;--sf:#141414;--sub:#A8A8A8;background:var(--bg);color:#fff;font-family:"Noto Sans SC",sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}

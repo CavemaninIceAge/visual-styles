@@ -28,6 +28,7 @@ module.exports = (L) => {
     shadow: null,           // 不用投影；圆形小图外圈一道 10px 底色描边（box-shadow:0 0 0 10px 燕麦米）
     margin: 24,
     photo: 'sepia(.5) saturate(1.05) contrast(1) brightness(.95)',   // 主图那张的滤镜；外加暖光叠层和胶片颗粒（.v-photo 自带）
+    icon: { stroke: 1.5, cap: 'round', join: 'round', fill: 'none' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   const HW = '"LXGW Marker Gothic","Noto Sans SC",sans-serif';
   const SANS = '"Noto Sans SC",sans-serif';
@@ -261,7 +262,7 @@ ${light ? `<rect width="${w}" height="${h}" fill="url(#${id}g)"/>` : ''}<g trans
     dome: (inner, { h = 334, soft = false, style = '', cls = '' } = {}) => `<div class="v-dome${soft ? ' soft' : ''} ${cls}" style="height:${h}px;${style}">${inner}</div>`,
     // 规格行，最多两样：facts([['bed-double','1.8 米大床'], ['maximize','36 ㎡']])
     facts: (items) => `<div class="v-facts">${items.map(([ic, t]) => `<span>${icon(ic, 17, 1.5)}${t}</span>`).join('')}</div>`,
-    // ui.state(text, ic)：状态，绿圆里一个 lucide 图标（默认 check）+ 深鼠尾草字
+    // ui.state(text, ic)：状态，绿圆里一个图标（icon() 的名字，默认 check）+ 深鼠尾草字
     state: (text, ic = 'check') => `<span class="v-state"><i>${icon(ic, 14, 2.2)}</i>${text}</span>`,
     // 月历：month({ name: '十一月', year: '2026', lead: 6（1 号前空几格，周一起）, days: 30, from: 6, to: 8, off: [14,15,21], week: true })
     month: ({ name, year = '', lead = 0, days = 30, from = 0, to = 0, off = [], week = true } = {}) => {

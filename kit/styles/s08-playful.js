@@ -37,6 +37,7 @@ module.exports = (L) => {
     shadow: `0 6px 0 ${C.bd}`,       // 厚底：同色深一档、不模糊、往下 6px（白色东西用 #E2E7EE）
     margin: 24,
     photo: 'saturate(1.15) contrast(1.04) brightness(1.04)',
+    icon: { stroke: 2.6, cap: 'round', join: 'round', fill: 'solid' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   // 站酷快乐体只收了常用字（缺 玥 喆 祎 彧 赟 这类名字用字），缺的字落到圆体 Chill Round。
   // 图册模块的后备字写的是 "Douyin Sans"，这里用 Chill Round 就够（抖音美好体的排版特性读不了，pack.js 要去掉特性才能内嵌）。
@@ -362,12 +363,12 @@ ${arms === 'hand' ? `${hold ? `<g transform="translate(96 75)">${hold}</g>` : ''
     pin: (s, c = 'var(--o)') => `<svg width="${s}" height="${s}" viewBox="0 0 24 24"><path d="M12 22s7.5-7 7.5-12.6A7.5 7.5 0 0 0 4.5 9.4C4.5 15 12 22 12 22Z" fill="${c}"/><circle cx="12" cy="9.6" r="3" fill="#fff"/></svg>`,
     chk: (s = 18, c = '#fff') => `<svg width="${s}" height="${s}" viewBox="0 0 18 18"><path d="M4 9.5l3.2 3.2L14 5.5" stroke="${c}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`,
     back: (s = 20) => `<svg width="${s}" height="${s}" viewBox="0 0 20 20"><path d="M12.5 4 6.5 10l6 6" stroke="${C.ink}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`,
-    // 实心暂停、播放（lucide 的线性暂停在厚按键里像「00」）
+    // 实心暂停、播放（线性的暂停在厚按键里像「00」）
     pause: (s = 26, c = C.ink) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24"><rect x="5" y="4" width="5" height="16" rx="2.5" fill="${c}"/><rect x="14" y="4" width="5" height="16" rx="2.5" fill="${c}"/></svg>`,
     play: (s = 26, c = '#fff') => `<svg width="${s}" height="${s}" viewBox="0 0 24 24"><path d="M7 4.5 19 12 7 19.5Z" fill="${c}" stroke="${c}" stroke-width="3" stroke-linejoin="round"/></svg>`,
     speaker: (s = 26) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24"><path d="M3 9.5h4l5-4.5v14l-5-4.5H3z" fill="#fff"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg>`,
   };
-  // 标签栏的实心平涂图标（键是 lucide 名；没有的退回 lucide 线性图标、线宽 2.6）
+  // 标签栏的实心平涂图标（键是图标名；没有的退回 icon() 的线性图标、线宽 2.6）
   const FI = {
     house: (c) => `<path d="M4 13 14 4l10 9v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3Z" fill="${c}"/><rect x="11" y="17" width="6" height="9" rx="2" fill="#fff"/>`,
     'layout-grid': (c) => `<rect x="4" y="4" width="20" height="20" rx="6" fill="${c}"/><path d="M9 11h10M9 17h7" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`,
@@ -393,11 +394,11 @@ ${arms === 'hand' ? `${hold ? `<g transform="translate(96 75)">${hold}</g>` : ''
     logo: (name, en = '', { sym = head(38, { kind: 'bear' }), fs } = {}) => `<div class="v-logo"${fs ? ` style="font-size:${fs}px"` : ''}>${sym}<span>${name}</span>${en ? `<em>${en}</em>` : ''}</div>`,
     // App 顶栏：左边白色厚底小方键（返回），标题居中，right 放 ui.stat / ui.iconBtn
     nav: ({ title = '', back = true, right = '', left = '' } = {}) => `<div class="v-nav">${left || (back ? `<div class="v-ib" data-back>${ic.back()}</div>` : '<span></span>')}${title ? `<div class="t">${title}</div>` : ''}${right || '<span></span>'}</div>`,
-    // 小方键：c = '' 白 / 'b' 天蓝（喇叭、播放）/ 'g' / 'o'；inner 是 lucide 名或现成的 svg
+    // 小方键：c = '' 白 / 'b' 天蓝（喇叭、播放）/ 'g' / 'o'；inner 是图标名或现成的 svg
     iconBtn: (inner, { c = '', attrs = '', size = 22 } = {}) => `<div class="v-ib ${c}" ${attrs}>${inner.startsWith('<') ? inner : icon(inner, size, 3, c ? 'style="color:#fff"' : '')}</div>`,
     // 底部标签栏：tabs([['house', '今天'], ['user', '我的']], 0, ['home', 'me'])。当前格的图标坐在浅绿小垫子上、图标草绿（走 --g）、字藏青；其余没有垫子，图标 #9AA6B6、字灰蓝
     tabs: (items, cur = 0, go = []) => `<div class="v-tabs">${items.map(([n, t], i) => `<div class="${i === cur ? 'on' : ''}" ${go[i] ? `data-go="${go[i]}"` : ''}><i>${tabIc(n, i === cur ? 'var(--g)' : C.off)}</i><span>${t}</span></div>`).join('')}</div>`,
-    // 主按钮：天蓝厚底。ic = lucide 名（白、线宽 3）；tile = 按钮右头的小黄字卡（一个汉字或 40×40 的 SVG 片段）
+    // 主按钮：天蓝厚底。ic = 图标名（白、线宽 3）；tile = 按钮右头的小黄字卡（一个汉字或 40×40 的 SVG 片段）
     btn: (text, { ic: icn = '', tile = '', cls = '', attrs = '' } = {}) => `<div class="v-btn ${cls}" ${attrs}><span>${text}</span>${icn ? icon(icn, 24, 3) : ''}${tile ? `<span class="bt">${/^[^<]{1,2}$/.test(tile) ? tile : `<svg width="30" height="30" viewBox="0 0 40 40">${tile}</svg>`}</span>` : ''}</div>`,
     // 厚按键（任意尺寸）：key('登录', { c: 'w', w: 120, h: 50, fs: 20 })
     key: (text, { c = 'b', w, h = 56, r = 20, fs, attrs = '', pos = '' } = {}) => `<div class="v-tk ${c}" ${attrs} style="${w ? `width:${w}px;` : 'padding:0 26px;'}height:${h}px;border-radius:${r}px;${fs ? `font-size:${fs}px;` : ''}${pos ? `position:absolute;${pos}` : ''}">${text}</div>`,

@@ -41,6 +41,7 @@ module.exports = (L) => {
     shadow: '0 10px 22px -10px rgba(40,20,10,.55)',   // 拍立得、胶卷、唱片这些「放在桌上的物件」才有
     margin: 24,
     photo: 'sepia(.22) saturate(.95) contrast(.94) brightness(1.05)',   // 外加暖色柔光、褪色、漏光、灰尘颗粒四层（ui.photo 自带）
+    icon: { stroke: 1.7, cap: 'round', join: 'round', fill: 'none' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
 
   const uri = (svg) => `url('data:image/svg+xml,${encodeURIComponent(svg).replace(/'/g, '%27')}')`;

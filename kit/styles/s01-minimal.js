@@ -20,6 +20,7 @@ module.exports = (L) => {
     shadow: null,           // 不加卡片阴影；只有产品脚下的接地影
     margin: 28,             // 文字左边线；顶栏图标 24
     photo: 'saturate(.9) brightness(1.04)',
+    icon: { stroke: 1.3, cap: 'round', join: 'round', fill: 'none' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   const css = `
 /* 换品牌只改这些变量：--acc 主色、--on 按钮字色、--bg 页面底和标签栏、--mist 卡片和次按钮、--st1/2/3 展台渐变、--wb1/2/3 网页底渐变 */

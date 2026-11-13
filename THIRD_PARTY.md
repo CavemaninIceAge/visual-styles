@@ -19,7 +19,7 @@
 
 ## 图标
 
-[Lucide](https://lucide.dev)，ISC License，由 `npm ci` 安装。
+图标是本仓库自己画的（`kit/icons/`，规范见 `kit/icons/SPEC.md`），和代码一样按 MIT，没有用第三方图标库。
 
 ## 依赖
 

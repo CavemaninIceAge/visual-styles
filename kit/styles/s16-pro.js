@@ -37,6 +37,7 @@ module.exports = (L) => {
     photo: 'none',
     // 图册色卡原色（纯白、浅灰、工时蓝、正文灰、墨蓝黑），这一版改照飞书，只留作对照，界面上不用
     catalog: { white: '#FFFFFF', gray: '#F6F7F9', blue: '#2F4FE0', text: '#5B6475', ink: '#111827' },
+    icon: { stroke: 2, cap: 'round', join: 'round', fill: 'none' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   // 标签配色：底是该色 20% 透明（橙 15%），字是同色深一档，字重 500
   const TAGC = {
@@ -371,7 +372,7 @@ ${tagCss}
     star: '<path d="m12 6.2 1.8 3.7 4 .6-2.9 2.8.7 4L12 15.4l-3.6 1.9.7-4-2.9-2.8 4-.6Z" fill="none" stroke="#fff" stroke-width="1.9" stroke-linejoin="round"/>',
   };
   const mark = (s = 28, kind = 'clock', c = `var(--b,${B})`) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" style="flex:none"><rect width="24" height="24" rx="6" style="fill:${c}"/>${MARKS[kind] || MARKS.clock}</svg>`;
-  // lucide 图标照飞书的线宽：24 网格上 2 个单位、圆头圆角；按钮和输入框里 16，侧栏 18，顶栏 20，手机 24
+  // 图标照飞书的线宽：24 网格上 2 个单位、圆头圆角；按钮和输入框里 16，侧栏 18，顶栏 20，手机 24
   const IC = (n, s = 16) => icon(n, s, 2);
   const hrs = (t) => { if (typeof t === 'number') return t; const [h, m] = String(t).split(':').map(Number); return h + m / 60; };
   // 头像色：没有照片时按姓轮换几种飞书色板里的色，白字

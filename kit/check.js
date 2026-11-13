@@ -3,6 +3,8 @@
 // 还查 AI 味（审美守则第二节）：点和分隔符、装饰圆点、等宽字、眉题、加字距的小字、大写英文小字、编号、破折号、
 // emoji 和箭头字符、渐变字、用空格拉开的字、压在大数字上的说明词。这些算「问题」，要改到零；
 // 副标题、左侧竖条、套话、整数假数据、SVG 里的成串小圆点、画出来的竖线分隔算「提醒」，看一眼
+// 还查网上图标库的痕迹（审美守则第一节第 7 条：图标自己画）：lucide、iconfont、Font Awesome、Material Icons / Symbols、Bootstrap Icons、
+// Iconify、icons8、flaticon 等的类名、标签、字体、图片地址、外链脚本和样式表，算「问题」
 (async () => {
   await document.fonts.ready;
   await Promise.all([...document.images].map((i) => (i.complete ? 0 : new Promise((r) => { i.onload = i.onerror = r; }))));
@@ -23,6 +25,33 @@
   const declared = new Set([...document.fonts].map((f) => f.family.replace(/["']/g, '')));
   const failed = new Set([...document.fonts].filter((f) => f.status === 'error').map((f) => f.family.replace(/["']/g, '')));
   const rep = {};
+
+  // ---------- 网上图标库（审美守则第一节第 7 条） ----------
+  // 图标一律是 icon() 出的自己画的那一套（<svg class="ic">）；下面这些是从图标库拿来的记号
+  const LIB_CLASS = /^(lucide(-[\w-]+)?|fa[srlbdtk]|fa-[a-z][\w-]*|material-(icons|symbols)[\w-]*|bi-[a-z][\w-]*|iconify[\w-]*|iconfont|icon-?font-[\w-]+|icons8[\w-]*|flaticon[\w-]*|fi-[a-z]{1,3}-[\w-]+|glyphicon[\w-]*|feather(-[\w-]+)?|ri-[a-z][\w-]*-(line|fill)|ionicon[\w-]*|tabler-icon[\w-]*|remixicon)$/i;
+  const LIB_TAG = /^(iconify-icon|ion-icon|lord-icon|box-icon)$/i;
+  const LIB_ATTR = /^(data-lucide|data-feather|data-icon|data-fa-[\w-]+|data-iconify[\w-]*)$/i;
+  const LIB_FONT = /font ?awesome|material (icons|symbols)|bootstrap-icons|iconfont|remixicon|ionicons|icomoon|flaticon|glyphicons|tabler-icons|phosphor/i;
+  const LIB_URL = /lucide|font-?awesome|fontawesome|material-?(icons|symbols)|bootstrap-icons|iconify|icons8|flaticon|iconfont|at\.alicdn\.com|remixicon|ionicons|icomoon|tabler-icons|phosphor-icons/i;
+  const libWhy = (el, cs) => {
+    const cls = el.getAttribute('class') || '';
+    const c = cls.split(/\s+/).find((x) => x && LIB_CLASS.test(x));
+    if (c) return `类名「${c}」`;
+    if (LIB_TAG.test(el.tagName)) return `<${el.tagName.toLowerCase()}> 标签`;
+    for (const a of el.attributes) if (LIB_ATTR.test(a.name)) return `属性 ${a.name}`;
+    const fam = cs.fontFamily || '';
+    if (LIB_FONT.test(fam)) return `图标字体 ${fam.split(',')[0].replace(/["']/g, '')}`;
+    for (const pe of ['::before', '::after']) { const pf = getComputedStyle(el, pe).fontFamily || ''; if (getComputedStyle(el, pe).content !== 'none' && LIB_FONT.test(pf)) return `${pe} 用图标字体 ${pf.split(',')[0].replace(/["']/g, '')}`; }
+    const src = el.getAttribute('src') || el.getAttribute('href') || el.getAttribute('xlink:href') || '';
+    if (src && LIB_URL.test(src)) return `地址 ${src.slice(0, 50)}`;
+    if (cs.backgroundImage && cs.backgroundImage !== 'none' && LIB_URL.test(cs.backgroundImage)) return '背景图来自图标库';
+    if ((cs.maskImage || cs.webkitMaskImage || 'none') !== 'none' && LIB_URL.test(cs.maskImage || cs.webkitMaskImage)) return '遮罩图来自图标库';
+    return '';
+  };
+  const LIB_DOC = [];
+  for (const e of document.querySelectorAll('link[href], script[src]')) { const u = e.getAttribute('href') || e.getAttribute('src'); if (LIB_URL.test(u)) LIB_DOC.push(`页面引用了 ${u.slice(0, 60)}`); }
+  for (const f of document.fonts) if (LIB_FONT.test(f.family)) LIB_DOC.push(`载入了图标字体 ${f.family.replace(/["']/g, '')}`);
+  const LIB_HINT = '图标自己画：用 icon() 取我们的图标集，缺的照 kit/icons/SPEC.md 画（项目专用的 defineIcon），不用网上图标库';
 
   // ---------- AI 味（审美守则第二节） ----------
   // 状态栏、微信胶囊、底部横条、灵动岛、浏览器外框是真实系统界面，不查；data-dot 包着的是允许的点（轮播页码、未读红点、点阵图）
@@ -63,7 +92,8 @@
   }
   // SVG 里的小圆点：字标里的直接算问题，别处一张图里有三颗以上算提醒；虚线画的点线也提醒
   function svgDots(svg, issues, notes) {
-    if (svg.closest(PUBLIC_UI) || svg.closest('[data-dot]')) return;
+    // 图标集里的图标（<svg class="ic">）按 kit/icons/SPEC.md 画，省略号的三个点是图形本身
+    if (svg.closest(PUBLIC_UI) || svg.closest('[data-dot]') || svg.classList.contains('ic')) return;
     const small = [...svg.querySelectorAll('circle, ellipse')].filter((c) => {
       const b = c.getBoundingClientRect(); const f = getComputedStyle(c).fill;
       return b.width >= 2 && b.width <= 10 && Math.abs(b.width - b.height) <= 1.5 && f && f !== 'none' && tint(f);
@@ -92,7 +122,7 @@
       if (!okDot && DOTS.test(pc)) issues.push({ t: '点', s: (txt || el.tagName.toLowerCase()).slice(0, 18), d: `${pe} 里写了「${pc.slice(0, 6)}」` });
       if (DASH.test(pc) || /[|｜]/.test(pc) || /^\s*[\/／]\s*$/.test(pc)) issues.push({ t: '分隔符', s: (txt || el.tagName.toLowerCase()).slice(0, 18), d: `${pe} 里写了「${pc.slice(0, 6)}」` });
       const sy = symbols(pc);
-      if (sy.length) issues.push({ t: '符号装饰', s: (txt || el.tagName.toLowerCase()).slice(0, 18), d: `${pe} 里写了「${sy.join('')}」：换成 lucide 图标或删掉` });
+      if (sy.length) issues.push({ t: '符号装饰', s: (txt || el.tagName.toLowerCase()).slice(0, 18), d: `${pe} 里写了「${sy.join('')}」：换成 icon() 图标或删掉` });
       const w = parseFloat(ps.width); const h = parseFloat(ps.height);
       if (!okDot && isDot(ps, w, h)) issues.push({ t: '圆点', s: (txt || String(el.className) || el.tagName.toLowerCase()).slice(0, 18), d: `${pe} 画了 ${Math.round(w)}px 的圆点：删掉；状态写字或配图标` });
     }
@@ -174,6 +204,8 @@
       if (r.width < 1 || r.height < 1) return;
       const txt = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join('').trim();
       if (!el.children.length || txt) count++;
+      const lib = libWhy(el, cs);
+      if (lib) issues.push({ t: '图标库', s: (txt || el.getAttribute('class') || el.tagName.toLowerCase()).slice(0, 18), d: `${lib}：${LIB_HINT}` });
       if (!el.closest(PUBLIC_UI)) aiLook(el, cs, r, txt, issues, notes, seenMono, texts);
       if (!txt) return;
       const snip = txt.slice(0, 18);
@@ -203,6 +235,7 @@
     root.querySelectorAll('img').forEach((i) => { if (!i.naturalWidth) issues.push({ t: '图片没载入', s: i.src.slice(-40), d: '' }); });
     // 字体串的双引号写进 style="…" 会把属性截断，样式悄悄失效，这里能查出来
     [root, ...root.querySelectorAll('*')].forEach((el) => { for (const a of el.attributes) if (!/^[a-zA-Z_:][-\w:.]*$/.test(a.name)) issues.push({ t: '属性被截断', s: a.name.slice(0, 18), d: el.tagName.toLowerCase() + '（style 里的双引号换成单引号）' }); });
+    for (const d of LIB_DOC) issues.push({ t: '图标库', s: '页面', d: `${d}：${LIB_HINT}` });
     eyebrows(texts, issues, notes);
     rep[one.dataset.s] = { 元素: count, 问题: issues, 提醒: notes };
   });

@@ -28,6 +28,7 @@ module.exports = (L) => {
     shadow: '0 12px 24px -12px rgba(240,84,92,.7)',   // 只给主按钮：主色的柔光往下沉；网页浮签用 0 10px 24px -14px rgba(35,32,29,.5)
     margin: 24,
     photo: 'saturate(1.08) brightness(1.04) contrast(1.02)',
+    icon: { stroke: 2, cap: 'round', join: 'round', fill: 'none' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   const A = T.accents;
   const HV = '"Noto Sans SC","PingFang SC",sans-serif';      // 标题：思源黑体 900
@@ -227,7 +228,7 @@ module.exports = (L) => {
     btn: (text, { ic = '', cls = '', attrs = '' } = {}) => `<div class="v-btn ${cls}" ${attrs}><span>${text}</span>${ic ? icon(ic, 20, 2.6) : ''}</div>`,
     // 选择胶囊：pill('豆豆', { av: avatar('',{s:34,photo,…}) }) 或 pill('望京店', { ic: 'map-pin', hi: true })；hi 让图标变主色
     pill: (text, { av = '', ic = '', hi = false, more = true, attrs = '' } = {}) => `<div class="v-pill ${av ? 'av' : ''}" ${attrs}>${av}${ic ? icon(ic, 18, 2.2, hi ? 'style="color:var(--c)"' : '') : ''}<span>${text}</span>${more ? icon('chevron-down', 16, 2.4, 'data-more') : ''}</div>`,
-    // 评分：rate('4.93')，lucide 圆头星 + Nunito 数字；放进 meta、people、float 里用
+    // 评分：rate('4.93')，圆头星（icon('star')） + Nunito 数字；放进 meta、people、float 里用
     rate: (n, { s = 14 } = {}) => `<span class="v-rate">${icon('star', s, 2.4)}<b>${n}</b></span>`,
     // 照片下那行灰字：meta([ui.rate('4.93'), '1.2 km'])，最多两样（第三样起不显示），两段空 14px；三样都要说就写成一句话传一样：meta(['1.2 km，营业到 21:00'])
     meta: (items) => `<div class="v-mt">${items.slice(0, 2).map((t) => (String(t).startsWith('<') ? t : `<span>${t}</span>`)).join('')}</div>`,

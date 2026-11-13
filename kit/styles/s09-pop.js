@@ -28,6 +28,7 @@ module.exports = function starter(L, over = {}) {
     shadow: null,           // 不加阴影：靠撞色分层
     margin: 24,
     photo: 'saturate(1.2) contrast(1.08)',   // 普通照片；要和色卡融成一体用 ui.pic 的双色调
+    icon: { stroke: 2.2, cap: 'round', join: 'round', fill: 'none' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   const P = T.bg, Y = T.primary, { red: R, pink: PK, ink: K, deep: DP } = T.accents;
   const QK = '"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif';

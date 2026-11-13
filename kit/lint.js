@@ -3,6 +3,7 @@
 // 风格说明和样例由 tools/lint.sh 同步到 kit/.docs/ 下再查；没有 .docs 就跳过文档部分。
 // 报告分两档：错（必须改）、提醒（看一眼，可能有理由）。有错时退出码 1。
 // 去 AI 味（审美守则第二节）的静态部分也在这里：起手包、风格说明、样例里不许有点、等宽字、小标题组件、加字距的小字、破折号
+// 图标自己画（审美守则第一节第 7 条）：起手包和样例源码里不许引用网上图标库（lucide、iconfont、Font Awesome、Material Icons 等）
 const fs = require('fs');
 const path = require('path');
 const L = require('./lib');
@@ -11,7 +12,7 @@ const KIT = __dirname;
 const STY = path.join(KIT, 'styles');
 const DOCS = path.join(KIT, '.docs');
 
-const T_FIELDS = ['bg', 'surface', 'ink', 'ink2', 'line', 'primary', 'onPrimary', 'accents', 'fonts', 'radius', 'border', 'shadow', 'margin', 'photo'];
+const T_FIELDS = ['bg', 'surface', 'ink', 'ink2', 'line', 'primary', 'onPrimary', 'accents', 'fonts', 'radius', 'border', 'shadow', 'margin', 'photo', 'icon'];
 const NEED_CLASS = ['v-pad', 'v-h1', 'v-h2', 'v-h3', 'v-tx', 'v-mut', 'v-num', 'v-big', 'v-price', 'v-btn', 'v-card', 'v-list', 'v-row', 'v-chips', 'v-chip', 'v-inp', 'v-tabs', 'v-nav', 'v-logo'];
 const NEED_SEL = [/\.v-btn\.wide\b/, /\.v-btn\.ghost\b/, /\.v-chip\.on\b/, /\.v-card\s*>\s*\.ph\b/, /\.v-card\s+\.bd\b/];
 const PUBLIC = ['scr', 'web', 'sb', 'mn', 'cap', 'hb', 'dev', 'dev-s', 'dev-z', 'island', 'brw', 'ic'];
@@ -43,6 +44,13 @@ function aiTells(text, label, err, dashText = text) {
   const dash = firstHit(dashText, DASH_RE); if (dash) err(`${label}有破折号「—」：${dash.slice(0, 70)}`);
   const mono = [...new Set((text.match(MONO_CSS) || []).map((m) => m.replace(/["']/g, '')))];
   if (mono.length) err(`${label}用了等宽字体：${mono.join('、')}`);
+}
+
+// 网上图标库：源码（含注释，注释里的说法会被照抄）里提到或引用就报错
+const ICON_LIB = /lucide|font-?awesome|material[- ](icons|symbols)|bootstrap-icons|iconify|icons8|flaticon|iconfont|at\.alicdn\.com|remixicon|ionicons|glyphicon|tabler-icons|phosphor-icons|\bbi-[a-z]|(^|[\s"'`])fa[srlb]?\s+fa-[a-z]|(^|[\s"'`])fa-[a-z][\w-]*/i;
+function iconLibs(text, label, err) {
+  const hit = firstHit(text, ICON_LIB);
+  if (hit) err(`${label}引用了网上图标库：${hit.slice(0, 70)}（图标用 icon() 取自己画的那一套，缺的照 kit/icons/SPEC.md 画，项目专用的用 defineIcon）`);
 }
 
 const stripComments = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"`])\/\/.*$/gm, '$1');
@@ -205,6 +213,14 @@ function lintStyle(key) {
   const code = stripComments(raw);
   for (const [k, v] of Object.entries(T.fonts || {})) if (v && MONO_RE.test(String(v).split(',')[0])) err(`T.fonts.${k} 是等宽字体 ${v}：换成风格自己的字体，数字对齐用 tabular-nums`);
   aiTells(raw, '起手包（含注释里的用法示例）', err);
+  iconLibs(raw, '起手包（含注释）', err);
+  if (T.icon) {
+    const o = T.icon;
+    if (typeof o.stroke !== 'number') err('T.icon.stroke 要是数字（没给线宽时的线宽）');
+    if (!['round', 'square'].includes(o.cap)) err(`T.icon.cap 只能是 round 或 square：现在是 ${o.cap}`);
+    if (!['round', 'miter'].includes(o.join)) err(`T.icon.join 只能是 round 或 miter：现在是 ${o.join}`);
+    if (!['none', 'tint', 'solid'].includes(o.fill)) err(`T.icon.fill 只能是 none、tint、solid：现在是 ${o.fill}`);
+  }
   for (const k of Object.keys(ui)) if (KICKER_UI.test(k)) err(`ui.${k} 是眉题 / 书眉 / 页码 / 期号组件：删掉，用到它的地方改掉`);
   for (const { sel, rule } of sels) { const why = labelRule(rule); if (why) err(`标签式小字 / 拉开字距（${why}）：${sel}`); }
   const kc = KICK_CLASS.exec(css); if (kc) err(`css 里有眉题 / 书眉 / 页码 / 等宽这类类名 ${kc[0]}：删掉，用到的地方改掉`);
@@ -266,6 +282,7 @@ function lintDocs(key, S, cat) {
   const noRefs = cut(noDont, '参考图');
   const codeParts = [...noDont.matchAll(/```[\s\S]*?```|`[^`\n]+`/g)].map((m) => m[0]).join('\n');
   aiTells(noDont.replace(MONO_CSS, ''), '风格说明（「别做」以外）', err, codeParts);
+  iconLibs(noDont, '风格说明（「别做」以外）', err);
   const dotAll = firstHit(md, DOT_RE); if (dotAll && !DOT_RE.test(noDont)) err(`风格说明（「别做」或图册原文里）有「·」这类点：${dotAll.slice(0, 70)}`);
   const monoNames = [...new Set((noRefs.match(MONO_CSS) || []).map((m) => m.replace(/["']/g, '')))];
   if (monoNames.length) err(`风格说明写了等宽字体名（只能写在「别做」「参考图」里）：${monoNames.join('、')}`);
@@ -284,6 +301,7 @@ function lintDemo(file, label, err) {
   const src = fs.readFileSync(file, 'utf8');
   const code = stripComments(src);
   aiTells(src, label, err);
+  iconLibs(src, label, err);
   for (const { sel, rule } of selectors((/const css = `([\s\S]*?)`;/.exec(code) || [])[1] || '')) { const why = labelRule(rule); if (why) err(`${label}标签式小字（${why}）：${sel}`); }
 }
 
@@ -311,6 +329,16 @@ if (!want.length && fs.existsSync(path.join(DOCS, 'examples'))) {
   for (const d of fs.readdirSync(path.join(DOCS, 'examples'))) {
     if (all.includes(d)) continue;
     const f = path.join(DOCS, 'examples', d, 'demo.js');
+    // 能用的应用样例（kit/app）：src 下每个文件都查点、破折号、等宽字
+    if (fs.existsSync(path.join(DOCS, 'examples', d, 'app.json'))) {
+      const E = [];
+      const files = (dd) => fs.readdirSync(dd, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? files(path.join(dd, e.name)) : /\.(js|css)$/.test(e.name) ? [path.join(dd, e.name)] : []));
+      for (const g of files(path.join(DOCS, 'examples', d, 'src'))) { const t = fs.readFileSync(g, 'utf8'); const lb = path.relative(path.join(DOCS, 'examples', d), g) + ' '; aiTells(t, lb, (m) => E.push(m)); iconLibs(t, lb, (m) => E.push(m)); }
+      nE += E.length;
+      console.log(`examples/${d}（应用）：${E.length ? E.length + ' 处错' : '没有错'}`);
+      E.forEach((m) => console.log('  错    ' + m));
+      continue;
+    }
     if (!fs.existsSync(f)) continue;
     const E = [];
     lintDemo(f, '', (m) => E.push(m));

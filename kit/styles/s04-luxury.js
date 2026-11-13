@@ -21,6 +21,7 @@ module.exports = (L) => {
     shadow: null,
     margin: 28,
     photo: 'grayscale(1) sepia(.07) contrast(1.08) brightness(.86)',  // 深底照片；象牙底上 grayscale(1) sepia(.06) contrast(1.05) brightness(1.06)
+    icon: { stroke: 1, cap: 'square', join: 'miter', fill: 'none' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   const css = `
 .s04{--k:#0D0C0B;--iv:#F2EDE4;--sm:#8C877E;--au:#B49A6A;--bd:"Bodoni Moda",serif;--sg:"Noto Serif SC",serif;--bz:"Bodoni Moda","Noto Serif SC",serif;--fg:var(--iv);--hi:#fff;--mut:var(--sm);--ln:rgba(242,237,228,.16);--fr:rgba(242,237,228,.86);--pg:var(--k);background:var(--k);color:var(--fg);font-family:var(--sg);font-weight:300;font-size:15px;line-height:1.6;letter-spacing:.02em}
@@ -132,7 +133,7 @@ module.exports = (L) => {
 .s04.v-stage{position:absolute;inset:0;background:radial-gradient(ellipse 72% 56% at 50% 46%,#38332E 0%,#16130F 64%,#0D0C0B 100%)}
 .s04.v-stage .v-logo{position:absolute;left:96px;top:56px;text-align:left}
 `;
-  // 这种风格自己的 1px 细线图形（比 lucide 更细更长）：返回、关闭、菜单
+  // 这种风格自己的 1px 细线图形（比图标集里的更细更长）：返回、关闭、菜单
   const G = {
     back: '<svg width="24" height="12" viewBox="0 0 24 12"><path d="M6.5 1 1 6l5.5 5M1 6h23" stroke="currentColor" stroke-width="1" fill="none"/></svg>',
     close: '<svg width="18" height="18" viewBox="0 0 18 18"><path d="M1 1l16 16M17 1 1 17" stroke="currentColor" stroke-width="1" fill="none"/></svg>',
@@ -151,7 +152,7 @@ module.exports = (L) => {
   const ui = {
     // 细线图形：glyph('back' | 'close' | 'menu')
     glyph: (name) => G[name] || '',
-    // lucide 图标按这个风格的线宽画（1px）：ic('search', 20)
+    // 图标集里的图标按这个风格的线宽画（1px）：ic('search', 20)
     ic: (name, size = 20) => icon(name, size, 1),
     // 字标：logo('辰璧') 中文名细宋体；客户本来就有英文名时 logo('中文名', 'English Name')，只显示英文（Bodoni，照原本大小写），中文名放进 aria-label
     // 第三个参数 { size: '' | 'sm' | 'md' | 'xl', fs, ls }：默认和 sm 是顶栏 26px，md 展示板 30px，xl 官网首屏 112px；fs 字号 px、ls 字距 em，名字长到顶栏字标超过 200px 宽时收一收

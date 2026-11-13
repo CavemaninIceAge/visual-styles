@@ -26,6 +26,7 @@ module.exports = (L) => {
       ink: 'grayscale(1) sepia(.3) brightness(1.18) contrast(.86)',
       fan: 'grayscale(1) sepia(.32) brightness(1.16) contrast(1.02)',
     },
+    icon: { stroke: 1.4, cap: 'round', join: 'round', fill: 'none' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
 
   // 宣纸：细颗粒 + 几处极淡的明暗

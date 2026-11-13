@@ -1,0 +1,109 @@
+/* 应用外壳：电脑上的切换条和手机外框、手机上的全屏、浮层、提示。颜色和字体由 shell.js 从起手包的 T 写进 --as-* */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html,body{min-height:100%;background:var(--as-stage,#ECE8E1)}
+body{font-family:var(--as-font,sans-serif);color:var(--as-ink,#1b1b1b);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:inherit;-webkit-tap-highlight-color:transparent}
+button:disabled,[aria-disabled="true"]{cursor:not-allowed;opacity:.45}
+input,textarea,select{font:inherit;color:inherit}
+[data-act],[data-go],[data-back]{cursor:pointer;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+input[data-act],textarea[data-act],select[data-act]{-webkit-user-select:auto;user-select:auto}
+.as-body [data-act]:active,.as-body [data-go]:active,.as-foot [data-act]:active,.as-ov [data-act]:active{opacity:.72}
+:focus-visible{outline:2px solid var(--as-pri);outline-offset:2px}
+
+/* 真输入框放进起手包的 .v-inp 里：<label class="v-inp"><input data-model="name"></label> */
+.v-inp input,.v-inp textarea,.v-inp select{flex:1;min-width:0;width:100%;border:0;outline:0;background:none;padding:0;font:inherit;color:inherit;height:100%}
+.v-inp textarea{resize:none;height:auto;padding:8px 0;line-height:inherit}
+.v-inp:focus-within{border-color:var(--as-pri)}
+.v-inp input::placeholder,.v-inp textarea::placeholder{color:var(--as-ink2);opacity:.8}
+
+/* 电脑：几端都有时顶上一条切换 */
+.as-bar{position:fixed;left:0;right:0;top:0;height:56px;z-index:50;display:flex;align-items:center;gap:16px;padding:0 20px;background:var(--as-surface);border-bottom:1px solid var(--as-line);color:var(--as-ink)}
+.as-brand{display:flex;align-items:center;min-width:0}
+.as-seg{position:absolute;left:50%;top:10px;transform:translateX(-50%);display:flex;gap:2px;padding:3px;border-radius:9px;background:color-mix(in srgb,var(--as-ink) 7%,transparent)}
+.as-seg button{height:30px;padding:0 18px;border-radius:7px;font-size:14px;line-height:30px;color:var(--as-ink2);white-space:nowrap}
+.as-seg button:hover{color:var(--as-ink)}
+.as-seg button.on{background:var(--as-surface);color:var(--as-ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.14)}
+.as-reset{height:32px;display:inline-flex;align-items:center;gap:6px;padding:0 12px;border-radius:7px;border:1px solid var(--as-line);background:var(--as-surface);color:var(--as-ink);font-size:14px;white-space:nowrap}
+.as-bar .as-reset{margin-left:auto}
+.as-reset:hover{border-color:var(--as-ink2)}
+html:has(.as-bar){--as-top:56px}
+
+/* 电脑：手机端放进手机外框，旁边一句话 */
+.as-stage{min-height:100vh;display:flex;align-items:center;justify-content:center;gap:56px;padding:calc(var(--as-top,0px) + 24px) 32px 24px}
+.as-fit{position:relative;flex:none}
+.as-dev{position:absolute;left:0;top:0;width:399px;height:836px;padding:12px;border-radius:60px;transform:scale(var(--s,1));transform-origin:0 0;background:linear-gradient(150deg,#34353b,#0f1013 60%);box-shadow:0 0 0 1px rgba(255,255,255,.22),inset 0 0 0 1.5px #55565d,inset 0 0 0 3px #1a1b1f,0 30px 60px -18px rgba(18,26,51,.45),0 10px 22px -8px rgba(18,26,51,.25)}
+.as-dev-s{position:relative;width:375px;height:812px;border-radius:48px;overflow:hidden;background:var(--as-bg,#fff);isolation:isolate}
+.as-island{position:absolute;left:50%;top:23px;transform:translateX(-50%);width:118px;height:34px;border-radius:999px;background:#000;z-index:80;pointer-events:none}
+.as-note{width:248px;flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+.as-note p{margin:0;font-size:18px;line-height:1.65;font-weight:500;color:var(--as-stage-ink)}
+@media (max-width:1000px){.as-stage{flex-direction:column;gap:24px}.as-note{width:auto;align-items:center;text-align:center}}
+
+/* 手机屏（外框里 375×812；手机上打开时铺满） */
+.as-scr{position:relative;display:flex;flex-direction:column;overflow:hidden;background:var(--as-bg)}
+.as-scr.scr{width:100%;height:100%}
+.as-dev-s>.as-scr{width:375px;height:812px}
+.as-full{position:fixed;inset:0}
+.as-full>.as-scr{padding-top:env(safe-area-inset-top)}
+.as-top{flex:none;position:relative;z-index:5}
+.as-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none}
+.as-body::-webkit-scrollbar{display:none}
+.as-foot{position:absolute;left:0;right:0;bottom:0;z-index:6;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--as-surface);border-top:1px solid var(--as-line)}
+.as-dev-s .as-foot{padding-bottom:30px}
+.as-scr>.hb{pointer-events:none}
+.as-mback{display:flex;align-items:center;justify-content:center;width:32px;height:32px;margin-left:-6px}
+.as-in-f{animation:asInF .22s cubic-bezier(.22,.7,.2,1)}
+.as-in-b{animation:asInB .22s cubic-bezier(.22,.7,.2,1)}
+@keyframes asInF{from{transform:translate3d(40px,0,0);opacity:.35}to{transform:none;opacity:1}}
+@keyframes asInB{from{transform:translate3d(-40px,0,0);opacity:.35}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.as-in-f,.as-in-b{animation:none}}
+.as-oops{margin:24px 16px;padding:16px;border-radius:8px;background:var(--as-surface);font-size:15px}
+
+/* 网页端：整页，不套框 */
+.as-webwrap{padding-top:var(--as-top,0px);min-height:100vh;background:var(--as-bg)}
+.as-web.web{width:auto;min-height:calc(100vh - var(--as-top,0px));overflow:visible}
+
+/* 浮层：网页端是居中对话框或右侧抽屉，手机端是底部弹层 */
+.as-scrim{position:fixed;inset:0;z-index:60;background:rgba(15,18,24,.42);animation:asFade .16s ease-out}
+.as-ov{position:fixed;z-index:61;display:flex;flex-direction:column;max-height:86vh;background:var(--as-surface);color:var(--as-ink);box-shadow:0 18px 48px -12px rgba(15,18,24,.35)}
+.as-dialog{left:50%;top:50%;transform:translate(-50%,-50%);max-width:calc(100vw - 32px);border-radius:12px}
+.as-drawer{top:0;right:0;bottom:0;max-height:none;max-width:100vw}
+.as-sheet{left:0;right:0;bottom:0;max-height:84%;border-radius:16px 16px 0 0;padding-bottom:env(safe-area-inset-bottom);animation:asUp .2s cubic-bezier(.22,.7,.2,1)}
+.as-scr .as-scrim,.as-scr .as-ov{position:absolute}
+.as-dev-s .as-sheet{padding-bottom:22px}
+.as-ov-h{display:flex;align-items:center;gap:12px;padding:16px 16px 4px 20px}
+.as-ov-h b{flex:1;min-width:0;font-family:var(--as-title);font-size:17px;line-height:26px;font-weight:600}
+.as-ov-b{overflow-y:auto;padding:8px 20px 20px}
+.as-ov-p{margin:0;font-size:15px;line-height:24px;color:var(--as-ink2)}
+.as-ov-f{display:flex;gap:12px;justify-content:flex-end;margin-top:24px}
+.as-sheet .as-ov-f>*{flex:1}
+.as-x{width:32px;height:32px;display:grid;place-items:center;border-radius:7px;color:var(--as-ink2)}
+.as-x:hover{background:color-mix(in srgb,var(--as-ink) 6%,transparent)}
+@keyframes asFade{from{opacity:0}}
+@keyframes asUp{from{transform:translate3d(0,40px,0);opacity:.4}}
+@media (max-width:767px){
+  .as-dialog,.as-drawer{left:0;right:0;top:auto;bottom:0;width:auto!important;max-height:86%;transform:none;border-radius:16px 16px 0 0;padding-bottom:env(safe-area-inset-bottom)}
+}
+
+/* 状态标签（起手包没有 ui.st 时用）：形状加文字 */
+.as-st{display:inline-flex;align-items:center;gap:4px;font-size:13px;line-height:20px;font-weight:500;white-space:nowrap}
+.as-st-ok{color:#2A8048}.as-st-wait,.as-st-info{color:var(--as-pri)}.as-st-warn{color:#A86400}.as-st-bad{color:#C2352F}.as-st-idle,.as-st-done{color:var(--as-ink2)}
+html.as-dark .as-st-ok{color:#5BCB82}html.as-dark .as-st-warn{color:#F0B04A}html.as-dark .as-st-bad{color:#F07A74}
+
+/* 提示 */
+.as-toast{position:fixed;left:50%;top:calc(var(--as-top,0px) + 24px);transform:translateX(-50%);z-index:90;display:flex;align-items:center;gap:8px;max-width:calc(100% - 48px);padding:10px 16px;border-radius:8px;background:var(--as-surface);color:var(--as-ink);box-shadow:0 10px 28px -6px rgba(15,18,24,.24);font-size:15px;line-height:22px;pointer-events:none;animation:asFade .16s ease-out}
+.as-scr .as-toast{position:absolute;top:42%;max-width:280px;padding:12px 18px;border-radius:12px;background:rgba(22,24,28,.88);color:#fff;box-shadow:none}
+.as-toast svg{flex:none}
+
+/* 手机上打开、又有几端时：左边一个小把手，点开切换 */
+.as-handle{position:fixed;left:0;top:46%;z-index:70;width:24px;height:60px;display:grid;place-items:center;border-radius:0 12px 12px 0;background:rgba(22,24,28,.58);color:#fff}
+.as-sw-i{width:100%;height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--as-line);font-size:16px;color:var(--as-ink)}
+.as-sw-i:last-child{border-bottom:none}
+.as-sw-i.on{font-weight:600}
+.as-sw-i em{font-style:normal;font-size:14px;color:var(--as-ink2)}
+.as-sw-i svg{color:var(--as-ink2)}
+
+/* 检查用：把手机屏展开成一整页再量（tools/app.sh check 自动加上，看不到） */
+html.as-qa *,html.as-qa *::before,html.as-qa *::after{animation:none!important;transition:none!important}
+html.as-flat .as-dev,html.as-flat .as-dev-s,html.as-flat .as-scr,html.as-flat .as-full{position:relative;height:auto!important;overflow:visible!important;inset:auto}
+html.as-flat .as-fit{height:auto!important}
+html.as-flat .as-body{flex:none;overflow:visible!important}

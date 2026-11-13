@@ -26,6 +26,7 @@ module.exports = (L) => {
     shadow: null,           // 几乎不用阴影：亮度靠光晕，不靠投影
     margin: 20,
     photo: 'grayscale(.6) brightness(.86) contrast(1.12)',
+    icon: { stroke: 1.5, cap: 'round', join: 'round', fill: 'none' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   const A = T.primary, Ar = '88,180,255';
   const { panel2: P2, dim: T3, bright: HI, soft: SF, bar: BAR, line2: LN2 } = T.accents;
@@ -307,7 +308,7 @@ module.exports = (L) => {
       const seq = Array.from({ length: n }, (_, i) => i);
       return `<div class="v-dial" style="width:${d}px;height:${d}px"><svg width="${d}" height="${d}" viewBox="0 0 ${d} ${d}"><g>${seq.filter((i) => i > k && i !== ni).map((i) => tick(i, 'var(--bar)')).join('')}</g><g class="lit">${seq.filter((i) => i <= k && i !== ni).map((i) => tick(i, 'var(--a)')).join('')}</g>${ni >= 0 ? tick(ni, 'var(--t1)') : ''}</svg><div class="in">${inner}</div>${lo ? `<span class="lo">${lo}</span>` : ''}${hi ? `<span class="hi">${hi}</span>` : ''}</div>`;
     },
-    // 正在发生的状态：live('充电中', 'zap')，冷光蓝的字自己发光；ic 是说明它是什么的 lucide 图标（录音 mic、充电 zap、空调 fan），可省
+    // 正在发生的状态：live('充电中', 'zap')，冷光蓝的字自己发光；ic 是说明它是什么的图标（录音 mic、充电 zap、空调 fan），可省
     live: (text, ic = '') => `<span class="v-live">${ic ? icon(ic, 16, 1.8) : ''}${text}</span>`,
     // 头像：av('沈', 24)
     av,

@@ -20,6 +20,7 @@ module.exports = (L) => {
     shadow: 'inset 0 1px 1.5px rgba(255,255,255,.65),inset 0 -1px 1px rgba(255,255,255,.22),inset 0 0 22px rgba(255,255,255,.07),0 16px 36px -14px rgba(3,20,26,.5)',
     margin: 16,             // 玻璃件贴 16，字贴 24，顶部圆按钮贴 20
     photo: 'none',          // 手机屏不加滤镜，照片原色就是界面的颜色；网页 brightness(.86) saturate(1.04)
+    icon: { stroke: 2, cap: 'round', join: 'round', fill: 'none' },   // 图标（自己画的那一套）：没给线宽时的线宽、线头、转角、填法，见 kit/icons/SPEC.md 第六节
   };
   const FH = '"PingFang SC","Noto Sans SC",sans-serif';            // 中文标题和正文（苹方；没有苹方的设备落到思源黑体）
   const FN = '"Outfit","PingFang SC","Noto Sans SC",sans-serif';   // 数字和西文（Outfit 没有中文，混排的中文落到苹方）

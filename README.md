@@ -1,6 +1,6 @@
 # visual-styles
 
-十六种界面视觉风格的 Claude Code 技能。说一句「要新中式那种」或者「按第 05 种出两套首页」，它就用客户自己的店名和商品做一套 demo：每屏 PNG、一张展示板、一个发出去就能点的单文件 HTML。
+十六种界面视觉风格的 Claude Code 技能。说一句「要新中式那种」或者「按第 05 种做个 demo」，它就用客户自己的店名和商品做一个真能用的应用：按钮能点、表单能填、数据存在浏览器里，几端（手机 App、小程序、电脑后台）用同一份数据。电脑上打开时手机端在手机外框里，手机上打开直接全屏；打包出来是一个静态文件夹，丢到任何静态服务器就能用。挑风格阶段还能出每屏 PNG 和展示板，方便发给客户。
 
 风格来自模方科技的图册《您的软件想长什么样》。
 
@@ -42,13 +42,29 @@ bash ~/.claude/skills/visual-styles/tools/setup.sh
 
 出图时每一屏都会过一遍自动检查：字有没有出界、截断、字体有没有生效，以及 AI 做界面最常留下的记号，比如拿「·」串信息、装饰小圆点、等宽字体、大标题上压一行小字、拉开字距的标签字、编号和页码。查出来的要改到零。
 
-不用 Claude Code 时，也可以手动跑：
+图标是自己画的一套（`kit/icons/`，24 格），线宽、线头、转角和填法跟着风格变；缺的照 `kit/icons/SPEC.md` 画，不用网上的图标库和素材站。页面里出现图标库的类名、字体或外链，自动检查直接报问题。
+
+不用 Claude Code 时，也可以手动跑。做能用的应用：
 
 ```bash
 K=~/.claude/skills/visual-styles
+bash $K/tools/new_app.sh ~/demos/qingtong-20261113 16 "青桐物业" app+web    # 建项目，改 src/ 和 flows.js
+bash $K/tools/app.sh check ~/demos/qingtong-20261113                       # 电脑、手机两种尺寸各走一遍主流程，每屏自动检查
+bash $K/tools/app.sh pack ~/demos/qingtong-20261113 qingtong               # 上线版静态站点，在 out/qingtong/
+```
+
+完整的例子在 `examples/app-s16/`：业主在 App 上报修，物业后台派单、标记完成，业主那边跟着变。
+
+![应用样例：电脑上的手机端](examples/app-s16/shots/desk-app.jpg)
+
+![应用样例：物业后台](examples/app-s16/shots/desk-admin.jpg)
+
+挑风格时出静态屏和展示板：
+
+```bash
 bash $K/tools/new_demo.sh ~/demos/songjian-20261106 05 "松间民宿" mini   # 建项目，改 demo.js
 bash $K/tools/render.sh ~/demos/songjian-20261106                        # 出图和自动检查
-bash $K/tools/pack.sh ~/demos/songjian-20261106 "松间民宿-可点击演示"     # 打单文件 HTML
+bash $K/tools/pack.sh ~/demos/songjian-20261106 "松间民宿-风格预览"       # 单文件 HTML，只当风格预览
 ```
 
 结果在项目的 `out/` 里。出图只用无头 Chrome，不开窗口。
@@ -63,4 +79,4 @@ bash $K/tools/pack.sh ~/demos/songjian-20261106 "松间民宿-可点击演示"  
 
 ## 授权
 
-代码、文档和设计规范用 [MIT](LICENSE)。字体、照片、图标的授权见 [THIRD_PARTY.md](THIRD_PARTY.md)。
+代码、文档、设计规范和图标用 [MIT](LICENSE)。字体和照片的授权见 [THIRD_PARTY.md](THIRD_PARTY.md)。

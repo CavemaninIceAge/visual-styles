@@ -6,5 +6,5 @@ source "$(dirname "$0")/common.sh"
 remote_ok; sync_kit
 on "mkdir -p '$REMOTE_KIT/.docs/examples'"
 rsync -a --delete --exclude '.DS_Store' "$SKILL/styles/" "$(at "$REMOTE_KIT/.docs/styles/")"
-rsync -a --delete --exclude '.DS_Store' "$SKILL/examples/" "$(at "$REMOTE_KIT/.docs/examples/")"
+rsync -a --delete --exclude '.DS_Store' --exclude out "$SKILL/examples/" "$(at "$REMOTE_KIT/.docs/examples/")"
 on "$NODE_PATH_CMD; cd '$REMOTE_KIT' && node lint.js $*"

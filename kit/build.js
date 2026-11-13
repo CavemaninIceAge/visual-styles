@@ -68,6 +68,8 @@ function lum(c) {
 }
 
 let css = rd('fonts.css').replace(/__ROOT__/g, 'file://' + KIT) + '\n' + rd('base.css');
+// 图标规则（起手包 T.icon）放在起手包 css 前面：起手包里同样具体的图标规则压得过它
+css += '\n/* 图标 */\n' + L.iconCss() + [S, ...borrowed].filter(Boolean).map(L.iconCss).join('');
 if (S && S.css) css += '\n/* 风格起手包 ' + S.key + ' */\n' + S.css;
 for (const b of borrowed) css += '\n/* 借来的 ' + b.key + ' */\n' + b.css;
 for (const k of demo.use || []) css += '\n/* 图册模块 ' + k + ' */\n' + (catalog(k).css || '');

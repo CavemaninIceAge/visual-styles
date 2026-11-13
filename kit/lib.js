@@ -1,4 +1,4 @@
-// 出 demo 用的公用件：图库图片、线性图标、iOS 状态栏、小程序胶囊、底部横条、手机外框、浏览器外框
+// 出 demo 用的公用件：图库图片、自己画的图标、iOS 状态栏、小程序胶囊、底部横条、手机外框、浏览器外框
 const fs = require('fs');
 const path = require('path');
 const KIT = __dirname;
@@ -18,22 +18,33 @@ function img(name) {
 }
 const logo = (name) => 'file://' + path.join(KIT, 'assets/logo', name + '.png');
 
-// lucide 线性图标：icon('coffee', 20, 1.8)。名字查 node_modules/lucide-static/icons
-const iconCache = {};
-function icon(name, size = 20, stroke = 1.8, extra = '') {
-  let svg = iconCache[name];
-  if (!svg) {
-    const p = path.join(KIT, 'node_modules/lucide-static/icons', name + '.svg');
-    if (!fs.existsSync(p)) throw new Error('图标不存在：' + name + '（ls node_modules/lucide-static/icons | grep 关键词）');
-    svg = fs.readFileSync(p, 'utf8').replace(/<!--[\s\S]*?-->/g, '').trim();
-    iconCache[name] = svg;
-  }
-  return svg
-    .replace(/width="24"/, `width="${size}"`)
-    .replace(/height="24"/, `height="${size}"`)
-    .replace(/stroke-width="2"/, `stroke-width="${stroke}"`)
-    .replace(/class="[^"]*"/, `class="ic" ${extra}`);
+// 图标：icon('coffee', 20, 1.8)。全部是我们自己画的那一套（kit/icons/，规矩见 kit/icons/SPEC.md），不用网上的图标库
+// 线宽不给时跟着风格走（起手包 T.icon），给了就用给的；端点、转角、填色总是跟着风格走
+// 有哪些名字：kit/icons/names.js；总览图：tools/icon_sheet.sh
+const ICONS = require('./icons');
+const ownIcons = {};
+const iconMissing = (name) => `图标不存在：${name}。图标集里没有就自己画：通用的照 kit/icons/SPEC.md 画进 kit/icons/ 对应的组文件并登记到 names.js；只这个项目用的业务图标，在项目里 defineIcon('${name}', '<path d="…"/>') 按同一套规范画。不许从网上图标库拷`;
+// 项目自己的业务图标：defineIcon('kettle', '<path class="t" d="…"/><path d="…"/>')。
+// 只写 24 格里面的标记（不带外层 <svg>），规矩和 kit/icons/SPEC.md 一样：七种标签、只写几何属性、class 只用 t k s sk、最多 5 笔
+function defineIcon(name, markup) {
+  if (!/^[a-z][a-z0-9-]*$/.test(name)) throw new Error(`defineIcon 的名字只用小写字母、数字和短横：${name}`);
+  if (name in ICONS.icons()) throw new Error(`图标集里已经有「${name}」，直接 icon('${name}')；要画不一样的就换个名字`);
+  const bad = ICONS.validate(markup);
+  if (bad.length) throw new Error(`defineIcon('${name}') 不合规范（kit/icons/SPEC.md）：${bad.join('；')}`);
+  ownIcons[name] = String(markup).trim();
+  return name;
 }
+function iconMarkup(name) {
+  if (name in ownIcons) return ICONS.expand(ownIcons[name]);
+  const m = ICONS.icons()[name];
+  if (m === undefined) throw new Error(iconMissing(name));
+  return ICONS.expand(m);
+}
+function icon(name, size = 20, stroke, extra = '') {
+  return ICONS.wrap(iconMarkup(name), size, stroke, extra);
+}
+// 风格的图标规则：起手包的 T.icon 变成 CSS（组装时自动加，起手包自己不用写）；iconCss() 不传是不挂在风格下的默认规则
+const iconCss = (S) => ICONS.css(S ? S.root : '', (S && S.T && S.T.icon) || {}, (S && S.T) || {});
 
 // iOS 状态栏（深色底传 true）
 function statusBar(light = false) {
@@ -94,4 +105,4 @@ function qr(size, color = '#111', bg = '#fff', seed = 7) {
 // SVG 噪点颗粒（叠在照片或纸面上：<div style="position:absolute;inset:0;background:${grain(.18)}">）
 const grain = (opacity = .16, freq = .9) => `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='${freq}' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 ${opacity} 0'/></filter><rect width='100%' height='100%' filter='url(#n)'/></svg>`)}")`;
 
-module.exports = { KIT, setProject, img, logo, icon, statusBar, miniNav, homeBar, phone, browser, esc, rng, qr, grain };
+module.exports = { KIT, setProject, img, logo, icon, defineIcon, iconMarkup, iconCss, statusBar, miniNav, homeBar, phone, browser, esc, rng, qr, grain };
