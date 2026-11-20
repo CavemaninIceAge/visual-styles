@@ -195,13 +195,19 @@ const ST = {
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/>',
   done: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
 };
+// endUi()：当前这一端的起手包组件（端写了 style 就是借来的那套，否则就是主风格的 ui）。几端共用的代码画组件时用它
+export function endUi() { const e = ENDS && route.end ? endOf(route.end) : null; return e && e.style && B[e.style] ? B[e.style].ui : ui; }
 export function status(text, kind = 'ok') {
-  if (typeof ui.st === 'function') return ui.st(esc(text), kind);
+  const U = endUi();
+  if (typeof U.st === 'function') return U.st(esc(text), kind);
   return `<span class="as-st as-st-${ST[kind] ? kind : 'ok'}">${SV(14, ST[kind] || ST.ok, 'stroke-width="2.4"')}${esc(text)}</span>`;
 }
 
 /* ---------------------------------------------------------------- 画 */
-const kindWord = (e) => (e.kind === 'mini' ? '小程序' : ' App');
+const kindWord = (e) => (e.kind === 'mini' ? '小程序' : e.kind === 'pad' ? ' App' : ' App');
+const isPad = (e) => e.kind === 'pad';
+// 端可以用借来的风格整端显示：ends 里写 style: 's16-pro'（要先写进 app.json 的 borrow）
+const rootOf = (e) => (e && e.style && B[e.style] ? B[e.style].root : S.root);
 function chrome(e) {
   const multi = ENDS.length > 1;
   const resetBtn = `<button type="button" class="as-reset" data-act="_reset">${SV(16, G.reset)}<span>恢复演示数据</span></button>`;
@@ -210,7 +216,11 @@ function chrome(e) {
     h += `<header class="as-bar ${S.root}"><div class="as-brand">${CFG.brand || ui.logo(CFG.name)}</div>
 <nav class="as-seg" aria-label="切换">${ENDS.map((x) => `<button type="button" data-act="_end" data-end="${x.key}">${esc(x.label)}</button>`).join('')}</nav>${resetBtn}</header>`;
   }
-  if (!PHONE && !isWeb(e)) {
+  if (isPad(e) && !PHONE) {
+    h += `<main class="as-stage as-stage-pad"><div class="as-fit"><div class="as-dev as-dev-pad"><div class="as-dev-s" data-as-host></div></div></div>
+<div class="as-note"><p>这是在平板上模拟的 App（横屏），可以直接点着用</p>${multi ? '' : resetBtn}</div></main>`;
+  } else if (isPad(e)) h += '<div class="as-full as-padfull"><div class="as-padbox" data-as-host></div></div>';
+  else if (!PHONE && !isWeb(e)) {
     h += `<main class="as-stage"><div class="as-fit"><div class="as-dev"><div class="as-dev-s" data-as-host></div><i class="as-island"></i></div></div>
 <div class="as-note"><p>这是在手机上模拟的${kindWord(e)}，<br>可以直接点着用</p>${multi ? '' : resetBtn}</div></main>`;
   } else if (PHONE && !isWeb(e)) h += '<div class="as-full" data-as-host></div>';
@@ -223,9 +233,9 @@ function overlayHtml(o, e) {
   let inner = '';
   try { inner = d.render(o, c); } catch (err) { console.error(err); inner = `<p class="as-ov-p">这里出错了：${esc(err.message)}</p>`; }
   const title = typeof d.title === 'function' ? d.title(o, c) : d.title || '';
-  const kind = isWeb(e) ? d.kind || 'dialog' : 'sheet';
+  const kind = isWeb(e) || isPad(e) ? d.kind || 'dialog' : 'sheet';
   const w = kind === 'sheet' ? '' : `style="width:${d.w}px"`;
-  return `<div class="as-layer ${S.root} p"><div class="as-scrim" data-act="_close" data-ov="${o.k}"></div><div class="as-ov as-${kind} ov-${o.id}" data-ov="${o.k}" role="dialog" ${w}>
+  return `<div class="as-layer ${rootOf(e)} p"><div class="as-scrim" data-act="_close" data-ov="${o.k}"></div><div class="as-ov as-${kind} ov-${o.id}" data-ov="${o.k}" role="dialog" ${w}>
 ${title ? `<div class="as-ov-h"><b>${title}</b><button type="button" class="as-x" data-act="_close" aria-label="关闭">${SV(20, G.x)}</button></div>` : ''}<div class="as-ov-b">${inner}</div></div></div>`;
 }
 const toastHtml = () => (toastMsg ? `<div class="as-toast as-t-${toastMsg.kind}" role="status" data-k="${toastMsg.k}">${SV(20, G[toastMsg.kind] || G.ok)}<span>${esc(toastMsg.text)}</span></div>` : '');
@@ -235,7 +245,7 @@ function screen(e) {
   let body = '';
   try { body = p.render(c); } catch (err) { console.error(err); body = `<div class="as-oops">这一页出错了：${esc(err.message)}</div>`; }
   const ovs = overlays.filter((o) => o.end === e.key).map((o) => overlayHtml(o, e)).join('');
-  if (isWeb(e)) return `<div class="as-web web ${S.root} p e-${e.key} ${slug}" data-as-screen>${body}${ovs}${toastHtml()}</div>`;
+  if (isWeb(e)) return `<div class="as-web web ${rootOf(e)} p e-${e.key} ${slug}" data-as-screen>${body}${ovs}${toastHtml()}</div>`;
   const title = typeof p.title === 'function' ? p.title(c) : p.title || '';
   const hasBack = p.back != null ? p.back : p.tab == null;
   let top = '';
@@ -245,7 +255,7 @@ function screen(e) {
   else top = ui.nav({ title, back: hasBack });
   const tabs = e.tabs && p.tab != null ? ui.tabs(e.tabs.map((t) => [t[0], t[1]]), p.tab, e.tabs.map((t) => t[2])) : '';
   const framed = !PHONE;
-  return `<div class="as-scr scr ${S.root} p e-${e.key} k-${e.kind} ${slug}" data-as-screen>${framed ? L.statusBar(S.dark) : ''}
+  return `<div class="as-scr scr ${rootOf(e)} p e-${e.key} k-${e.kind} ${slug}" data-as-screen>${framed ? L.statusBar(S.dark) : ''}
 <div class="as-top">${top}</div><div class="as-body ${dir ? 'as-in-' + dir : ''}">${body}</div>
 ${p.foot ? `<div class="as-foot">${p.foot(c)}</div>` : ''}${tabs}${ovs}${toastHtml()}${framed ? L.homeBar(S.dark) : ''}</div>`;
 }
@@ -305,9 +315,17 @@ function layoutBottom(host) {
 }
 // 电脑上的手机外框按窗口高度缩放
 function fit() {
+  const pb = document.querySelector('.as-padbox');
+  if (pb) { pb.style.setProperty('--s', Math.min(innerWidth / 1180, innerHeight / 820)); return; }
   const f = document.querySelector('.as-fit');
   if (!f) return;
   const top = !PHONE && ENDS.length > 1 ? 56 : 0;
+  if (f.querySelector('.as-dev-pad')) {
+    const PH = 852, PW = 1212;
+    const s = Math.min(1, Math.max(0.4, Math.min((innerHeight - top - 48 - 64) / PH, (innerWidth - 64) / PW)));
+    f.style.setProperty('--s', s); f.style.width = Math.round(PW * s) + 'px'; f.style.height = Math.round(PH * s) + 'px';
+    return;
+  }
   const H = 836, W = 399;
   const s = Math.min(1, Math.max(0.5, (innerHeight - top - 48) / H));
   f.style.setProperty('--s', s);
@@ -372,11 +390,13 @@ function phoneMode() {
 const lum = (c) => { const m = /^#([0-9a-f]{6})/i.exec(String(c || '')); if (!m) return 0.6; const n = parseInt(m[1], 16); return (0.2126 * (n >> 16) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255)) / 255; };
 
 /* ---------------------------------------------------------------- 启动 */
-// createApp({ name, key, version, seed, brand, ends: [{ key: 'm', kind: 'app' | 'mini' | 'web', label, home, tabs: [[图标, 文字, 地址]] }] })
+// createApp({ name, key, version, seed, brand, ends: [{ key: 'm', kind: 'app' | 'mini' | 'pad' | 'web', label, home, tabs: [[图标, 文字, 地址]] }] })
+// pad：横屏平板 App，屏幕 1180×820；电脑上放进平板外框，手机和平板上打开时整块按屏幕缩放铺满
 export function createApp(cfg) {
   if (!cfg || !cfg.ends || !cfg.ends.length || typeof cfg.seed !== 'function') throw new Error('createApp 要有 ends 和 seed');
   CFG = cfg; ENDS = cfg.ends; VER = cfg.version || 1;
   KEY = 'app:' + (cfg.key || cfg.name || 'demo');
+  for (const e of ENDS) if (e.style && !B[e.style]) throw new Error(`「${e.label}」写了 style: '${e.style}'，要先在 app.json 的 borrow 里加上它`);
   for (const e of ENDS) if (!match(e.home)) throw new Error(`「${e.label}」的首页 ${e.home} 没有用 definePage 注册`);
   if (Q.get('reset') === '1') store.del();
   load();

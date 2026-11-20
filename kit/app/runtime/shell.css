@@ -38,6 +38,16 @@ html:has(.as-bar){--as-top:56px}
 .as-note p{margin:0;font-size:18px;line-height:1.65;font-weight:500;color:var(--as-stage-ink)}
 @media (max-width:1000px){.as-stage{flex-direction:column;gap:24px}.as-note{width:auto;align-items:center;text-align:center}}
 
+/* 平板（kind: 'pad'，横屏 1180×820）：电脑上放进平板外框、说明放下面；手机和平板上整块按屏幕缩放 */
+.as-stage-pad{flex-direction:column;gap:18px}
+.as-stage-pad .as-note{width:auto;align-items:center;text-align:center}
+.as-dev-pad{width:1212px;height:852px;padding:16px;border-radius:40px}
+.as-dev-pad .as-dev-s{width:1180px;height:820px;border-radius:22px}
+.as-dev-pad .as-dev-s>.as-scr{width:1180px;height:820px}
+.as-padfull{overflow:hidden;background:#111}
+.as-padbox{position:absolute;left:50%;top:50%;width:1180px;height:820px;transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:center}
+.as-padbox>.as-scr{width:1180px;height:820px}
+
 /* 手机屏（外框里 375×812；手机上打开时铺满） */
 .as-scr{position:relative;display:flex;flex-direction:column;overflow:hidden;background:var(--as-bg)}
 .as-scr.scr{width:100%;height:100%}
@@ -107,3 +117,5 @@ html.as-qa *,html.as-qa *::before,html.as-qa *::after{animation:none!important;t
 html.as-flat .as-dev,html.as-flat .as-dev-s,html.as-flat .as-scr,html.as-flat .as-full{position:relative;height:auto!important;overflow:visible!important;inset:auto}
 html.as-flat .as-fit{height:auto!important}
 html.as-flat .as-body{flex:none;overflow:visible!important}
+/* 平板端在手机上：把手挪到左上角的黑边上，不压内容 */
+.as-phone:has(.as-padfull) .as-handle{top:8px;bottom:auto;transform:none}
