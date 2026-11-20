@@ -38,6 +38,7 @@ async function run() {
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
   const BASE = `http://127.0.0.1:${server.address().port}/index.html?qa=1`;
   const { ch, ws } = await launch(path.join(P, 'out'));
+  CHROME = ch;
   const cdp = await connect(ws);
   const report = { views: {} };
   let bad = 0; let warn = 0;
@@ -147,7 +148,7 @@ async function run() {
         if (k === 'tap') return tap(a, b || 0);
         if (k === 'type') {
           const e = await tap(asSel(a)); if (e) return e;
-          await ev(`(() => { const el = document.querySelector('[data-qa-t]'); const i = el.matches('input,textarea') ? el : el.querySelector('input,textarea'); i.focus(); i.select && i.select(); return 1; })()`);
+          await ev(`(() => { const el = document.querySelector('[data-qa-t]') || document.querySelector(${JSON.stringify(asSel(a))}); const i = el.matches('input,textarea') ? el : el.querySelector('input,textarea'); i.focus(); i.select && i.select(); return 1; })()`);   // 提示条消失时整屏重画会丢掉 data-qa-t，再按选择器找一次
           await s('Input.insertText', { text: String(b) });
           await settle();
           const v = await ev(`(() => { const el = document.querySelector(${JSON.stringify(asSel(a))}); const i = el && (el.matches('input,textarea') ? el : el.querySelector('input,textarea')); return i ? i.value : null; })()`);
@@ -234,5 +235,8 @@ async function run() {
   console.log('应用检查：' + (bad ? `共 ${bad} 处问题，要改到零` : '没有问题') + (warn ? `；${warn} 条提醒，逐条看` : ''));
   process.exit(bad ? 1 : 0);
 }
-setTimeout(() => { console.log('应用检查超过 5 分钟，停了'); process.exit(1); }, 300000).unref();
+// 整个检查默认最多 5 分钟；端多、页多的大项目在 flows.js 里写 minutes（最多 15）放宽
+const LIMIT = Math.min(15, Math.max(5, Number(FL.minutes) || 5));
+let CHROME = null;   // 超时退出时把无头 Chrome 一起关掉，不然下次检查会报 SingletonLock
+setTimeout(() => { console.log(`应用检查超过 ${LIMIT} 分钟，停了`); try { if (CHROME) CHROME.kill(); } catch (e) { /* 已经退了 */ } process.exit(1); }, LIMIT * 60000).unref();
 run().catch((e) => { console.log('应用检查失败：' + e.message); process.exit(1); });

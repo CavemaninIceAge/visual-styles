@@ -112,6 +112,7 @@ export function switchEnd(key) {
   const e = endOf(key);
   switcher = false;
   overlays = [];
+  toastMsg = null; clearTimeout(toastTimer);   // 上一端的提示不带到这一端
   dir = '';
   location.hash = '#/' + (LAST[e.key] || e.home);
 }
@@ -127,7 +128,7 @@ function onRoute() {
   replacing = false;
   if (st.length > 1 && st[st.length - 2] === path) { st.pop(); dir = 'b'; }   // 浏览器的返回键
   else if (st[st.length - 1] !== path) st.push(path);
-  LAST[route.end] = path;
+  LAST[route.end] = location.hash.replace(/^#\//, '') || path;   // 连查询参数一起记，切端回来不丢 ?ids= 这类参数
   if (!prev || prev.end !== m.page.end || (prev.tab != null && m.page.tab != null) || isWeb(endOf(route.end))) dir = '';
   if (!STATE[path]) { STATE[path] = {}; if (m.page.init) m.page.init(ctx()); }
   overlays = overlays.filter((o) => o.keep);
@@ -144,13 +145,18 @@ export function setQuery(patch) {
 }
 export function ctx() {
   const e = endOf(route.end);
-  return { path: route.path, params: route.params, query: route.query, end: route.end, kind: e.kind, state: STATE[route.path] || (STATE[route.path] = {}), db: DB, phone: PHONE, framed: !PHONE && !isWeb(e) };
+  const fresh = !STATE[route.path];
+  if (fresh) STATE[route.path] = {};
+  const c = { path: route.path, params: route.params, query: route.query, end: route.end, kind: e.kind, state: STATE[route.path], db: DB, phone: PHONE, framed: !PHONE && !isWeb(e) };
+  // 状态被 clearState 清掉、还没跳走就重画了（mutate、toast 都会重画），也先跑一次 init，表单不会变成空的
+  if (fresh && route.page && route.page.init) route.page.init(c);
+  return c;
 }
 
 /* ---------------------------------------------------------------- 浮层、确认、提示 */
 export function openOverlay(id, props = {}) {
   if (!OVERLAYS[id]) { console.error('没有这个浮层：' + id); return null; }
-  const o = Object.assign({ id, k: ++seq, end: route.end }, props);
+  const o = Object.assign({}, props, { id, k: ++seq, end: route.end });   // id、k、end 是外壳自己的字段，props 里同名的会被盖掉
   overlays.push(o);
   refresh();
   return o;
@@ -167,7 +173,8 @@ defineOverlay('_confirm', {
 export function toast(text, kind = 'ok') {
   toastMsg = { text, kind, k: ++seq };
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { toastMsg = null; refresh(); }, 2400);
+  // 到时只把提示条拿掉，不整屏重画：整屏重画会冲掉正在打的字、吞掉按下和抬起之间的那一下点击
+  toastTimer = setTimeout(() => { toastMsg = null; document.querySelectorAll('.as-toast').forEach((t) => t.remove()); }, 2400);
   refresh();
 }
 
@@ -208,6 +215,10 @@ const kindWord = (e) => (e.kind === 'mini' ? '小程序' : e.kind === 'pad' ? ' 
 const isPad = (e) => e.kind === 'pad';
 // 端可以用借来的风格整端显示：ends 里写 style: 's16-pro'（要先写进 app.json 的 borrow）
 const rootOf = (e) => (e && e.style && B[e.style] ? B[e.style].root : S.root);
+// 借来风格的那一端，外壳的颜色、字体变量（--as-*）也换成那套，浮层、提示、对话框跟着这一端走
+const asVars = (T) => [['--as-bg', T.bg], ['--as-surface', T.surface || '#fff'], ['--as-ink', T.ink], ['--as-ink2', T.ink2], ['--as-line', T.line], ['--as-pri', T.primary], ['--as-on-pri', T.onPrimary], ['--as-font', T.fonts && T.fonts.body], ['--as-title', T.fonts && T.fonts.title]]
+  .filter(([, v]) => v != null && v !== '').map(([k, v]) => k + ':' + String(v).replace(/"/g, "'")).join(';');
+const varsOf = (e) => (e && e.style && B[e.style] && B[e.style].T ? ` style="${asVars(B[e.style].T)}"` : '');
 function chrome(e) {
   const multi = ENDS.length > 1;
   const resetBtn = `<button type="button" class="as-reset" data-act="_reset">${SV(16, G.reset)}<span>恢复演示数据</span></button>`;
@@ -235,7 +246,7 @@ function overlayHtml(o, e) {
   const title = typeof d.title === 'function' ? d.title(o, c) : d.title || '';
   const kind = isWeb(e) || isPad(e) ? d.kind || 'dialog' : 'sheet';
   const w = kind === 'sheet' ? '' : `style="width:${d.w}px"`;
-  return `<div class="as-layer ${rootOf(e)} p"><div class="as-scrim" data-act="_close" data-ov="${o.k}"></div><div class="as-ov as-${kind} ov-${o.id}" data-ov="${o.k}" role="dialog" ${w}>
+  return `<div class="as-layer ${rootOf(e)} p"${varsOf(e)}><div class="as-scrim" data-act="_close" data-ov="${o.k}"></div><div class="as-ov as-${kind} ov-${o.id}" data-ov="${o.k}" role="dialog" ${w}>
 ${title ? `<div class="as-ov-h"><b>${title}</b><button type="button" class="as-x" data-act="_close" aria-label="关闭">${SV(20, G.x)}</button></div>` : ''}<div class="as-ov-b">${inner}</div></div></div>`;
 }
 const toastHtml = () => (toastMsg ? `<div class="as-toast as-t-${toastMsg.kind}" role="status" data-k="${toastMsg.k}">${SV(20, G[toastMsg.kind] || G.ok)}<span>${esc(toastMsg.text)}</span></div>` : '');
@@ -245,7 +256,7 @@ function screen(e) {
   let body = '';
   try { body = p.render(c); } catch (err) { console.error(err); body = `<div class="as-oops">这一页出错了：${esc(err.message)}</div>`; }
   const ovs = overlays.filter((o) => o.end === e.key).map((o) => overlayHtml(o, e)).join('');
-  if (isWeb(e)) return `<div class="as-web web ${rootOf(e)} p e-${e.key} ${slug}" data-as-screen>${body}${ovs}${toastHtml()}</div>`;
+  if (isWeb(e)) return `<div class="as-web web ${rootOf(e)} p e-${e.key} ${slug}"${varsOf(e)} data-as-screen>${body}${ovs}${toastHtml()}</div>`;
   const title = typeof p.title === 'function' ? p.title(c) : p.title || '';
   const hasBack = p.back != null ? p.back : p.tab == null;
   let top = '';
@@ -255,9 +266,10 @@ function screen(e) {
   else top = ui.nav({ title, back: hasBack });
   const tabs = e.tabs && p.tab != null ? ui.tabs(e.tabs.map((t) => [t[0], t[1]]), p.tab, e.tabs.map((t) => t[2])) : '';
   const framed = !PHONE;
-  return `<div class="as-scr scr ${rootOf(e)} p e-${e.key} k-${e.kind} ${slug}" data-as-screen>${framed ? L.statusBar(S.dark) : ''}
+  const ft = p.foot ? p.foot(c) : '';   // foot 返回空串就不画底栏
+  return `<div class="as-scr scr ${rootOf(e)} p e-${e.key} k-${e.kind} ${slug}"${varsOf(e)} data-as-screen>${framed ? L.statusBar(S.dark) : ''}
 <div class="as-top">${top}</div><div class="as-body ${dir ? 'as-in-' + dir : ''}">${body}</div>
-${p.foot ? `<div class="as-foot">${p.foot(c)}</div>` : ''}${tabs}${ovs}${toastHtml()}${framed ? L.homeBar(S.dark) : ''}</div>`;
+${ft && String(ft).trim() ? `<div class="as-foot">${ft}</div>` : ''}${tabs}${ovs}${toastHtml()}${framed ? L.homeBar(S.dark) : ''}</div>`;
 }
 function switcherHtml() {
   if (!switcher) return '';
@@ -271,6 +283,7 @@ let raf = 0;
 export function refresh() { if (raf) return; window.__asBusy = true; raf = requestAnimationFrame(() => { raf = 0; paint(false); }); }
 function paint(routeChanged) {
   if (raf) { cancelAnimationFrame(raf); raf = 0; }
+  if (!route.page) { window.__asBusy = false; return; }   // 地址不认识、正在跳回首页：等 hashchange 再画
   const root = document.getElementById('as-root');
   const e = endOf(route.end);
   const lk = [PHONE ? 'p' : 'd', e.key].join('|');

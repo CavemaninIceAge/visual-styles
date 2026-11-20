@@ -96,7 +96,7 @@ let css = rd(path.join(KIT, 'base.css')) + '\n/* 图标 */\n' + [null, S, ...BS]
 BS.forEach((b, i) => { css += '\n/* 借来的 ' + borrow[i] + ' */\n' + b.css; });
 const faces = rd(path.join(KIT, 'fonts.css')).replace(/\/\*[\s\S]*?\*\//g, '').match(/@font-face\s*\{[^}]*\}/g) || [];
 const famOf = (blk) => (/font-family:\s*["']?([^;"']+)["']?/.exec(blk) || [])[1];
-const usedText = css + rd(path.join(__dirname, 'runtime', 'shell.css')) + projText;
+const usedText = css + rd(path.join(__dirname, 'runtime', 'shell.css')) + projText + styleSrc.join('\n');   // 起手包 JS 里直接写的字体（03 的印章字）也算用到
 const used = [...new Set(faces.map(famOf))].filter((f) => f && new RegExp(`["']${f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["']`).test(usedText));
 const FD = path.join(SITE, 'fonts');
 fs.mkdirSync(FD, { recursive: true });

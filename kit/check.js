@@ -61,7 +61,7 @@
   const DASH = /[—―]/;
   const SYMBOL = /[←-⇿☀-➿⬀-⯿«»‹›]|\p{Extended_Pictographic}/u;
   const SYMBOL_OK = /^[©®™]$/;
-  const NUMBERED = /^(0\d(\s*[\/／]\s*\d+)?|No\.?\s*\d+|№\s*\d+|§\s*\d*|p\.\s*\d+|(part|chapter|section|step|vol\.?|issue)\s*\d+|第\s*\d+\s*(期|章|节|部分)|第[一二三四五六七八九十]+(期|章|节|部分|卷)|(其|卷)[一二三四五六七八九十]+|[壹贰叁肆伍陆柒捌玖拾]+)$/i;
+  const NUMBERED = /^(0\d(\s*[\/／]\s*\d+)?|No\.?\s*\d+|№\s*\d+|§\s*\d*|p\.\s*\d+|(part|chapter|section|step|vol\.?|issue)\s*\d+|第\s*\d+\s*(期|章|节|部分)|第[一二三四五六七八九十]+(期|章|节|部分|卷)|(其|卷)[一二三四五六七八九十]+|[壹贰叁肆柒捌玖]|[壹贰叁肆伍陆柒捌玖拾]{2,})$/i;
   const SPACED = /^([\u4e00-\u9fff][ \u3000\u00a0]+)+[\u4e00-\u9fff]$/;   // 「预　约」「立 即 购 买」：用空格拉字距
   const SLASH = /\S\s+[\/／]\s+\S/;
   const MONO = /mono|courier|menlo|consolas|monaco|^monospace$/i;
@@ -166,20 +166,22 @@
   // 眉题：大标题正上方贴着的一行小字；副标题：大标题正下方贴着的一行没有数字的小字
   const wordy = (t) => { const d = (t.match(/[\d.,:%¥￥$]/g) || []).length; return d / t.length < 0.5; };
   function eyebrows(texts, issues, notes) {
+    // 浮层和下面的页面不是一层：只拿同一层里的字配对（浮层里的小字压在页面大标题上不算眉题）
+    const lay = (t) => (t.lay === undefined ? (t.lay = t.el.closest('.as-layer') || null) : t.lay);
     const heads = texts.filter((b) => b.fs >= 24 && wordy(b.txt));
     const nums = texts.filter((b) => b.fs >= 32 && !wordy(b.txt));
     // 压在大数字正上方的说明词：守则要求放在数字右边或下面
     for (const a of texts) {
       if (a.fs > 15 || a.txt.length > 12 || a.el.closest('[data-dot]')) continue;
-      const b = nums.find((n) => !n.el.contains(a.el) && !a.el.contains(n.el) && a.r.left < n.r.right && a.r.right > n.r.left && n.r.top - a.r.bottom >= -2 && n.r.top - a.r.bottom <= 16);
+      const b = nums.find((n) => lay(n) === lay(a) && !n.el.contains(a.el) && !a.el.contains(n.el) && a.r.left < n.r.right && a.r.right > n.r.left && n.r.top - a.r.bottom >= -2 && n.r.top - a.r.bottom <= 16);
       // 它正上方紧贴着另一个大数字时，它是那个数字下面的说明，不算
-      const owner = b && nums.find((n) => n !== b && a.r.left < n.r.right && a.r.right > n.r.left && a.r.top - n.r.bottom >= -2 && a.r.top - n.r.bottom <= 12);
+      const owner = b && nums.find((n) => n !== b && lay(n) === lay(a) && a.r.left < n.r.right && a.r.right > n.r.left && a.r.top - n.r.bottom >= -2 && a.r.top - n.r.bottom <= 12);
       if (b && !owner) issues.push({ t: '数字眉题', s: a.txt.slice(0, 18), d: `压在「${b.txt.slice(0, 8)}」上面的说明词：挪到数字右边或下面` });
     }
     for (const a of texts) {
       if (a.fs > 15 || a.txt.length > 20 || a.el.closest('[data-dot]')) continue;
       for (const b of heads) {
-        if (b.fs < Math.max(24, a.fs * 1.8) || b.el.contains(a.el) || a.el.contains(b.el)) continue;
+        if (b.fs < Math.max(24, a.fs * 1.8) || lay(b) !== lay(a) || b.el.contains(a.el) || a.el.contains(b.el)) continue;
         const hx = a.r.left >= b.r.left - 6 && a.r.left <= b.r.right && a.r.right >= b.r.left;
         if (!hx) continue;
         const above = b.r.top - a.r.bottom; const below = a.r.top - b.r.bottom;
